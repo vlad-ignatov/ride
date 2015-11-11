@@ -1,0 +1,26 @@
+{
+  "name": "ride",
+  "version": "0.0.1",
+  "description": "React Editor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vlad-ignatov/ride.git"
+  },
+  "keywords": [
+    "React",
+    "Editor",
+    "IDE",
+    "Flux",
+    "JSX"
+  ],
+  "author": "Vladimir Ignatov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vlad-ignatov/ride/issues"
+  },
+  "homepage": "https://github.com/vlad-ignatov/ride#readme"
+}
