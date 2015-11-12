@@ -1,0 +1,56 @@
+.file-tree {
+
+    &, ul {
+        margin : 0;
+        padding: 0;
+        display: table;
+        min-width: 100%;
+    }
+
+    li {
+        white-space: nowrap;
+        display    : block;
+        min-width  : 100%;
+
+         > div {
+             min-width: 100%;
+             display: inline-block;
+             padding-right: 4px;
+             position: relative;
+             z-index: 2;
+             border-radius: 2px;
+         }
+
+        > div:before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-width: 5px;
+            border-color: transparent;
+            border-style: inset inset inset solid;
+            position: relative;
+            display: inline-block;
+            margin: 0px 3px 0px 9px;
+        }
+        &.dir > div:before {
+            border-color: transparent transparent transparent #666;
+        }
+        &.expanded > div:before {
+            border-color: #666 transparent transparent transparent;
+            border-style: solid inset inset inset;
+            margin: 6px 6px -3px 6px;
+        }
+        > div:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-shadow : 0 1px 1px #000;
+        }
+        > div:focus {
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 1px 0 rgba(255, 127, 0, 0.8) inset;
+            outline: none;
+            color: #fff;
+            text-shadow : 0 1px 1px #000;
+        }
+    }
+}

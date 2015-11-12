@@ -1,0 +1,200 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    overflow: hidden;
+    height: 100%;
+    background: #2F3129;
+    color: #797A75;
+}
+body {
+    font: menu;
+    background: #2F3129;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    cursor: default;
+    color: #797A75;
+    -webkit-app-region: drag;
+}
+
+// Scrollbars ==================================================================
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 200, 200, 0.1);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 200, 200, 0.3);
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgba(200, 200, 200, 0.5);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+/*::-webkit-scrollbar-track:hover {
+  background: #666666;
+}
+::-webkit-scrollbar-track:active {
+  background: #333333;
+}*/
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/*div, iframe {
+    box-shadow: 0 0 0 0.5px #CCC;
+}*/
+.main-wrap {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.main-row {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    background: #272822;
+    -webkit-app-region: no-drag;
+}
+.main-sidebar-left {
+    padding     : 1px;
+    width       : 300px;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    overflow    : auto;
+    position    : relative;
+}
+
+.main-stage {
+    display: flex;
+    flex: 5;
+    flex-direction: column;
+}
+
+.main-tabs {
+    display: flex;
+    flex-direction: row;
+    height: 2em;
+    background: linear-gradient(#1E1F1A, #272822);
+    .tab {
+        display: flex;
+        flex: 1;
+        position: relative;
+        z-index: 2;
+        padding: 4px;
+        max-width: 40%;
+        border-radius: 3px 3px 0 0;
+        box-shadow: 0px -1px 0px 1px #1E1F1A;
+        margin: 1px 1px 0 0;
+        background: #2F3129;
+        &.active {
+            border-top: 2px solid rgba(255, 165, 0, 0.4);
+            background: #2F3129;
+            color: #fff;
+        }
+    }
+}
+
+.main-frame {
+    display: flex;
+    flex: 5;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+.main-inspector {
+    display : flex;
+    flex    : 5;
+    position: relative;
+    background: #272822;
+    border-top: 1px solid #2F3129;
+}
+
+
+.main-sidebar-right {
+    display: flex;
+    padding: 4px;
+    flex   : 2;
+    border-left : 1px solid rgba(255, 255, 255, 0.1);
+    overflow: auto;
+}
+.main-status-bar {
+    display: flex;
+    padding: 1px 4px;
+    border-top : 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-app-region: drag;
+}
+
+.header {
+    height: 23px;
+    line-height: 22px;
+    font-size: 14px;
+    text-shadow: 0 0 1px #000;
+    color: #ccc;
+    border-bottom: 1px solid #222;
+}
+
+#editor {
+    position: absolute;
+    border-top: 1px solid #000;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-family: "Roboto Mono", "Source Code Pro", Menlo;
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+
+    &.ace_dark {
+        font-weight: 300;
+        text-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 1);
+        /*opacity: 0.8;*/
+    }
+    &.ace-ambiance .ace_gutter {
+        color: #000 !important;
+        font-weight: 400;
+    }
+    &.ace-ambiance .ace_marker-layer .ace_selected-word {
+        border-width: 1px;
+    }
+    .ace_comment {
+        font-family: "Source Code Pro", Menlo;
+        font-weight: 400;
+    }
+}
+
+@import "FileTree.less";
+
+.resizer {
+    position: fixed;
+    pointer-events: auto;
+    z-index: 1000;
+    // background: orange;
+    // opacity: 0.2;
+    &.vertical {
+        cursor: col-resize;
+        width: 6px;
+        top: 0;
+        bottom: 0;
+    }
+    &.horizontal {
+        cursor: row-resize;
+        height: 6px;
+        left: 0;
+        right: 0;
+    }
+    // &:active {
+    //     background: orange;
+    //     opacity: 0.5;
+    // }
+}
