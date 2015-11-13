@@ -1,6 +1,9 @@
 /* global __dirname, process */
 var app           = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var ipc           = require('ipc');
+
+require("babel-core/register");
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -9,13 +12,25 @@ require('crash-reporter').start();
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
 
-// Quit when all windows are closed.
-// app.on('window-all-closed', function() {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    // if (process.platform != 'darwin') {
-    //     app.quit();
-    // }
+// This app uses custom header so we need to make it (un)maximize on dblclick
+ipc.on('toggleMaximize', function() {
+    if (mainWindow) {
+        if (mainWindow.isMaximized()) {
+            mainWindow.unmaximize();
+        } else {
+            mainWindow.maximize();
+        }
+    }
+});
+
+// Pass actions from the browser window to the global dispatcher
+// on the main process
+// ipc.on('handleViewAction', function(event, action) {
+//     return AppDispatcher.handleViewAction(action);
+// });
+//
+// ipc.on('registerDispatch', function(event, fn) {
+//     return AppDispatcher.register(fn);
 // });
 
 // This method will be called when Electron has finished
@@ -30,7 +45,11 @@ app.on('ready', function() {
         'min-width' : 400,
         'min-height': 200,
         //   frame       : false,
-        'title-bar-style': 'hidden'
+        'title-bar-style': 'hidden',
+        webSecurity : false,
+        allowDisplayingInsecureContent: true,
+        allowRunningInsecureContent: true,
+        overlayScrollbars: true
     });
 
     // and load the index.html of the app.

@@ -2,10 +2,11 @@ import MainWindow from './components/MainWindow.jsx';
 import { default as $ } from 'jquery';
 
 $(function() {
+    $(document).on('selectstart', false);
+
     ReactDOM.render(<MainWindow />, document.querySelector('.main-wrap'));
 
     var leftSidebar = $('.main-sidebar-left');
-
     leftSidebar.find('> .resizer.vertical')
     .on('mousedown', function(evt) {
         var $resizer = $(this),
@@ -36,5 +37,9 @@ $(function() {
             });
         });
         return false;
+    });
+
+    $('.header').on('dblclick', function() {
+        ipc.send('toggleMaximize');
     });
 });
