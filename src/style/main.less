@@ -148,9 +148,15 @@ body {
         }
 
         &.active {
-            border-top: 2px solid rgba(255, 165, 0, 0.4);
-            background: lighten(#2F3129, 5%);
+            // border-top: 2px solid rgba(255, 165, 0, 0.4);
+            box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
+            background: linear-gradient(lighten(#2F3129, 10%), lighten(#2F3129, 5%));
             color: #fff;
+        }
+
+        &.preview {
+            font-style: italic;
+            text-shadow: none;
         }
 
         .close-tab {

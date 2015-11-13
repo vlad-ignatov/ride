@@ -1,4 +1,4 @@
-var Constants = require('../constants/AppConstants');
+var Constants     = require('../constants/constants');
 var appDispatcher = require('../Dispatcher');
 
 var AppActions = {

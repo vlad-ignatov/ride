@@ -1,4 +1,4 @@
-var Constants = require('../constants/FileTreeConstants');
+var Constants     = require('../constants/constants');
 var appDispatcher = require('../Dispatcher');
 
 var FileTreeActions = {

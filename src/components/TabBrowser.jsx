@@ -1,69 +1,48 @@
 'use strict';
-// TabBrowser.js
+
 import { PropTypes, Component } from 'react';
-import { openFilesStore }       from '../stores/OpenFilesStore';
 import AppActions               from '../actions/AppActions';
+import FileTreeActions          from '../actions/FileTreeActions';
 
 export default class TabBrowser extends Component
 {
     constructor()
     {
         super();
-        this.state = {
-            files : {}
-        };
-        this._onChange = this._onChange.bind(this);
     }
 
-    componentWillUnmount()
+    close(path, e)
     {
-        openFilesStore.removeChangeListener(this._onChange);
-    }
-
-    componentDidMount()
-    {
-        openFilesStore.addChangeListener(this._onChange);
-    }
-
-    _onChange()
-    {
-        // console.log(openFilesStore.getAll())
-        this.setState({
-            files : openFilesStore.getAll()
-        });
-    }
-
-    close(path)
-    {
+        e.stopPropagation();
         AppActions.closeFile(path);
+    }
+
+    select(path)
+    {
+        FileTreeActions.select(path);
     }
 
     render()
     {
-        // console.log(this.state.files);
-        var files = [];
-        for (let file in this.state.files) {
-            files.push(
-                <div className="tab" key={file} title={file}>
+        var files = this.props.files.map(f => {
+            let file = f.path;
+            return (
+                <div className={
+                        'tab' +
+                        (this.props.selectedPath == file ? ' active' : '') +
+                        (f.isPreview ? ' preview' : '')
+                    }
+                    key={file}
+                    title={file}
+                    onClick={ this.select.bind(this, file) }>
                     <span className="close-tab icon icon-close"
                         title="Close Tab"
                         onClick={ this.close.bind(this, file) }/>
                     {file.substr(file.lastIndexOf('/') + 1)}
                 </div>
             );
-        }
-        return (
-            <div className="main-tabs">
-                { files }
-                { /*
-                <div className="tab active">
-                    Tab 1
-                </div>
-                <div className="tab">
-                    Tab 2
-                </div>
-                */ }
-            </div>
-        );
+        });
+
+        return (<div className="main-tabs">{ files }</div>);
     }
 }

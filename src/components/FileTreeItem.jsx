@@ -90,9 +90,6 @@ export default class FileTreeItem extends Component
                 expanded : !this.state.expanded
             });
         }
-        // else {
-            // DISPATCHER.emit('selectfile', this.props.path);
-        // }
         FileTreeActions.select(this.props.path);
     }
 

@@ -1,6 +1,6 @@
 import { PropTypes, Component } from 'react';
 import { default as fs } from 'fs';
-import { appStateStore } from '../stores/AppStateStore';
+import { stateStore } from '../stores/StateStore';
 
 export default class Editor extends Component
 {
@@ -23,25 +23,14 @@ export default class Editor extends Component
 
     componentWillUnmount()
     {
-        appStateStore.removeChangeListener(this._onChange);
+        stateStore.removeChangeListener(this._onChange);
     }
 
     _onChange()
     {
-        var path  = appStateStore.getState().selectedFilePath;
-        if (path) {
-            var isDir = fs.statSync(path).isDirectory();
-            if (!isDir) {
-                try {
-                    let modelist = ace.require("ace/ext/modelist");
-                    let mode     = modelist.getModeForPath(path).mode
-                    this.editor.session.setMode(mode) // mode now contains "ace/mode/javascript".
-                    this.editor.setValue(fs.readFileSync(path, 'utf8'), -1);
-                } catch(ex) {
-                    console.error(ex);
-                    this.editor.setValue('');
-                }
-            }
+        var state = stateStore.getCurrentSession();
+        if (state) {
+            this.editor.setSession(state.session);
         }
         else {
             this.editor.setValue('');
@@ -50,11 +39,10 @@ export default class Editor extends Component
 
     componentDidMount()
     {
-        appStateStore.addChangeListener(this._onChange);
+        stateStore.addChangeListener(this._onChange);
         this.editor = ace.edit(this.refs.wrapper);
         this.editor.$blockScrolling = Infinity;
         this.editor.setTheme("ace/theme/twilight");
-        this.editor.getSession().setMode("ace/mode/jsx");
         this.editor.setDisplayIndentGuides(false);
     }
 
