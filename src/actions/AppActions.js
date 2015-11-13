@@ -8,6 +8,13 @@ var AppActions = {
             actionType: Constants.APP_OPEN_FILE,
             path      : path
         });
+    },
+
+    closeFile: function(path) {
+        appDispatcher.handleViewAction({
+            actionType: Constants.APP_CLOSE_FILE,
+            path      : path
+        });
     }
 
 };

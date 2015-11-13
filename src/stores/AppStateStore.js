@@ -1,8 +1,9 @@
 'use strict';
 
-var Constants     = require('../constants/FileTreeConstants');
-var EventEmitter  = require('events').EventEmitter;
-var appDispatcher = require('../Dispatcher');
+var AppConstants      = require('../constants/AppConstants');
+var FileTreeConstants = require('../constants/FileTreeConstants');
+var EventEmitter      = require('events').EventEmitter;
+var appDispatcher     = require('../Dispatcher');
 
 var CHANGE_EVENT = 'change';
 
@@ -24,9 +25,15 @@ class AppStateStore extends EventEmitter
             var text;
 
             switch(action.actionType) {
-                case Constants.FILETREE_SELECT_ITEM:
+                case FileTreeConstants.FILETREE_SELECT_ITEM:
                     SATE.selectedFilePath = action.path;
                     store.emitChange();
+                break;
+                case AppConstants.APP_CLOSE_FILE:
+                    if (SATE.selectedFilePath == action.path) {
+                        SATE.selectedFilePath = '';
+                        store.emitChange();
+                    }
                 break;
             }
 

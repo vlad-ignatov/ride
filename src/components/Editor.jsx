@@ -29,17 +29,22 @@ export default class Editor extends Component
     _onChange()
     {
         var path  = appStateStore.getState().selectedFilePath;
-        var isDir = fs.statSync(path).isDirectory();
-        if (!isDir) {
-            try {
-                let modelist = ace.require("ace/ext/modelist");
-                let mode     = modelist.getModeForPath(path).mode
-                this.editor.session.setMode(mode) // mode now contains "ace/mode/javascript".
-                this.editor.setValue(fs.readFileSync(path, 'utf8'), -1);
-            } catch(ex) {
-                console.error(ex);
-                this.editor.setValue('');
+        if (path) {
+            var isDir = fs.statSync(path).isDirectory();
+            if (!isDir) {
+                try {
+                    let modelist = ace.require("ace/ext/modelist");
+                    let mode     = modelist.getModeForPath(path).mode
+                    this.editor.session.setMode(mode) // mode now contains "ace/mode/javascript".
+                    this.editor.setValue(fs.readFileSync(path, 'utf8'), -1);
+                } catch(ex) {
+                    console.error(ex);
+                    this.editor.setValue('');
+                }
             }
+        }
+        else {
+            this.editor.setValue('');
         }
     }
 

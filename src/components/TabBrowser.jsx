@@ -1,7 +1,8 @@
 'use strict';
 // TabBrowser.js
 import { PropTypes, Component } from 'react';
-import { openFilesStore } from '../stores/OpenFilesStore';
+import { openFilesStore }       from '../stores/OpenFilesStore';
+import AppActions               from '../actions/AppActions';
 
 export default class TabBrowser extends Component
 {
@@ -26,10 +27,15 @@ export default class TabBrowser extends Component
 
     _onChange()
     {
-        console.log(openFilesStore.getAll())
+        // console.log(openFilesStore.getAll())
         this.setState({
             files : openFilesStore.getAll()
         });
+    }
+
+    close(path)
+    {
+        AppActions.closeFile(path);
     }
 
     render()
@@ -39,7 +45,9 @@ export default class TabBrowser extends Component
         for (let file in this.state.files) {
             files.push(
                 <div className="tab" key={file} title={file}>
-                    <span className="close-tab icon icon-close" title="Close Tab"/>
+                    <span className="close-tab icon icon-close"
+                        title="Close Tab"
+                        onClick={ this.close.bind(this, file) }/>
                     {file.substr(file.lastIndexOf('/') + 1)}
                 </div>
             );

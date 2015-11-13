@@ -699,6 +699,13 @@
 	            actionType: Constants.APP_OPEN_FILE,
 	            path: path
 	        });
+	    },
+
+	    closeFile: function closeFile(path) {
+	        appDispatcher.handleViewAction({
+	            actionType: Constants.APP_CLOSE_FILE,
+	            path: path
+	        });
 	    }
 
 	};
@@ -712,7 +719,8 @@
 	'use strict';
 
 	module.exports = {
-	    APP_OPEN_FILE: 'APP_OPEN_FILE'
+	    APP_OPEN_FILE: 'APP_OPEN_FILE',
+	    APP_CLOSE_FILE: 'APP_CLOSE_FILE'
 	};
 
 /***/ },
@@ -767,17 +775,21 @@
 	        key: '_onChange',
 	        value: function _onChange() {
 	            var path = _AppStateStore.appStateStore.getState().selectedFilePath;
-	            var isDir = _fs2.default.statSync(path).isDirectory();
-	            if (!isDir) {
-	                try {
-	                    var modelist = ace.require("ace/ext/modelist");
-	                    var mode = modelist.getModeForPath(path).mode;
-	                    this.editor.session.setMode(mode); // mode now contains "ace/mode/javascript".
-	                    this.editor.setValue(_fs2.default.readFileSync(path, 'utf8'), -1);
-	                } catch (ex) {
-	                    console.error(ex);
-	                    this.editor.setValue('');
+	            if (path) {
+	                var isDir = _fs2.default.statSync(path).isDirectory();
+	                if (!isDir) {
+	                    try {
+	                        var modelist = ace.require("ace/ext/modelist");
+	                        var mode = modelist.getModeForPath(path).mode;
+	                        this.editor.session.setMode(mode); // mode now contains "ace/mode/javascript".
+	                        this.editor.setValue(_fs2.default.readFileSync(path, 'utf8'), -1);
+	                    } catch (ex) {
+	                        console.error(ex);
+	                        this.editor.setValue('');
+	                    }
 	                }
+	            } else {
+	                this.editor.setValue('');
 	            }
 	        }
 	    }, {
@@ -795,7 +807,7 @@
 	        value: function render() {
 	            return React.createElement('div', { ref: 'wrapper', id: 'editor', __source: {
 	                    fileName: '../../../../../src/components/Editor.jsx',
-	                    lineNumber: 58
+	                    lineNumber: 63
 	                }
 	            });
 	        }
@@ -830,7 +842,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Constants = __webpack_require__(8);
+	var AppConstants = __webpack_require__(11);
+	var FileTreeConstants = __webpack_require__(8);
 	var EventEmitter = __webpack_require__(14).EventEmitter;
 	var appDispatcher = __webpack_require__(9);
 
@@ -855,9 +868,15 @@
 	            var text;
 
 	            switch (action.actionType) {
-	                case Constants.FILETREE_SELECT_ITEM:
+	                case FileTreeConstants.FILETREE_SELECT_ITEM:
 	                    SATE.selectedFilePath = action.path;
 	                    store.emitChange();
+	                    break;
+	                case AppConstants.APP_CLOSE_FILE:
+	                    if (SATE.selectedFilePath == action.path) {
+	                        SATE.selectedFilePath = '';
+	                        store.emitChange();
+	                    }
 	                    break;
 	            }
 
@@ -926,6 +945,12 @@
 
 	var _OpenFilesStore = __webpack_require__(16);
 
+	var _AppActions = __webpack_require__(10);
+
+	var _AppActions2 = _interopRequireDefault(_AppActions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -960,10 +985,15 @@
 	    }, {
 	        key: '_onChange',
 	        value: function _onChange() {
-	            console.log(_OpenFilesStore.openFilesStore.getAll());
+	            // console.log(openFilesStore.getAll())
 	            this.setState({
 	                files: _OpenFilesStore.openFilesStore.getAll()
 	            });
+	        }
+	    }, {
+	        key: 'close',
+	        value: function close(path) {
+	            _AppActions2.default.closeFile(path);
 	        }
 	    }, {
 	        key: 'render',
@@ -975,12 +1005,14 @@
 	                    'div',
 	                    { className: 'tab', key: file, title: file, __source: {
 	                            fileName: '../../../../../src/components/TabBrowser.jsx',
-	                            lineNumber: 41
+	                            lineNumber: 47
 	                        }
 	                    },
-	                    React.createElement('span', { className: 'close-tab icon icon-close', title: 'Close Tab', __source: {
+	                    React.createElement('span', { className: 'close-tab icon icon-close',
+	                        title: 'Close Tab',
+	                        onClick: this.close.bind(this, file), __source: {
 	                            fileName: '../../../../../src/components/TabBrowser.jsx',
-	                            lineNumber: 42
+	                            lineNumber: 48
 	                        }
 	                    }),
 	                    file.substr(file.lastIndexOf('/') + 1)
@@ -990,7 +1022,7 @@
 	                'div',
 	                { className: 'main-tabs', __source: {
 	                        fileName: '../../../../../src/components/TabBrowser.jsx',
-	                        lineNumber: 48
+	                        lineNumber: 56
 	                    }
 	                },
 	                files
@@ -1045,6 +1077,12 @@
 	                case Constants.APP_OPEN_FILE:
 	                    FILES[action.path] = 1;
 	                    store.emitChange();
+	                    break;
+	                case Constants.APP_CLOSE_FILE:
+	                    if (FILES[action.path]) {
+	                        delete FILES[action.path];
+	                        store.emitChange();
+	                    }
 	                    break;
 	            }
 

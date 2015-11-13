@@ -24,6 +24,12 @@ class OpenFilesStore extends EventEmitter
                     FILES[action.path] = 1;
                     store.emitChange();
                 break;
+                case Constants.APP_CLOSE_FILE:
+                    if (FILES[action.path]) {
+                        delete FILES[action.path];
+                        store.emitChange();
+                    }
+                break;
             }
 
             return true; // No errors. Needed by promise in Dispatcher.
