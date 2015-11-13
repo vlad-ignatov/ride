@@ -30,6 +30,10 @@ module.exports = {
                     'less-loader'
                 ]
             },
+            {
+                test: /\.woff$/,
+                loader: 'url?limit=100000'
+            }
             // {
             //     test : /\.css$/,
             //     // exclude: /node_modules/,
@@ -45,12 +49,12 @@ module.exports = {
         'react-dom' : 'ReactDOM',
         'fs'        : 'fs',
         'jquery'    : 'jQuery',
-        // '$'         : 'jQuery'
-    //     'events' : 'events',
-    //     'ipc'    : 'ipc',
+        'events'    : 'events',
+        'ipc'       : 'ipc',
         // 'app'            : 'app',
         // 'browser-window' : 'browser-window',
         // 'crash-reporter' : 'crash-reporter'
+        'AppDispatcher' : 'AppDispatcher'
     },
     resolve : {
         extensions : [ '', '.js', '.jsx' ],
