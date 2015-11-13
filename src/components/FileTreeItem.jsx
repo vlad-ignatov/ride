@@ -1,5 +1,7 @@
 import { PropTypes, Component } from 'react';
 import fs                       from 'fs';
+import FileTreeActions          from '../actions/FileTreeActions';
+import AppActions               from '../actions/AppActions';
 
 export default class FileTreeItem extends Component
 {
@@ -9,6 +11,7 @@ export default class FileTreeItem extends Component
         name     : PropTypes.string,
         type     : PropTypes.string.isRequired,
         level    : PropTypes.number,
+        selectedPath : PropTypes.string
     };
 
     static TYPE_FILE = 'file';
@@ -18,12 +21,14 @@ export default class FileTreeItem extends Component
         path    : '/',
         expanded: false,
         level   : 0,
+        selectedPath : ''
     };
 
     constructor(props)
     {
         super(props);
-        this.mouseDwn = this.mouseDwn.bind(this);
+        this.onClick  = this.onClick.bind(this);
+        this.dblClick = this.dblClick.bind(this);
         this.state = {
             expanded : props.expanded
         };
@@ -33,8 +38,13 @@ export default class FileTreeItem extends Component
     {
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;
         if (this.state.expanded && isDir) {
-            var files = fs.readdirSync(this.props.path),
-                items = [];
+            var files, items = [];
+
+            try {
+                files = fs.readdirSync(this.props.path);
+            } catch (ex) {
+                console.error(ex);
+            }
 
             for (var i in files){
                 var path = (this.props.path == '/' ? '' : this.props.path) + '/' + files[i],
@@ -48,6 +58,7 @@ export default class FileTreeItem extends Component
                 items.push({
                     name : files[i],
                     level: this.props.level + 1,
+                    selectedPath: this.props.selectedPath,
                     path,
                     key  : path,
                     type : stats.isDirectory() ?
@@ -62,8 +73,6 @@ export default class FileTreeItem extends Component
                 (b.type == FileTreeItem.TYPE_DIR ? 0 : 1)
             ));
 
-            console.log(items);
-
             return (<ul>{ items.map(item => (
                 <FileTreeItem { ...item } />)
             ) }</ul>);
@@ -72,7 +81,7 @@ export default class FileTreeItem extends Component
         return null;
     }
 
-    mouseDwn(e)
+    onClick(e)
     {
         e.stopPropagation();
         e.preventDefault();
@@ -81,8 +90,16 @@ export default class FileTreeItem extends Component
                 expanded : !this.state.expanded
             });
         }
-        else {
+        // else {
             // DISPATCHER.emit('selectfile', this.props.path);
+        // }
+        FileTreeActions.select(this.props.path);
+    }
+
+    dblClick(e)
+    {
+        if (this.props.type == FileTreeItem.TYPE_FILE) {
+            AppActions.openFile(this.props.path);
         }
     }
 
@@ -91,10 +108,21 @@ export default class FileTreeItem extends Component
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;
         return (
             <li key={this.props.path} className={
-                    this.props.type + (this.state.expanded ? ' expanded' : '')
+                    this.props.type + (this.state.expanded ? ' expanded' : '') +
+                    (this.props.selectedPath === this.props.path ? ' selected' : '')
                 }>
-                <div onClick={ this.mouseDwn } style={{ paddingLeft: this.props.level * 18 }} tabIndex="0">
-                    { (isDir ? '📂' : '📄') +  this.props.name || this.props.path }
+                <div onClick={ this.onClick }
+                     onDoubleClick={ this.dblClick }
+                     style={{ paddingLeft: this.props.level * 18, opacity: this.props.name.indexOf('.') === 0 ? 0.5 : 1 }}
+                     tabIndex="0">
+                     <span className={ 'icon ' + (
+                        isDir ?
+                            this.state.expanded ?
+                                'icon-folder-open' :
+                                'icon-folder' :
+                            'icon-file-text2'
+                    ) }/>
+                    { this.props.name || this.props.path }
                 </div>
                 { this.getChildren() }
             </li>

@@ -7,6 +7,26 @@
         min-width: 100%;
     }
 
+    .icon {
+        display: inline-block;
+        vertical-align: top;
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+        line-height: 20px;
+        text-align: left;
+        margin-right: 4px;
+
+        &.icon-folder-open,
+        &.icon-folder {
+            color: rgba(169, 142, 76, 0.7);
+        }
+
+        &.icon-file-text2 {
+            color: rgba(141, 163, 171, 0.7);
+        }
+    }
+
     li {
         white-space: nowrap;
         display    : block;
@@ -19,6 +39,7 @@
              position: relative;
              z-index: 2;
              border-radius: 2px;
+             line-height: 20px;
          }
 
         > div:before {
@@ -40,17 +61,36 @@
             border-style: solid inset inset inset;
             margin: 6px 6px -3px 6px;
         }
+
         > div:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: rgba(0, 0, 0, 0.2);
             text-shadow : 0 1px 1px #000;
+            box-shadow: 0 0 1px 0 #000;
         }
+
         > div:focus {
-            background: rgba(0, 0, 0, 0.3);
-            box-shadow: 0 0 1px 0 rgba(255, 127, 0, 0.8) inset;
             outline: none;
-            color: #fff;
-            text-shadow : 0 1px 1px #000;
         }
+
+        &.selected > div {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 1px 0 #000;
+            outline: none;
+            color: #FFF;
+            text-shadow : 0 1px 1px #000;
+
+            .icon-folder-open,
+            .icon-folder {
+                color: rgba(169, 142, 76, 0.9);
+            }
+
+            .icon-file-text2 {
+                color: rgba(141, 163, 171, 0.9);
+            }
+        }
+
+        // &.selected > div {
+        //     box-shadow: 0 0 1px 0 rgba(255, 127, 0, 1) inset;
+        // }
     }
 }

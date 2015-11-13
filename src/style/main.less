@@ -18,6 +18,49 @@ body {
     -webkit-app-region: drag;
 }
 
+@font-face {
+	font-family: 'icomoon';
+	src:url('./fonts/icomoon.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.icon {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cancel:before {
+	content: "\e205";
+}
+.icon-close:before {
+	content: "\e209";
+}
+.icon-folder:before {
+	content: "\f07b";
+}
+.icon-folder-open:before {
+	content: "\f07c";
+}
+.icon-folder-o:before {
+	content: "\f114";
+}
+.icon-folder-open-o:before {
+	content: "\f115";
+}
+.icon-file-text2:before {
+	content: "\e900";
+}
+
 // Scrollbars ==================================================================
 ::-webkit-scrollbar {
   width: 6px;
@@ -61,13 +104,13 @@ body {
     display: flex;
     flex: 1;
     flex-direction: row;
-    background: #272822;
+    background: #1E1F18;
     -webkit-app-region: no-drag;
 }
 .main-sidebar-left {
-    padding     : 1px;
+    padding     : 3px;
     width       : 300px;
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
     overflow    : auto;
     position    : relative;
 }
@@ -84,20 +127,56 @@ body {
     height: 2em;
     background: linear-gradient(#1E1F1A, #272822);
     .tab {
-        display: flex;
+        // display: flex;
         flex: 1;
         position: relative;
         z-index: 2;
-        padding: 4px;
+        padding: 4px 8px;
         max-width: 40%;
         border-radius: 3px 3px 0 0;
-        box-shadow: 0px -1px 0px 1px #1E1F1A;
-        margin: 1px 1px 0 0;
+        box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
+        margin: 1px 2px 0 0;
         background: #2F3129;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-shadow: 0px -1px 0px #000;
+
+        &:hover {
+            background: lighten(#2F3129, 5%);
+            color: #fff;
+        }
+
         &.active {
             border-top: 2px solid rgba(255, 165, 0, 0.4);
-            background: #2F3129;
+            background: lighten(#2F3129, 5%);
             color: #fff;
+        }
+
+        .close-tab {
+            float: right;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+            margin: 1px -3px auto 3px;
+            font-size: 14px;
+            line-height: 16px;
+            text-align: center;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+            opacity: 0.5;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.3);
+                color: #fff;
+                opacity: 1;
+            }
+
+            &:active {
+                box-shadow: 1px 1px 2px #000 inset;
+            }
         }
     }
 }
@@ -116,7 +195,7 @@ body {
     flex    : 5;
     position: relative;
     background: #272822;
-    border-top: 1px solid #2F3129;
+    border-top: 2px solid #2F3129;
 }
 
 
@@ -141,6 +220,8 @@ body {
     text-shadow: 0 0 1px #000;
     color: #ccc;
     border-bottom: 1px solid #222;
+    position: relative;
+    z-index: 2;
 }
 
 #editor {

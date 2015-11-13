@@ -6,15 +6,17 @@ import fs       from 'fs';
 export class FileTree extends Component
 {
     static propTypes = {
-        path     : PropTypes.string,
-        name     : PropTypes.string,
-        expanded : PropTypes.bool
+        path         : PropTypes.string,
+        name         : PropTypes.string,
+        expanded     : PropTypes.bool,
+        selectedPath : PropTypes.string
     };
 
     static defaultProps = {
         path    : '/',
         name    : 'Folder',
-        expanded: false
+        expanded: false,
+        selectedPath : ''
     };
 
     constructor(...args)
@@ -34,7 +36,8 @@ export class FileTree extends Component
                     path={ this.props.path }
                     name={ this.props.name }
                     type={ type }
-                    expanded={ this.props.expanded } />
+                    expanded={ this.props.expanded }
+                    selectedPath={ this.props.selectedPath } />
             </ul>
         );
     }
