@@ -15,6 +15,13 @@ var AppActions = {
             actionType: Constants.APP_CLOSE_FILE,
             path      : path
         });
+    },
+
+    save: function() {
+        appDispatcher.handleViewAction({
+            actionType: Constants.APP_SAVE_FILE,
+            path      : path
+        });
     }
 
 };

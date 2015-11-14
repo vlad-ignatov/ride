@@ -118,15 +118,15 @@
 
 	var _FileTree = __webpack_require__(4);
 
-	var _Editor = __webpack_require__(12);
+	var _Editor = __webpack_require__(11);
 
 	var _Editor2 = _interopRequireDefault(_Editor);
 
-	var _TabBrowser = __webpack_require__(15);
+	var _TabBrowser = __webpack_require__(16);
 
 	var _TabBrowser2 = _interopRequireDefault(_TabBrowser);
 
-	var _StateStore = __webpack_require__(24);
+	var _StateStore = __webpack_require__(12);
 
 	var _AppActions = __webpack_require__(10);
 
@@ -404,14 +404,14 @@
 	    function FileTreeItem(props) {
 	        _classCallCheck(this, FileTreeItem);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FileTreeItem).call(this, props));
+	        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(FileTreeItem).call(this, props));
 
-	        _this.onClick = _this.onClick.bind(_this);
-	        _this.dblClick = _this.dblClick.bind(_this);
-	        _this.state = {
+	        _this2.onClick = _this2.onClick.bind(_this2);
+	        _this2.dblClick = _this2.dblClick.bind(_this2);
+	        _this2.state = {
 	            expanded: props.expanded
 	        };
-	        return _this;
+	        return _this2;
 	    }
 
 	    _createClass(FileTreeItem, [{
@@ -492,15 +492,31 @@
 	                _AppActions2.default.openFile(this.props.path);
 	            }
 	        }
+
+	        // componentDidMount()
+	        // {
+	        //     console.log(this.refs.li, this.props)
+	        //     if (jQuery(this.refs.li).is('.selected')) {
+	        //         this.refs.li.scrollIntoViewIfNeeded();
+	        //     }
+	        // }
+
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this = this;
+
 	            var isDir = this.props.type == FileTreeItem.TYPE_DIR;
+	            if (this.props.selectedPath === this.props.path) {
+	                setTimeout(function () {
+	                    _this.refs.li.scrollIntoViewIfNeeded();
+	                });
+	            }
 	            return React.createElement(
 	                'li',
-	                { key: this.props.path, className: this.props.type + (this.state.expanded ? ' expanded' : '') + (this.props.selectedPath === this.props.path ? ' selected' : ''), __source: {
+	                { key: this.props.path, ref: 'li', className: this.props.type + (this.state.expanded ? ' expanded' : '') + (this.props.selectedPath === this.props.path ? ' selected' : ''), __source: {
 	                        fileName: '../../../../../src/components/FileTreeItem.jsx',
-	                        lineNumber: 107
+	                        lineNumber: 118
 	                    }
 	                },
 	                React.createElement(
@@ -510,12 +526,12 @@
 	                        style: { paddingLeft: this.props.level * 18, opacity: this.props.name.indexOf('.') === 0 ? 0.5 : 1 },
 	                        tabIndex: '0', __source: {
 	                            fileName: '../../../../../src/components/FileTreeItem.jsx',
-	                            lineNumber: 111
+	                            lineNumber: 122
 	                        }
 	                    },
 	                    React.createElement('span', { className: 'icon ' + (isDir ? this.state.expanded ? 'icon-folder-open' : 'icon-folder' : 'icon-file-text2'), __source: {
 	                            fileName: '../../../../../src/components/FileTreeItem.jsx',
-	                            lineNumber: 115
+	                            lineNumber: 126
 	                        }
 	                    }),
 	                    this.props.name || this.props.path
@@ -558,7 +574,7 @@
 
 	'use strict';
 
-	var Constants = __webpack_require__(23);
+	var Constants = __webpack_require__(8);
 	var appDispatcher = __webpack_require__(9);
 
 	var FileTreeActions = {
@@ -601,12 +617,9 @@
 
 	'use strict';
 
-	module.exports = {
-	    FILETREE_SELECT_ITEM: 'FILETREE_SELECT_ITEM',
-	    FILETREE_EXPAND_ITEM: 'FILETREE_EXPAND_ITEM',
-	    FILETREE_COLLAPSE_ITEM: 'FILETREE_COLLAPSE_ITEM',
-	    FILETREE_TOGGLE_ITEM: 'FILETREE_TOGGLE_ITEM'
-	};
+	['APP_OPEN_FILE', 'APP_CLOSE_FILE', 'APP_SAVE_FILE', 'FILETREE_SELECT_ITEM', 'FILETREE_EXPAND_ITEM', 'FILETREE_COLLAPSE_ITEM', 'FILETREE_TOGGLE_ITEM'].forEach(function (x) {
+	    return exports[x] = x;
+	});
 
 /***/ },
 /* 9 */
@@ -698,7 +711,7 @@
 
 	'use strict';
 
-	var Constants = __webpack_require__(23);
+	var Constants = __webpack_require__(8);
 	var appDispatcher = __webpack_require__(9);
 
 	var AppActions = {
@@ -715,6 +728,13 @@
 	            actionType: Constants.APP_CLOSE_FILE,
 	            path: path
 	        });
+	    },
+
+	    save: function save() {
+	        appDispatcher.handleViewAction({
+	            actionType: Constants.APP_SAVE_FILE,
+	            path: path
+	        });
 	    }
 
 	};
@@ -723,17 +743,6 @@
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {
-	    APP_OPEN_FILE: 'APP_OPEN_FILE',
-	    APP_CLOSE_FILE: 'APP_CLOSE_FILE'
-	};
-
-/***/ },
-/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -750,7 +759,7 @@
 
 	var _fs2 = _interopRequireDefault(_fs);
 
-	var _StateStore = __webpack_require__(24);
+	var _StateStore = __webpack_require__(12);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -766,19 +775,20 @@
 	    function Editor(props) {
 	        _classCallCheck(this, Editor);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Editor).call(this, props));
+	        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Editor).call(this, props));
 
-	        _this.state = {
+	        _this2.state = {
 	            filePath: props.filePath || ''
 	        };
-	        _this._onChange = _this._onChange.bind(_this);
-	        return _this;
+	        _this2._onChange = _this2._onChange.bind(_this2);
+	        return _this2;
 	    }
 
 	    _createClass(Editor, [{
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
 	            _StateStore.stateStore.removeChangeListener(this._onChange);
+	            ipc.removeListener('setSyntaxTheme');
 	        }
 	    }, {
 	        key: '_onChange',
@@ -793,18 +803,57 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
+	            var _this = this;
+
 	            _StateStore.stateStore.addChangeListener(this._onChange);
 	            this.editor = ace.edit(this.refs.wrapper);
 	            this.editor.$blockScrolling = Infinity;
 	            this.editor.setTheme("ace/theme/twilight");
 	            this.editor.setDisplayIndentGuides(false);
+	            ipc.on('setSyntaxTheme', function (theme) {
+	                _this.editor.setTheme(theme);
+	            });
+	            ipc.on('saveFile', function () {
+	                var state = _StateStore.stateStore.getCurrentSession();
+	                if (state && state.path) {
+	                    try {
+	                        _fs2.default.writeFileSync(state.path, state.session.getValue(), 'utf8');
+	                    } catch (ex) {
+	                        remote.require('dialog').showMessageBox(null, {
+	                            type: 'error',
+	                            title: 'Error saving file',
+	                            message: ex.message,
+	                            detail: ex.stack
+	                        });
+	                    }
+	                }
+	            });
+	            ipc.on('saveFileAs', function () {
+	                var dialog = remote.require('dialog');
+	                var path = dialog.showSaveDialog(null, {
+	                    title: 'Save As'
+	                });
+
+	                if (path) {
+	                    try {
+	                        _fs2.default.writeFileSync(path, _this.editor.getValue(), 'utf8');
+	                    } catch (ex) {
+	                        dialog.showMessageBox(null, {
+	                            type: 'error',
+	                            title: 'Error saving file',
+	                            message: ex.message,
+	                            detail: ex.stack
+	                        });
+	                    }
+	                }
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return React.createElement('div', { ref: 'wrapper', id: 'editor', __source: {
 	                    fileName: '../../../../../src/components/Editor.jsx',
-	                    lineNumber: 51
+	                    lineNumber: 89
 	                }
 	            });
 	        }
@@ -822,14 +871,252 @@
 	};
 
 /***/ },
-/* 13 */,
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AppConstants = __webpack_require__(13);
+	var FileTreeConstants = __webpack_require__(14);
+	var EventEmitter = __webpack_require__(15).EventEmitter;
+	var appDispatcher = __webpack_require__(9);
+
+	var CHANGE_EVENT = 'change';
+	var STATE = {
+	    fileTree: {
+	        selectedPath: ''
+	    },
+	    openFiles: [],
+	    currentFile: '',
+	    settings: {
+	        syntaxTheme: 'ace/theme/twilight',
+	        leftSidebarWidth: 300
+	    }
+	};
+
+	/**
+	 * If the file is already opened just switches to it py setting STATE.currentFile
+	 * to it's full path.
+	 */
+	function openFile(path, isPreview) {
+
+	    // TODO: browse for file of the path is empty
+
+	    // If already opened just switch to it
+	    var idx = STATE.openFiles.findIndex(function (f) {
+	        return f.path === path;
+	    }),
+	        stats;
+	    if (idx > -1) {
+	        var meta = STATE.openFiles[idx];
+	        if (meta.path !== STATE.currentFile || !!meta.isPreview !== !!isPreview) {
+	            STATE.currentFile = meta.path;
+	            STATE.fileTree.selectedPath = path;
+	            meta.isPreview = !!isPreview;
+	            return true; // did switch
+	        }
+	        return false; // did nothing
+	    }
+
+	    // Skip directories
+	    try {
+	        stats = fs.statSync(path);
+	        if (stats.isDirectory()) {
+	            return false;
+	        }
+	    } catch (ex) {
+	        console.error(ex);
+	        return false;
+	    }
+
+	    // Try to read the file
+	    var text = '';
+	    try {
+	        text = fs.readFileSync(path, 'utf8');
+	    } catch (err) {
+	        console.error(err);
+	        return false;
+	    }
+
+	    // Detect mode
+	    var modelist = ace.require("ace/ext/modelist");
+	    var mode = modelist.getModeForPath(path).mode;
+
+	    // Close the existing reusable session (if any)
+	    STATE.openFiles = STATE.openFiles.filter(function (o) {
+	        return !o.isPreview;
+	    });
+
+	    // Create new session and switch to it
+	    var session = ace.createEditSession(text, mode);
+	    STATE.openFiles.push({ path: path, session: session, isPreview: isPreview });
+
+	    // Set the new session as bith current and selected
+	    STATE.currentFile = path;
+	    STATE.fileTree.selectedPath = path;
+
+	    // Indicates that something has changed
+	    return true;
+	}
+
+	function closeFile(path) {
+	    var idx = STATE.openFiles.findIndex(function (f) {
+	        return f.path === path;
+	    });
+	    if (idx > -1) {
+	        var meta = STATE.openFiles[idx];
+	        STATE.openFiles.splice(idx, 1);
+	        var next = idx - 1;
+	        if (next < 0) {
+	            next = STATE.openFiles.length - 1;
+	        }
+	        if (next >= 0) {
+	            next = STATE.openFiles[next];
+	        } else {
+	            next = { path: '' };
+	        }
+	        if (meta.path === STATE.currentFile) {
+	            STATE.currentFile = next.path;
+	        }
+	        if (meta.path === STATE.fileTree.selectedPath) {
+	            STATE.fileTree.selectedPath = next.path;
+	        }
+	        return true;
+	    }
+	    return false;
+	}
+
+	function previewFile(path) {
+	    return openFile(path, true);
+	}
+
+	var Store = (function (_EventEmitter) {
+	    _inherits(Store, _EventEmitter);
+
+	    function Store() {
+	        _classCallCheck(this, Store);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Store).call(this));
+
+	        var store = _this;
+
+	        _this.dispatcherIndex = appDispatcher.register(function (payload) {
+	            var action = payload.action;
+	            switch (action.actionType) {
+
+	                // This is slightly different from open. It loads the selected
+	                // file in for preview reusable session
+	                case FileTreeConstants.FILETREE_SELECT_ITEM:
+	                    if (previewFile(action.path)) {
+	                        store.emitChange();
+	                    }
+	                    break;
+
+	                case AppConstants.APP_OPEN_FILE:
+	                    if (openFile(action.path)) {
+	                        store.emitChange();
+	                    }
+	                    break;
+
+	                case AppConstants.APP_CLOSE_FILE:
+	                    if (closeFile(action.path)) {
+	                        store.emitChange();
+	                    }
+	                    break;
+	            }
+
+	            return true; // No errors. Needed by promise in Dispatcher.
+	        });
+	        return _this;
+	    }
+
+	    /**
+	     * @param {function} callback
+	     */
+
+	    _createClass(Store, [{
+	        key: 'addChangeListener',
+	        value: function addChangeListener(callback) {
+	            this.on(CHANGE_EVENT, callback);
+	        }
+
+	        /**
+	         * @param {function} callback
+	         */
+
+	    }, {
+	        key: 'removeChangeListener',
+	        value: function removeChangeListener(callback) {
+	            this.removeListener(CHANGE_EVENT, callback);
+	        }
+	    }, {
+	        key: 'emitChange',
+	        value: function emitChange() {
+	            this.emit(CHANGE_EVENT);
+	        }
+	    }, {
+	        key: 'getState',
+	        value: function getState() {
+	            return STATE;
+	        }
+	    }, {
+	        key: 'getCurrentSession',
+	        value: function getCurrentSession() {
+	            return STATE.openFiles.find(function (f) {
+	                return f.path === STATE.currentFile;
+	            });
+	        }
+	    }]);
+
+	    return Store;
+	})(EventEmitter);
+
+	var stateStore = exports.stateStore = new Store();
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	    APP_OPEN_FILE: 'APP_OPEN_FILE',
+	    APP_CLOSE_FILE: 'APP_CLOSE_FILE'
+	};
+
+/***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	    FILETREE_SELECT_ITEM: 'FILETREE_SELECT_ITEM',
+	    FILETREE_EXPAND_ITEM: 'FILETREE_EXPAND_ITEM',
+	    FILETREE_COLLAPSE_ITEM: 'FILETREE_COLLAPSE_ITEM',
+	    FILETREE_TOGGLE_ITEM: 'FILETREE_TOGGLE_ITEM'
+	};
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = events;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -924,7 +1211,6 @@
 	exports.default = TabBrowser;
 
 /***/ },
-/* 16 */,
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -959,7 +1245,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #2F3129;\n  color: #797A75;\n}\nbody {\n  font: menu;\n  background: #2F3129;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: #797A75;\n  -webkit-app-region: drag;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(20) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: #666666;\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #1E1F18;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: auto;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2em;\n  background: linear-gradient(#1E1F1A, #272822);\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #3c3f35;\n  color: #fff;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n  border-top: 2px solid #2F3129;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 1px 4px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #222;\n  position: relative;\n  z-index: 2;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-family: \"Source Code Pro\", Menlo;\n  font-weight: 400;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #2F3129;\n  color: #797A75;\n}\nbody {\n  font: menu;\n  background: #2F3129;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: #797A75;\n  -webkit-app-region: drag;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(20) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: #666666;\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #1E1F18;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: auto;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2.2em;\n  background: linear-gradient(#1E1F1A, #272822);\n  position: relative;\n  padding-bottom: 3px;\n}\n.main-tabs::after {\n  content: '';\n  height: 3px;\n  display: block;\n  background: #2F3129;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);\n  z-index: 3;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #3c3f35;\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 1px 4px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #111;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-family: \"Source Code Pro\", Menlo;\n  font-weight: 400;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n", ""]);
 
 	// exports
 
@@ -1285,227 +1571,6 @@
 /***/ function(module, exports) {
 
 	module.exports = jQuery;
-
-/***/ },
-/* 23 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	['APP_OPEN_FILE', 'APP_CLOSE_FILE', 'FILETREE_SELECT_ITEM', 'FILETREE_EXPAND_ITEM', 'FILETREE_COLLAPSE_ITEM', 'FILETREE_TOGGLE_ITEM'].forEach(function (x) {
-	    return module.exports[x] = x;
-	});
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AppConstants = __webpack_require__(11);
-	var FileTreeConstants = __webpack_require__(8);
-	var EventEmitter = __webpack_require__(14).EventEmitter;
-	var appDispatcher = __webpack_require__(9);
-
-	var CHANGE_EVENT = 'change';
-	var STATE = {
-	    fileTree: {
-	        selectedPath: ''
-	    },
-	    openFiles: [],
-	    currentFile: ''
-	};
-
-	/**
-	 * If the file is already opened just switches to it py setting STATE.currentFile
-	 * to it's full path.
-	 */
-	function openFile(path, isPreview) {
-
-	    // TODO: browse for file of the path is empty
-
-	    // If already opened just switch to it
-	    var idx = STATE.openFiles.findIndex(function (f) {
-	        return f.path === path;
-	    }),
-	        stats;
-	    if (idx > -1) {
-	        var meta = STATE.openFiles[idx];
-	        if (meta.path !== STATE.currentFile || !!meta.isPreview !== !!isPreview) {
-	            STATE.currentFile = meta.path;
-	            STATE.fileTree.selectedPath = path;
-	            meta.isPreview = !!isPreview;
-	            return true; // did switch
-	        }
-	        return false; // did nothing
-	    }
-
-	    // Skip directories
-	    try {
-	        stats = fs.statSync(path);
-	        if (stats.isDirectory()) {
-	            return false;
-	        }
-	    } catch (ex) {
-	        console.error(ex);
-	        return false;
-	    }
-
-	    // Try to read the file
-	    var text = '';
-	    try {
-	        text = fs.readFileSync(path, 'utf8');
-	    } catch (err) {
-	        console.error(err);
-	        return false;
-	    }
-
-	    // Detect mode
-	    var modelist = ace.require("ace/ext/modelist");
-	    var mode = modelist.getModeForPath(path).mode;
-
-	    // Close the existing reusable session (if any)
-	    STATE.openFiles = STATE.openFiles.filter(function (o) {
-	        return !o.isPreview;
-	    });
-
-	    // Create new session and switch to it
-	    var session = ace.createEditSession(text, mode);
-	    STATE.openFiles.push({ path: path, session: session, isPreview: isPreview });
-
-	    // Set the new session as bith current and selected
-	    STATE.currentFile = path;
-	    STATE.fileTree.selectedPath = path;
-
-	    // Indicates that something has changed
-	    return true;
-	}
-
-	function closeFile(path) {
-	    var idx = STATE.openFiles.findIndex(function (f) {
-	        return f.path === path;
-	    });
-	    if (idx > -1) {
-	        var meta = STATE.openFiles[idx];
-	        STATE.openFiles.splice(idx, 1);
-	        var next = idx - 1;
-	        if (next < 0) {
-	            next = STATE.openFiles.length - 1;
-	        }
-	        if (next >= 0) {
-	            next = STATE.openFiles[next];
-	        } else {
-	            next = { path: '' };
-	        }
-	        if (meta.path === STATE.currentFile) {
-	            STATE.currentFile = next.path;
-	        }
-	        if (meta.path === STATE.fileTree.selectedPath) {
-	            STATE.fileTree.selectedPath = next.path;
-	        }
-	        return true;
-	    }
-	    return false;
-	}
-
-	function previewFile(path) {
-	    return openFile(path, true);
-	}
-
-	var Store = (function (_EventEmitter) {
-	    _inherits(Store, _EventEmitter);
-
-	    function Store() {
-	        _classCallCheck(this, Store);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Store).call(this));
-
-	        var store = _this;
-
-	        _this.dispatcherIndex = appDispatcher.register(function (payload) {
-	            var action = payload.action;
-	            switch (action.actionType) {
-
-	                // This is slightly different from open. It loads the selected
-	                // file in for preview reusable session
-	                case FileTreeConstants.FILETREE_SELECT_ITEM:
-	                    if (previewFile(action.path)) {
-	                        store.emitChange();
-	                    }
-	                    break;
-
-	                case AppConstants.APP_OPEN_FILE:
-	                    if (openFile(action.path)) {
-	                        store.emitChange();
-	                    }
-	                    break;
-
-	                case AppConstants.APP_CLOSE_FILE:
-	                    if (closeFile(action.path)) {
-	                        store.emitChange();
-	                    }
-	                    break;
-	            }
-
-	            return true; // No errors. Needed by promise in Dispatcher.
-	        });
-	        return _this;
-	    }
-
-	    /**
-	     * @param {function} callback
-	     */
-
-	    _createClass(Store, [{
-	        key: 'addChangeListener',
-	        value: function addChangeListener(callback) {
-	            this.on(CHANGE_EVENT, callback);
-	        }
-
-	        /**
-	         * @param {function} callback
-	         */
-
-	    }, {
-	        key: 'removeChangeListener',
-	        value: function removeChangeListener(callback) {
-	            this.removeListener(CHANGE_EVENT, callback);
-	        }
-	    }, {
-	        key: 'emitChange',
-	        value: function emitChange() {
-	            this.emit(CHANGE_EVENT);
-	        }
-	    }, {
-	        key: 'getState',
-	        value: function getState() {
-	            return STATE;
-	        }
-	    }, {
-	        key: 'getCurrentSession',
-	        value: function getCurrentSession() {
-	            return STATE.openFiles.find(function (f) {
-	                return f.path === STATE.currentFile;
-	            });
-	        }
-	    }]);
-
-	    return Store;
-	})(EventEmitter);
-
-	var stateStore = exports.stateStore = new Store();
 
 /***/ }
 /******/ ]);

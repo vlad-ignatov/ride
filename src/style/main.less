@@ -122,10 +122,26 @@ body {
 }
 
 .main-tabs {
-    display: flex;
+    display       : flex;
     flex-direction: row;
-    height: 2em;
-    background: linear-gradient(#1E1F1A, #272822);
+    height        : 2.2em;
+    background    : linear-gradient(#1E1F1A, #272822);
+    position      : relative;
+    padding-bottom: 3px;
+
+    &::after {
+        content: '';
+        height : 3px;
+        display: block;
+        background: #2F3129;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        margin-top: -3px;
+        box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);
+        z-index: 3;
+    }
     .tab {
         // display: flex;
         flex: 1;
@@ -145,6 +161,7 @@ body {
         &:hover {
             background: lighten(#2F3129, 5%);
             color: #fff;
+            z-index: 4;
         }
 
         &.active {
@@ -152,6 +169,7 @@ body {
             box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
             background: linear-gradient(lighten(#2F3129, 10%), lighten(#2F3129, 5%));
             color: #fff;
+            z-index: 4;
         }
 
         &.preview {
@@ -201,7 +219,7 @@ body {
     flex    : 5;
     position: relative;
     background: #272822;
-    border-top: 2px solid #2F3129;
+    // border-top: 2px solid #2F3129;
 }
 
 
@@ -225,9 +243,9 @@ body {
     font-size: 14px;
     text-shadow: 0 0 1px #000;
     color: #ccc;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #111;
     position: relative;
-    z-index: 2;
+    z-index: 5;
 }
 
 #editor {

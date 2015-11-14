@@ -24,6 +24,7 @@ export default class Editor extends Component
     componentWillUnmount()
     {
         stateStore.removeChangeListener(this._onChange);
+        ipc.removeListener('setSyntaxTheme');
     }
 
     _onChange()
@@ -44,6 +45,43 @@ export default class Editor extends Component
         this.editor.$blockScrolling = Infinity;
         this.editor.setTheme("ace/theme/twilight");
         this.editor.setDisplayIndentGuides(false);
+        ipc.on('setSyntaxTheme', theme => {
+            this.editor.setTheme(theme);
+        });
+        ipc.on('saveFile', () => {
+            var state = stateStore.getCurrentSession();
+            if (state && state.path) {
+                try {
+                    fs.writeFileSync( state.path, state.session.getValue(), 'utf8');
+                } catch (ex) {
+                    remote.require('dialog').showMessageBox(null, {
+                        type: 'error',
+                        title: 'Error saving file',
+                        message: ex.message,
+                        detail: ex.stack
+                    });
+                }
+            }
+        });
+        ipc.on('saveFileAs', () => {
+            var dialog = remote.require('dialog');
+            var path = dialog.showSaveDialog(null, {
+                title: 'Save As'
+            });
+
+            if (path) {
+                try {
+                    fs.writeFileSync(path, this.editor.getValue(), 'utf8');
+                } catch (ex) {
+                    dialog.showMessageBox(null, {
+                        type: 'error',
+                        title: 'Error saving file',
+                        message: ex.message,
+                        detail: ex.stack
+                    });
+                }
+            }
+        });
     }
 
     render()

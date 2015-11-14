@@ -2,6 +2,10 @@
 var app           = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var ipc           = require('ipc');
+var Menu          = require('menu');
+var MenuItem      = require('menu-item');
+var dialog        = require('dialog');
+var MenusManager  = require('./src/MenusManager.js');
 
 require("babel-core/register");
 
@@ -31,6 +35,11 @@ ipc.on('toggleMaximize', function() {
 //
 // ipc.on('registerDispatch', function(event, fn) {
 //     return AppDispatcher.register(fn);
+// });
+
+// app.on('open-file', function(event, filePath) {
+//     event.preventDefault()
+//     console.log(arguments);
 // });
 
 // This method will be called when Electron has finished
@@ -65,6 +74,8 @@ app.on('ready', function() {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
+
+    MenusManager.setMainMenu(mainWindow);
 
     mainWindow.show();
 });
