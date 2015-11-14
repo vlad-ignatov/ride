@@ -30,7 +30,8 @@ export default class TabBrowser extends Component
                 <div className={
                         'tab' +
                         (this.props.selectedPath == file ? ' active' : '') +
-                        (f.isPreview ? ' preview' : '')
+                        (f.isPreview ? ' preview' : '') +
+                        (f.modified ? ' modified' : '')
                     }
                     key={file}
                     title={file}

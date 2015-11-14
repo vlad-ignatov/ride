@@ -53,6 +53,7 @@ export default class Editor extends Component
             if (state && state.path) {
                 try {
                     fs.writeFileSync( state.path, state.session.getValue(), 'utf8');
+                    state.modified = false;
                 } catch (ex) {
                     remote.require('dialog').showMessageBox(null, {
                         type: 'error',

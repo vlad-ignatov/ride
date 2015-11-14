@@ -11,7 +11,11 @@ var STATE = {
         selectedPath: ''
     },
     openFiles: [],
-    currentFile: ''
+    currentFile: '',
+    settings: {
+        syntaxTheme: 'ace/theme/twilight',
+        leftSidebarWidth: 300
+    }
 };
 
 /**
@@ -67,6 +71,12 @@ function openFile(path, isPreview) {
     // Create new session and switch to it
     let session  = ace.createEditSession(text, mode);
     STATE.openFiles.push({ path, session, isPreview });
+    session.on("change", (event) => {
+        appDispatcher.handleViewAction({
+            actionType: AppConstants.APP_NOTIFY_FILE_CHANGED,
+            path      : path
+        });
+    });
 
     // Set the new session as bith current and selected
     STATE.currentFile = path;
@@ -134,6 +144,14 @@ class Store extends EventEmitter
 
                 case AppConstants.APP_CLOSE_FILE:
                     if (closeFile(action.path)) {
+                        store.emitChange();
+                    }
+                break;
+
+                case AppConstants.APP_NOTIFY_FILE_CHANGED:
+                    var idx = STATE.openFiles.findIndex(f => f.path === action.path);
+                    if (idx > -1) {
+                        STATE.openFiles[idx].modified = true;
                         store.emitChange();
                     }
                 break;
