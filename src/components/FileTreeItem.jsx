@@ -100,11 +100,22 @@ export default class FileTreeItem extends Component
         }
     }
 
+    // componentDidMount()
+    // {
+    //     console.log(this.refs.li, this.props)
+    //     if (jQuery(this.refs.li).is('.selected')) {
+    //         this.refs.li.scrollIntoViewIfNeeded();
+    //     }
+    // }
+
     render()
     {
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;
+        if (this.props.selectedPath === this.props.path) {
+            setTimeout(() => { this.refs.li.scrollIntoViewIfNeeded(); });
+        }
         return (
-            <li key={this.props.path} className={
+            <li key={this.props.path} ref="li" className={
                     this.props.type + (this.state.expanded ? ' expanded' : '') +
                     (this.props.selectedPath === this.props.path ? ' selected' : '')
                 }>
