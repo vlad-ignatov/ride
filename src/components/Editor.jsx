@@ -2,6 +2,7 @@
 import { PropTypes, Component } from 'react';
 import { default as fs } from 'fs';
 import { stateStore } from '../stores/StateStore';
+import * as lib from '../lib';
 
 export default class Editor extends Component
 {
@@ -32,6 +33,7 @@ export default class Editor extends Component
     {
         var state = stateStore.getCurrentSession();
         if (state) {
+            // console.log(JSON.stringify(state.session, null, 2))
             this.editor.setSession(state.session);
         }
         else {
@@ -49,22 +51,7 @@ export default class Editor extends Component
         ipc.on('setSyntaxTheme', theme => {
             this.editor.setTheme(theme);
         });
-        ipc.on('saveFile', () => {
-            var state = stateStore.getCurrentSession();
-            if (state && state.path) {
-                try {
-                    fs.writeFileSync( state.path, state.session.getValue(), 'utf8');
-                    state.modified = false;
-                } catch (ex) {
-                    remote.require('dialog').showMessageBox(null, {
-                        type: 'error',
-                        title: 'Error saving file',
-                        message: ex.message,
-                        detail: ex.stack
-                    });
-                }
-            }
-        });
+        ipc.on('saveFile', lib.saveCurrentFile);
         ipc.on('saveFileAs', () => {
             var dialog = remote.require('dialog');
             var path = dialog.showSaveDialog(null, {

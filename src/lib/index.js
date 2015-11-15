@@ -1,9 +1,14 @@
 /* global ace, fs */
 
-import { default as STATE } from '../STATE';
-import appDispatcher        from '../Dispatcher';
-import * as Constants       from '../constants/constants';
+import { default as STATE  } from '../STATE';
+import appDispatcher         from '../Dispatcher';
+import * as Constants        from '../constants/constants';
+import { default as remote } from 'remote';
+import { default as crypto } from 'crypto';
 
+export function md5(str) {
+    return crypto.createHash('md5').update(str).digest("hex");
+}
 /**
  * If the file is already opened just switches to it py setting STATE.currentFile
  * to it's full path.
@@ -56,7 +61,8 @@ export function openFile(path, isPreview) {
 
     // Create new session and switch to it
     let session  = ace.createEditSession(text, mode);
-    STATE.openFiles.push({ path, session, isPreview });
+    let hash = md5(text);
+    STATE.openFiles.push({ path, session, isPreview, hash });
     session.on("change", () => {
         appDispatcher.handleViewAction({
             actionType: Constants.APP_NOTIFY_FILE_CHANGED,
@@ -102,9 +108,41 @@ export function closeFile(path) {
     return false;
 }
 
-// export function setLeftSidebarWidth(width) {
-//     appDispatcher.handleViewAction({
-//         actionType: Constants.APP_SET_LEFT_SIDEBAR_WIDTH,
-//         width
-//     });
-// }
+export function writeFile(path, contents, encoding = 'utf8') {
+    if (path) {
+        try {
+            fs.writeFileSync( path, contents, encoding);
+            return true;
+        } catch (ex) {
+            remote.require('dialog').showMessageBox(null, {
+                type   : 'error',
+                title  : 'Error writing file',
+                message: ex.message,
+                detail : ex.stack
+            });
+        }
+    }
+    return false;
+}
+
+export function saveCurrentFile() {
+    if (!STATE.currentFile) {
+        console.log('"saveCurrentFile" called but no file is opened');
+        return false;
+    }
+
+    let meta = STATE.openFiles.find(f => f.path === STATE.currentFile);
+    if (!meta) {
+        throw new Error('Cannot find "currentFile" within the opened files');
+    }
+
+    let text = meta.session.getValue();
+    if (writeFile(meta.path, text)) {
+        meta.modified = false;
+        meta.hash = md5(text);
+        appDispatcher.handleViewAction({
+            actionType: Constants.EVENT_FILE_SAVED,
+            path: meta.path
+        });
+    }
+}

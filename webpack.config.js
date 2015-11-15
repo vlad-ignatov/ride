@@ -1,3 +1,4 @@
+/* global __dirname */
 var path = require('path');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     },
     output: {
         path         : path.join(__dirname, 'dst'),
-        filename     : '[name]',
+        filename     : '[name]'//,
         // libraryTarget: 'commonjs2'
     },
     // devtool: 'cheap-module-eval-source-map',
@@ -51,14 +52,16 @@ module.exports = {
         'jquery'    : 'jQuery',
         'events'    : 'events',
         'ipc'       : 'ipc',
+        'remote'    : 'remote',
+        'crypto'    : 'crypto',
         // 'app'            : 'app',
         // 'browser-window' : 'browser-window',
         // 'crash-reporter' : 'crash-reporter'
         'AppDispatcher' : 'AppDispatcher'
     },
     resolve : {
-        extensions : [ '', '.js', '.jsx' ],
+        extensions : [ '', '.js', '.jsx' ]//,
         // packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
-    },
+    }//,
     // plugins: [ 'syntax-jsx' ]
 };

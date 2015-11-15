@@ -16,7 +16,7 @@ class Store extends StoreBase
         var store = this;
 
         this.dispatcherIndex = appDispatcher.register(function(payload) {
-            var action = payload.action;
+            var action = payload.action, idx;
             switch(action.actionType) {
 
             // This is slightly different from open. It loads the selected
@@ -40,10 +40,14 @@ class Store extends StoreBase
                 break;
 
             case Constants.APP_NOTIFY_FILE_CHANGED:
-                var idx = STATE.openFiles.findIndex(f => f.path === action.path);
+                idx = STATE.openFiles.findIndex(f => f.path === action.path);
                 if (idx > -1) {
-                    STATE.openFiles[idx].modified = true;
-                    store.save();
+                    let meta = STATE.openFiles[idx];
+                    let text = meta.session.getValue();
+                    meta.modified  = lib.md5(text) !== meta.hash;
+                    meta.isPreview = false;
+                    // console.log(STATE.openFiles[idx].session)
+                    store.emitChange();
                 }
                 break;
 
@@ -51,6 +55,14 @@ class Store extends StoreBase
                 if (action.width !== STATE.leftSidebarWidth) {
                     STATE.leftSidebarWidth = action.width;
                     store.save();
+                }
+                break;
+
+            case Constants.EVENT_FILE_SAVED:
+                idx = STATE.openFiles.findIndex(f => f.path === action.path);
+                if (idx > -1) {
+                    STATE.openFiles[idx].modified = false;
+                    store.emitChange();
                 }
                 break;
             }
@@ -61,7 +73,11 @@ class Store extends StoreBase
 
     save()
     {
-        localStorage.state = JSON.stringify(STATE);
+        var json = jQuery.extend(true, {}, STATE);
+        json.openFiles = [];//json.openFiles.map(f => {
+        //     f.session = null;
+        // });
+        localStorage.state = JSON.stringify(json);
         this.emitChange();
     }
 

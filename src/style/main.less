@@ -57,10 +57,15 @@ body {
 .icon-folder-open-o:before {
 	content: "\f115";
 }
+.icon-pencil-square:before {
+	content: "\f14b";
+}
 .icon-file-text2:before {
 	content: "\e900";
 }
-
+.icon-radio-checked2:before {
+	content: "\e901";
+}
 // Scrollbars ==================================================================
 ::-webkit-scrollbar {
   width: 6px;
@@ -198,6 +203,7 @@ body {
             position: relative;
             z-index: 2;
             opacity: 0.5;
+            transition: all 0.2s ease 0.1s;
 
             &:hover {
                 background: rgba(0, 0, 0, 0.3);
@@ -207,6 +213,15 @@ body {
 
             &:active {
                 box-shadow: 1px 1px 2px #000 inset;
+            }
+        }
+
+        &.modified .close-tab:not(:hover) {
+            opacity: 1;
+            &::before {
+                content: '\f14b';
+                color: orange;
+                text-shadow: 0px 0px 1px #000;
             }
         }
     }
@@ -283,6 +298,10 @@ body {
         // font-family: "Source Code Pro", Menlo;
         font-weight: 400;
         letter-spacing: 0.025ex;
+    }
+    &.ace-twilight .ace_fold {
+        background-color: rgb(47, 49, 41);
+        border-color: rgb(171, 134, 87);
     }
 }
 
