@@ -54,7 +54,15 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
+	var _AppActions = __webpack_require__(10);
+
+	var _AppActions2 = _interopRequireDefault(_AppActions);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	window.AppActions = _AppActions2.default;
+	// import * as lib from './lib';
+	/* global ReactDOM, ipc */
 
 	(0, _jquery2.default)(function () {
 	    (0, _jquery2.default)(document).on('selectstart', false);
@@ -62,7 +70,7 @@
 	    ReactDOM.render(React.createElement(_MainWindow2.default, {
 	        __source: {
 	            fileName: '../../../../../src/window.jsx',
-	            lineNumber: 7
+	            lineNumber: 12
 	        }
 	    }), document.querySelector('.main-wrap'));
 
@@ -92,6 +100,7 @@
 	                cursor: 'default',
 	                pointerEvents: 'auto'
 	            });
+	            _AppActions2.default.setLeftSidebarWidth(leftSidebar.outerWidth());
 	        });
 	        return false;
 	    });
@@ -140,6 +149,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	/* global ENV, ipc */
 	__webpack_require__(17);
 
 	var MainWindow = (function (_Component) {
@@ -182,14 +192,14 @@
 	                'div',
 	                { style: { display: 'flex', height: '100%', flexDirection: 'column' }, __source: {
 	                        fileName: '../../../../../src/components/MainWindow.jsx',
-	                        lineNumber: 39
+	                        lineNumber: 40
 	                    }
 	                },
 	                React.createElement(
 	                    'div',
 	                    { className: 'header', style: { textAlign: 'center' }, __source: {
 	                            fileName: '../../../../../src/components/MainWindow.jsx',
-	                            lineNumber: 40
+	                            lineNumber: 41
 	                        }
 	                    },
 	                    'React Editor'
@@ -198,14 +208,14 @@
 	                    'div',
 	                    { className: 'main-row', __source: {
 	                            fileName: '../../../../../src/components/MainWindow.jsx',
-	                            lineNumber: 41
+	                            lineNumber: 42
 	                        }
 	                    },
 	                    React.createElement(
 	                        'div',
-	                        { className: 'main-sidebar-left', __source: {
+	                        { className: 'main-sidebar-left', style: { width: this.state.leftSidebarWidth }, __source: {
 	                                fileName: '../../../../../src/components/MainWindow.jsx',
-	                                lineNumber: 42
+	                                lineNumber: 43
 	                            }
 	                        },
 	                        React.createElement(_FileTree.FileTree, { type: 'dir',
@@ -214,12 +224,12 @@
 	                            selectedPath: this.state.fileTree.selectedPath,
 	                            expanded: true, __source: {
 	                                fileName: '../../../../../src/components/MainWindow.jsx',
-	                                lineNumber: 43
+	                                lineNumber: 44
 	                            }
 	                        }),
-	                        React.createElement('div', { className: 'resizer vertical', style: { left: 300 }, __source: {
+	                        React.createElement('div', { className: 'resizer vertical', style: { left: this.state.leftSidebarWidth }, __source: {
 	                                fileName: '../../../../../src/components/MainWindow.jsx',
-	                                lineNumber: 48
+	                                lineNumber: 49
 	                            }
 	                        })
 	                    ),
@@ -227,24 +237,24 @@
 	                        'div',
 	                        { className: 'main-stage', __source: {
 	                                fileName: '../../../../../src/components/MainWindow.jsx',
-	                                lineNumber: 50
+	                                lineNumber: 51
 	                            }
 	                        },
 	                        React.createElement(_TabBrowser2.default, { selectedPath: this.state.currentFile, files: this.state.openFiles, __source: {
 	                                fileName: '../../../../../src/components/MainWindow.jsx',
-	                                lineNumber: 51
+	                                lineNumber: 52
 	                            }
 	                        }),
 	                        React.createElement(
 	                            'div',
 	                            { className: 'main-inspector', __source: {
 	                                    fileName: '../../../../../src/components/MainWindow.jsx',
-	                                    lineNumber: 52
+	                                    lineNumber: 53
 	                                }
 	                            },
 	                            React.createElement(_Editor2.default, { filePath: this.state.currentFile, __source: {
 	                                    fileName: '../../../../../src/components/MainWindow.jsx',
-	                                    lineNumber: 53
+	                                    lineNumber: 54
 	                                }
 	                            })
 	                        )
@@ -254,7 +264,7 @@
 	                    'div',
 	                    { className: 'main-status-bar', __source: {
 	                            fileName: '../../../../../src/components/MainWindow.jsx',
-	                            lineNumber: 57
+	                            lineNumber: 58
 	                        }
 	                    },
 	                    this.state.fileTree.selectedPath || 'Nothing selected'
@@ -303,7 +313,7 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global fs, DISPATCHER */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var FileTree = exports.FileTree = (function (_Component) {
 	    _inherits(FileTree, _Component);
@@ -329,7 +339,7 @@
 	                'ul',
 	                { className: 'file-tree', __source: {
 	                        fileName: '../../../../../src/components/FileTree.jsx',
-	                        lineNumber: 34
+	                        lineNumber: 33
 	                    }
 	                },
 	                React.createElement(_FileTreeItem2.default, {
@@ -339,7 +349,7 @@
 	                    expanded: this.props.expanded,
 	                    selectedPath: this.props.selectedPath, __source: {
 	                        fileName: '../../../../../src/components/FileTree.jsx',
-	                        lineNumber: 35
+	                        lineNumber: 34
 	                    }
 	                })
 	            );
@@ -487,7 +497,7 @@
 	        }
 	    }, {
 	        key: 'dblClick',
-	        value: function dblClick(e) {
+	        value: function dblClick() {
 	            if (this.props.type == FileTreeItem.TYPE_FILE) {
 	                _AppActions2.default.openFile(this.props.path);
 	            }
@@ -574,42 +584,42 @@
 
 	'use strict';
 
-	var Constants = __webpack_require__(8);
-	var appDispatcher = __webpack_require__(9);
+	var _constants = __webpack_require__(8);
 
-	var FileTreeActions = {
+	var _constants2 = _interopRequireDefault(_constants);
 
+	var _Dispatcher = __webpack_require__(9);
+
+	var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = {
 	    select: function select(path) {
-	        appDispatcher.handleViewAction({
-	            actionType: Constants.FILETREE_SELECT_ITEM,
+	        _Dispatcher2.default.handleViewAction({
+	            actionType: _constants2.default.FILETREE_SELECT_ITEM,
 	            path: path
 	        });
 	    },
-
 	    expand: function expand(path) {
-	        appDispatcher.handleViewAction({
-	            actionType: Constants.FILETREE_EXPAND_ITEM,
+	        _Dispatcher2.default.handleViewAction({
+	            actionType: _constants2.default.FILETREE_EXPAND_ITEM,
 	            path: path
 	        });
 	    },
-
 	    collapse: function collapse(path) {
-	        appDispatcher.handleViewAction({
-	            actionType: Constants.FILETREE_COLLAPSE_ITEM,
+	        _Dispatcher2.default.handleViewAction({
+	            actionType: _constants2.default.FILETREE_COLLAPSE_ITEM,
 	            path: path
 	        });
 	    },
-
 	    toggle: function toggle(path) {
-	        appDispatcher.handleViewAction({
-	            actionType: Constants.FILETREE_TOGGLE_ITEM,
+	        _Dispatcher2.default.handleViewAction({
+	            actionType: _constants2.default.FILETREE_TOGGLE_ITEM,
 	            path: path
 	        });
 	    }
-
 	};
-
-	module.exports = FileTreeActions;
 
 /***/ },
 /* 8 */
@@ -617,7 +627,7 @@
 
 	'use strict';
 
-	['APP_OPEN_FILE', 'APP_CLOSE_FILE', 'APP_SAVE_FILE', 'APP_SAVE_FILE_AS', 'APP_NOTIFY_FILE_CHANGED', 'FILETREE_SELECT_ITEM', 'FILETREE_EXPAND_ITEM', 'FILETREE_COLLAPSE_ITEM', 'FILETREE_TOGGLE_ITEM'].forEach(function (x) {
+	['APP_OPEN_FILE', 'APP_CLOSE_FILE', 'APP_SAVE_FILE', 'APP_SAVE_FILE_AS', 'APP_NOTIFY_FILE_CHANGED', 'APP_SET_LEFT_SIDEBAR_WIDTH', 'FILETREE_SELECT_ITEM', 'FILETREE_EXPAND_ITEM', 'FILETREE_COLLAPSE_ITEM', 'FILETREE_TOGGLE_ITEM', 'FILETREE_REVEAL_PATH'].forEach(function (x) {
 	    return exports[x] = x;
 	});
 
@@ -715,28 +725,29 @@
 	var appDispatcher = __webpack_require__(9);
 
 	var AppActions = {
-
 	    openFile: function openFile(path) {
 	        appDispatcher.handleViewAction({
 	            actionType: Constants.APP_OPEN_FILE,
 	            path: path
 	        });
 	    },
-
 	    closeFile: function closeFile(path) {
 	        appDispatcher.handleViewAction({
 	            actionType: Constants.APP_CLOSE_FILE,
 	            path: path
 	        });
 	    },
-
 	    save: function save() {
 	        appDispatcher.handleViewAction({
-	            actionType: Constants.APP_SAVE_FILE,
-	            path: path
+	            actionType: Constants.APP_SAVE_FILE
+	        });
+	    },
+	    setLeftSidebarWidth: function setLeftSidebarWidth(width) {
+	        appDispatcher.handleViewAction({
+	            actionType: Constants.APP_SET_LEFT_SIDEBAR_WIDTH,
+	            width: width
 	        });
 	    }
-
 	};
 
 	module.exports = AppActions;
@@ -767,7 +778,7 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global ipc, ace, remote */
 
 	var Editor = (function (_Component) {
 	    _inherits(Editor, _Component);
@@ -854,7 +865,7 @@
 	        value: function render() {
 	            return React.createElement('div', { ref: 'wrapper', id: 'editor', __source: {
 	                    fileName: '../../../../../src/components/Editor.jsx',
-	                    lineNumber: 90
+	                    lineNumber: 91
 	                }
 	            });
 	        }
@@ -875,6 +886,7 @@
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* global jQuery */
 	'use strict';
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -882,6 +894,31 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.stateStore = undefined;
+
+	var _Dispatcher = __webpack_require__(9);
+
+	var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
+
+	var _lib = __webpack_require__(24);
+
+	var lib = _interopRequireWildcard(_lib);
+
+	var _StoreBase2 = __webpack_require__(23);
+
+	var _StoreBase3 = _interopRequireDefault(_StoreBase2);
+
+	var _STATE = __webpack_require__(26);
+
+	var _STATE2 = _interopRequireDefault(_STATE);
+
+	var _constants = __webpack_require__(8);
+
+	var Constants = _interopRequireWildcard(_constants);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -889,128 +926,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var AppConstants = __webpack_require__(13);
-	var FileTreeConstants = __webpack_require__(14);
-	var EventEmitter = __webpack_require__(15).EventEmitter;
-	var appDispatcher = __webpack_require__(9);
-
-	var CHANGE_EVENT = 'change';
-	var STATE = {
-	    fileTree: {
-	        selectedPath: ''
-	    },
-	    openFiles: [],
-	    currentFile: '',
-	    settings: {
-	        syntaxTheme: 'ace/theme/twilight',
-	        leftSidebarWidth: 300
-	    }
-	};
-
-	/**
-	 * If the file is already opened just switches to it py setting STATE.currentFile
-	 * to it's full path.
-	 */
-	function openFile(path, isPreview) {
-
-	    // TODO: browse for file of the path is empty
-
-	    // If already opened just switch to it
-	    var idx = STATE.openFiles.findIndex(function (f) {
-	        return f.path === path;
-	    }),
-	        stats;
-	    if (idx > -1) {
-	        var meta = STATE.openFiles[idx];
-	        if (meta.path !== STATE.currentFile || !!meta.isPreview !== !!isPreview) {
-	            STATE.currentFile = meta.path;
-	            STATE.fileTree.selectedPath = path;
-	            meta.isPreview = !!isPreview;
-	            return true; // did switch
-	        }
-	        return false; // did nothing
-	    }
-
-	    // Skip directories
-	    try {
-	        stats = fs.statSync(path);
-	        if (stats.isDirectory()) {
-	            return false;
-	        }
-	    } catch (ex) {
-	        console.error(ex);
-	        return false;
-	    }
-
-	    // Try to read the file
-	    var text = '';
-	    try {
-	        text = fs.readFileSync(path, 'utf8');
-	    } catch (err) {
-	        console.error(err);
-	        return false;
-	    }
-
-	    // Detect mode
-	    var modelist = ace.require("ace/ext/modelist");
-	    var mode = modelist.getModeForPath(path).mode;
-
-	    // Close the existing reusable session (if any)
-	    STATE.openFiles = STATE.openFiles.filter(function (o) {
-	        return !o.isPreview;
-	    });
-
-	    // Create new session and switch to it
-	    var session = ace.createEditSession(text, mode);
-	    STATE.openFiles.push({ path: path, session: session, isPreview: isPreview });
-	    session.on("change", function (event) {
-	        appDispatcher.handleViewAction({
-	            actionType: AppConstants.APP_NOTIFY_FILE_CHANGED,
-	            path: path
-	        });
-	    });
-
-	    // Set the new session as bith current and selected
-	    STATE.currentFile = path;
-	    STATE.fileTree.selectedPath = path;
-
-	    // Indicates that something has changed
-	    return true;
-	}
-
-	function closeFile(path) {
-	    var idx = STATE.openFiles.findIndex(function (f) {
-	        return f.path === path;
-	    });
-	    if (idx > -1) {
-	        var meta = STATE.openFiles[idx];
-	        STATE.openFiles.splice(idx, 1);
-	        var next = idx - 1;
-	        if (next < 0) {
-	            next = STATE.openFiles.length - 1;
-	        }
-	        if (next >= 0) {
-	            next = STATE.openFiles[next];
-	        } else {
-	            next = { path: '' };
-	        }
-	        if (meta.path === STATE.currentFile) {
-	            STATE.currentFile = next.path;
-	        }
-	        if (meta.path === STATE.fileTree.selectedPath) {
-	            STATE.fileTree.selectedPath = next.path;
-	        }
-	        return true;
-	    }
-	    return false;
-	}
-
-	function previewFile(path) {
-	    return openFile(path, true);
-	}
-
-	var Store = (function (_EventEmitter) {
-	    _inherits(Store, _EventEmitter);
+	var Store = (function (_StoreBase) {
+	    _inherits(Store, _StoreBase);
 
 	    function Store() {
 	        _classCallCheck(this, Store);
@@ -1019,37 +936,44 @@
 
 	        var store = _this;
 
-	        _this.dispatcherIndex = appDispatcher.register(function (payload) {
+	        _this.dispatcherIndex = _Dispatcher2.default.register(function (payload) {
 	            var action = payload.action;
 	            switch (action.actionType) {
 
 	                // This is slightly different from open. It loads the selected
 	                // file in for preview reusable session
-	                case FileTreeConstants.FILETREE_SELECT_ITEM:
-	                    if (previewFile(action.path)) {
+	                case Constants.FILETREE_SELECT_ITEM:
+	                    if (lib.previewFile(action.path)) {
 	                        store.emitChange();
 	                    }
 	                    break;
 
-	                case AppConstants.APP_OPEN_FILE:
-	                    if (openFile(action.path)) {
-	                        store.emitChange();
+	                case Constants.APP_OPEN_FILE:
+	                    if (lib.openFile(action.path)) {
+	                        store.save();
 	                    }
 	                    break;
 
-	                case AppConstants.APP_CLOSE_FILE:
-	                    if (closeFile(action.path)) {
-	                        store.emitChange();
+	                case Constants.APP_CLOSE_FILE:
+	                    if (lib.closeFile(action.path)) {
+	                        store.save();
 	                    }
 	                    break;
 
-	                case AppConstants.APP_NOTIFY_FILE_CHANGED:
-	                    var idx = STATE.openFiles.findIndex(function (f) {
+	                case Constants.APP_NOTIFY_FILE_CHANGED:
+	                    var idx = _STATE2.default.openFiles.findIndex(function (f) {
 	                        return f.path === action.path;
 	                    });
 	                    if (idx > -1) {
-	                        STATE.openFiles[idx].modified = true;
-	                        store.emitChange();
+	                        _STATE2.default.openFiles[idx].modified = true;
+	                        store.save();
+	                    }
+	                    break;
+
+	                case Constants.APP_SET_LEFT_SIDEBAR_WIDTH:
+	                    if (action.width !== _STATE2.default.leftSidebarWidth) {
+	                        _STATE2.default.leftSidebarWidth = action.width;
+	                        store.save();
 	                    }
 	                    break;
 	            }
@@ -1059,74 +983,34 @@
 	        return _this;
 	    }
 
-	    /**
-	     * @param {function} callback
-	     */
-
 	    _createClass(Store, [{
-	        key: 'addChangeListener',
-	        value: function addChangeListener(callback) {
-	            this.on(CHANGE_EVENT, callback);
-	        }
-
-	        /**
-	         * @param {function} callback
-	         */
-
-	    }, {
-	        key: 'removeChangeListener',
-	        value: function removeChangeListener(callback) {
-	            this.removeListener(CHANGE_EVENT, callback);
-	        }
-	    }, {
-	        key: 'emitChange',
-	        value: function emitChange() {
-	            this.emit(CHANGE_EVENT);
+	        key: 'save',
+	        value: function save() {
+	            localStorage.state = JSON.stringify(_STATE2.default);
+	            this.emitChange();
 	        }
 	    }, {
 	        key: 'getState',
 	        value: function getState() {
-	            return STATE;
+	            return _STATE2.default;
 	        }
 	    }, {
 	        key: 'getCurrentSession',
 	        value: function getCurrentSession() {
-	            return STATE.openFiles.find(function (f) {
-	                return f.path === STATE.currentFile;
+	            return _STATE2.default.openFiles.find(function (f) {
+	                return f.path === _STATE2.default.currentFile;
 	            });
 	        }
 	    }]);
 
 	    return Store;
-	})(EventEmitter);
+	})(_StoreBase3.default);
 
 	var stateStore = exports.stateStore = new Store();
 
 /***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {
-	    APP_OPEN_FILE: 'APP_OPEN_FILE',
-	    APP_CLOSE_FILE: 'APP_CLOSE_FILE'
-	};
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {
-	    FILETREE_SELECT_ITEM: 'FILETREE_SELECT_ITEM',
-	    FILETREE_EXPAND_ITEM: 'FILETREE_EXPAND_ITEM',
-	    FILETREE_COLLAPSE_ITEM: 'FILETREE_COLLAPSE_ITEM',
-	    FILETREE_TOGGLE_ITEM: 'FILETREE_TOGGLE_ITEM'
-	};
-
-/***/ },
+/* 13 */,
+/* 14 */,
 /* 15 */
 /***/ function(module, exports) {
 
@@ -1196,14 +1080,14 @@
 	                        title: file,
 	                        onClick: _this.select.bind(_this, file), __source: {
 	                            fileName: '../../../../../src/components/TabBrowser.jsx',
-	                            lineNumber: 30
+	                            lineNumber: 35
 	                        }
 	                    },
 	                    React.createElement('span', { className: 'close-tab icon icon-close',
 	                        title: 'Close Tab',
 	                        onClick: _this.close.bind(_this, file), __source: {
 	                            fileName: '../../../../../src/components/TabBrowser.jsx',
-	                            lineNumber: 39
+	                            lineNumber: 44
 	                        }
 	                    }),
 	                    file.substr(file.lastIndexOf('/') + 1)
@@ -1214,7 +1098,7 @@
 	                'div',
 	                { className: 'main-tabs', __source: {
 	                        fileName: '../../../../../src/components/TabBrowser.jsx',
-	                        lineNumber: 47
+	                        lineNumber: 52
 	                    }
 	                },
 	                files
@@ -1226,6 +1110,10 @@
 	})(_react.Component);
 
 	exports.default = TabBrowser;
+	TabBrowser.propTypes = {
+	    files: _react.PropTypes.array,
+	    selectedPath: _react.PropTypes.string
+	};
 
 /***/ },
 /* 17 */
@@ -1262,7 +1150,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #2F3129;\n  color: #797A75;\n}\nbody {\n  font: menu;\n  background: #2F3129;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: #797A75;\n  -webkit-app-region: drag;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(20) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: #666666;\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #1E1F18;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: auto;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2.2em;\n  background: linear-gradient(#1E1F1A, #272822);\n  position: relative;\n  padding-bottom: 3px;\n}\n.main-tabs::after {\n  content: '';\n  height: 3px;\n  display: block;\n  background: #2F3129;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);\n  z-index: 3;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #3c3f35;\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab.modified {\n  color: orange;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 1px 4px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #111;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-family: \"Source Code Pro\", Menlo;\n  font-weight: 400;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.filetree-toolbar {\n  box-shadow: 0 1px 5px 0 #000;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #2F3129;\n  color: #797A75;\n}\nbody {\n  font: menu;\n  background: #2F3129;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: #797A75;\n  -webkit-app-region: drag;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(20) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n  box-shadow: 0 0 1px 0px rgba(255, 255, 255, 0.16) inset;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n  width: 12px;\n  height: 12px;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: rgba(200, 200, 200, 0.05);\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #1E1F18;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: overlay;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2.2em;\n  background: linear-gradient(#1E1F1A, #272822);\n  position: relative;\n  padding-bottom: 3px;\n}\n.main-tabs::after {\n  content: '';\n  height: 3px;\n  display: block;\n  background: #2F3129;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);\n  z-index: 3;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #3c3f35;\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab.modified {\n  color: orange;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 4px 1px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #111;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.filetree-toolbar {\n  box-shadow: 0 1px 5px 0 #000;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
 
 	// exports
 
@@ -1588,6 +1476,246 @@
 /***/ function(module, exports) {
 
 	module.exports = jQuery;
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var EventEmitter = __webpack_require__(15).EventEmitter;
+
+	var CHANGE_EVENT = 'change';
+
+	/**
+	 * The base class for all the stores
+	 */
+
+	var StoreBase = (function (_EventEmitter) {
+	    _inherits(StoreBase, _EventEmitter);
+
+	    function StoreBase() {
+	        _classCallCheck(this, StoreBase);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StoreBase).call(this));
+	    }
+
+	    /**
+	     * @param {function} callback
+	     */
+
+	    _createClass(StoreBase, [{
+	        key: 'addChangeListener',
+	        value: function addChangeListener(callback) {
+	            this.on(CHANGE_EVENT, callback);
+	        }
+
+	        /**
+	         * @param {function} callback
+	         */
+
+	    }, {
+	        key: 'removeChangeListener',
+	        value: function removeChangeListener(callback) {
+	            this.removeListener(CHANGE_EVENT, callback);
+	        }
+	    }, {
+	        key: 'emitChange',
+	        value: function emitChange() {
+	            this.emit(CHANGE_EVENT);
+	        }
+	    }]);
+
+	    return StoreBase;
+	})(EventEmitter);
+
+	exports.default = StoreBase;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.openFile = openFile;
+	exports.previewFile = previewFile;
+	exports.closeFile = closeFile;
+
+	var _STATE = __webpack_require__(26);
+
+	var _STATE2 = _interopRequireDefault(_STATE);
+
+	var _Dispatcher = __webpack_require__(9);
+
+	var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
+
+	var _constants = __webpack_require__(8);
+
+	var Constants = _interopRequireWildcard(_constants);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * If the file is already opened just switches to it py setting STATE.currentFile
+	 * to it's full path.
+	 */
+	function openFile(path, isPreview) {
+
+	    // TODO: browse for file of the path is empty
+
+	    // If already opened just switch to it
+	    var idx = _STATE2.default.openFiles.findIndex(function (f) {
+	        return f.path === path;
+	    }),
+	        stats;
+	    if (idx > -1) {
+	        var meta = _STATE2.default.openFiles[idx];
+	        if (meta.path !== _STATE2.default.currentFile || !!meta.isPreview !== !!isPreview) {
+	            _STATE2.default.currentFile = meta.path;
+	            _STATE2.default.fileTree.selectedPath = path;
+	            meta.isPreview = !!isPreview;
+	            return true; // did switch
+	        }
+	        return false; // did nothing
+	    }
+
+	    // Skip directories
+	    try {
+	        stats = fs.statSync(path);
+	        if (stats.isDirectory()) {
+	            return false;
+	        }
+	    } catch (ex) {
+	        console.error(ex);
+	        return false;
+	    }
+
+	    // Try to read the file
+	    var text = '';
+	    try {
+	        text = fs.readFileSync(path, 'utf8');
+	    } catch (err) {
+	        console.error(err);
+	        return false;
+	    }
+
+	    // Detect mode
+	    var modelist = ace.require("ace/ext/modelist");
+	    var mode = modelist.getModeForPath(path).mode;
+
+	    // Close the existing reusable session (if any)
+	    _STATE2.default.openFiles = _STATE2.default.openFiles.filter(function (o) {
+	        return !o.isPreview;
+	    });
+
+	    // Create new session and switch to it
+	    var session = ace.createEditSession(text, mode);
+	    _STATE2.default.openFiles.push({ path: path, session: session, isPreview: isPreview });
+	    session.on("change", function () {
+	        _Dispatcher2.default.handleViewAction({
+	            actionType: Constants.APP_NOTIFY_FILE_CHANGED,
+	            path: path
+	        });
+	    });
+
+	    // Set the new session as bith current and selected
+	    _STATE2.default.currentFile = path;
+	    _STATE2.default.fileTree.selectedPath = path;
+
+	    // Indicates that something has changed
+	    return true;
+	} /* global ace, fs */
+
+	function previewFile(path) {
+	    return openFile(path, true);
+	}
+
+	function closeFile(path) {
+	    var idx = _STATE2.default.openFiles.findIndex(function (f) {
+	        return f.path === path;
+	    });
+	    if (idx > -1) {
+	        var meta = _STATE2.default.openFiles[idx];
+	        _STATE2.default.openFiles.splice(idx, 1);
+	        var next = idx - 1;
+	        if (next < 0) {
+	            next = _STATE2.default.openFiles.length - 1;
+	        }
+	        if (next >= 0) {
+	            next = _STATE2.default.openFiles[next];
+	        } else {
+	            next = { path: '' };
+	        }
+	        if (meta.path === _STATE2.default.currentFile) {
+	            _STATE2.default.currentFile = next.path;
+	        }
+	        if (meta.path === _STATE2.default.fileTree.selectedPath) {
+	            _STATE2.default.fileTree.selectedPath = next.path;
+	        }
+	        return true;
+	    }
+	    return false;
+	}
+
+	// export function setLeftSidebarWidth(width) {
+	//     appDispatcher.handleViewAction({
+	//         actionType: Constants.APP_SET_LEFT_SIDEBAR_WIDTH,
+	//         width
+	//     });
+	// }
+
+/***/ },
+/* 25 */,
+/* 26 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	/* global jQuery */
+	var savedState;
+
+	try {
+	    savedState = JSON.parse(localStorage.state || '{}');
+	} catch (err) {
+	    console.warn('Error parsing saved state:');
+	    console.error(err);
+	    savedState = {};
+	}
+
+	var STATE = exports.STATE = jQuery.extend(true, {
+	    leftSidebarWidth: 300,
+	    fileTree: {
+	        selectedPath: ''
+	    },
+	    openFiles: [],
+	    currentFile: '',
+	    settings: {
+	        syntaxTheme: 'ace/theme/twilight',
+	        fontSize: '14px'
+	    }
+	}, savedState);
+
+	exports.default = STATE;
 
 /***/ }
 /******/ ]);

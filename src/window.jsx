@@ -1,5 +1,10 @@
+/* global ReactDOM, ipc */
 import MainWindow from './components/MainWindow.jsx';
 import { default as $ } from 'jquery';
+// import * as lib from './lib';
+import AppActions from './actions/AppActions';
+
+window.AppActions = AppActions;
 
 $(function() {
     $(document).on('selectstart', false);
@@ -35,6 +40,7 @@ $(function() {
                 cursor: 'default',
                 pointerEvents: 'auto'
             });
+            AppActions.setLeftSidebarWidth(leftSidebar.outerWidth());
         });
         return false;
     });

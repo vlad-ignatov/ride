@@ -1,3 +1,4 @@
+/* global ENV, ipc */
 require('../style/main.less');
 import { Component  } from 'react';
 import { FileTree   } from './FileTree';
@@ -39,13 +40,13 @@ export default class MainWindow extends Component
             <div style={{display:'flex', height: '100%', flexDirection: 'column' }}>
                 <div className="header" style={{ textAlign: 'center' }}>React Editor</div>
                 <div className="main-row">
-                    <div className="main-sidebar-left">
+                    <div className="main-sidebar-left" style={{ width: this.state.leftSidebarWidth }}>
                         <FileTree type="dir"
                             path={ ENV.HOME }
                             name={ ENV.HOME }
                             selectedPath={ this.state.fileTree.selectedPath }
                             expanded />
-                        <div className="resizer vertical" style={{left: 300}}></div>
+                        <div className="resizer vertical" style={{ left: this.state.leftSidebarWidth }}/>
                     </div>
                     <div className="main-stage">
                         <TabBrowser selectedPath={ this.state.currentFile } files={ this.state.openFiles }/>

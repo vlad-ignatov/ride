@@ -58,7 +58,7 @@ class Dispatcher
     {
         this.dispatch({
             source: 'VIEW_ACTION',
-            action: action
+            action
         });
     }
 }

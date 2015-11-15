@@ -1,36 +1,34 @@
-var Constants     = require('../constants/constants');
-var appDispatcher = require('../Dispatcher');
+import Constants     from '../constants/constants';
+import appDispatcher from '../Dispatcher';
 
-var FileTreeActions = {
+module.exports = {
 
-    select: function(path) {
+    select(path) {
         appDispatcher.handleViewAction({
             actionType: Constants.FILETREE_SELECT_ITEM,
-            path      : path
+            path
         });
     },
 
-    expand: function(path) {
+    expand(path) {
         appDispatcher.handleViewAction({
             actionType: Constants.FILETREE_EXPAND_ITEM,
-            path      : path
+            path
         });
     },
 
-    collapse: function(path) {
+    collapse(path) {
         appDispatcher.handleViewAction({
             actionType: Constants.FILETREE_COLLAPSE_ITEM,
-            path      : path
+            path
         });
     },
 
-    toggle: function(path) {
+    toggle(path) {
         appDispatcher.handleViewAction({
             actionType: Constants.FILETREE_TOGGLE_ITEM,
-            path      : path
+            path
         });
     }
 
 };
-
-module.exports = FileTreeActions;

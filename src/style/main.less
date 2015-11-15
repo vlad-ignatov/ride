@@ -73,9 +73,12 @@ body {
 ::-webkit-scrollbar-thumb {
   background: rgba(200, 200, 200, 0.1);
   border-radius: 5px;
+  box-shadow: 0 0 1px 0px rgba(255, 255, 255, 0.16) inset;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(200, 200, 200, 0.3);
+  width: 12px;
+  height: 12px;
 }
 ::-webkit-scrollbar-thumb:active {
   background: rgba(200, 200, 200, 0.5);
@@ -84,7 +87,7 @@ body {
   background: transparent;
 }
 /*::-webkit-scrollbar-track:hover {
-  background: #666666;
+  background: rgba(200, 200, 200, 0.05);
 }
 ::-webkit-scrollbar-track:active {
   background: #333333;
@@ -111,7 +114,7 @@ body {
     padding     : 3px;
     width       : 300px;
     border-right: 1px solid rgba(0, 0, 0, 0.4);
-    overflow    : auto;
+    overflow    : overlay;
     position    : relative;
 }
 
@@ -236,7 +239,7 @@ body {
 }
 .main-status-bar {
     display: flex;
-    padding: 1px 4px;
+    padding: 0 4px 1px;
     border-top : 1px solid rgba(255, 255, 255, 0.1);
     -webkit-app-region: drag;
 }
@@ -277,8 +280,9 @@ body {
         border-width: 1px;
     }
     .ace_comment {
-        font-family: "Source Code Pro", Menlo;
+        // font-family: "Source Code Pro", Menlo;
         font-weight: 400;
+        letter-spacing: 0.025ex;
     }
 }
 

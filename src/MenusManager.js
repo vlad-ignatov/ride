@@ -1,8 +1,9 @@
+/* global process */
 var app      = require('app');
 var Menu     = require('menu');
-var MenuItem = require('menu-item');
+// var MenuItem = require('menu-item');
 var dialog   = require('dialog');
-var fs       = require('fs');
+// var fs       = require('fs');
 
 function setMainMenu(mainWindow)
 {
@@ -13,7 +14,7 @@ function setMainMenu(mainWindow)
                 {
                     label: 'Open',
                     accelerator: 'CmdOrCtrl+O',
-                    click: function() {
+                    click() {
                         var files = dialog.showOpenDialog({
                             properties: [
                                 'openFile',
@@ -30,7 +31,7 @@ function setMainMenu(mainWindow)
                 {
                     label: 'Save',
                     accelerator: 'CmdOrCtrl+S',
-                    click: function(item, focusedWindow) {
+                    click(item, focusedWindow) {
                         if (focusedWindow) {
                             focusedWindow.webContents.send('saveFile');
                         }
@@ -39,7 +40,7 @@ function setMainMenu(mainWindow)
                 {
                     label: 'Save As',
                     accelerator: 'Shift+CmdOrCtrl+S',
-                    click: function(item, focusedWindow) {
+                    click(item, focusedWindow) {
                         if (focusedWindow) {
                             focusedWindow.webContents.send('saveFileAs');
                         }
@@ -82,7 +83,7 @@ function setMainMenu(mainWindow)
                     label: 'Select All',
                     accelerator: 'CmdOrCtrl+A',
                     role: 'selectall'
-                },
+                }
             ]
         },
         {
@@ -91,11 +92,12 @@ function setMainMenu(mainWindow)
                 {
                     label: 'Reload',
                     accelerator: 'CmdOrCtrl+R',
-                    click: function(item, focusedWindow) {
-                        if (focusedWindow)
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
                             focusedWindow.reload();
                         }
-                    },
+                    }
+                },
                 {
                     label: 'Toggle Full Screen',
                     accelerator: (function() {
@@ -104,9 +106,10 @@ function setMainMenu(mainWindow)
                         else
                             return 'F11';
                     })(),
-                    click: function(item, focusedWindow) {
-                        if (focusedWindow)
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
                             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+                        }
                     }
                 },
                 {
@@ -117,9 +120,10 @@ function setMainMenu(mainWindow)
                         else
                             return 'Ctrl+Shift+I';
                     })(),
-                    click: function(item, focusedWindow) {
-                        if (focusedWindow)
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
                             focusedWindow.toggleDevTools();
+                        }
                     }
                 },
                 {
@@ -164,14 +168,15 @@ function setMainMenu(mainWindow)
                             label: name,
                             type: 'radio',
                             checked: name == 'twilight',
-                            click: function(item, focusedWindow) {
+                            click(item, focusedWindow) {
                                 if (focusedWindow) {
-                                     focusedWindow.webContents.send('setSyntaxTheme', 'ace/theme/' + name);
+                                    focusedWindow.webContents.send('setSyntaxTheme', 'ace/theme/' + name);
                                 }
                             }
                         };
                     })
-                },
+                }
+                //,
                 // {
                 //     label: 'Editor Settings',
                 //     click: function(item, focusedWindow) {
@@ -188,7 +193,7 @@ function setMainMenu(mainWindow)
             submenu: [
                 {
                     label: 'Learn More',
-                    click: function() {
+                    click() {
                         require('shell').openExternal('http://electron.atom.io')
                     }
                 }
@@ -236,8 +241,8 @@ function setMainMenu(mainWindow)
                 {
                     label: 'Quit',
                     accelerator: 'Command+Q',
-                    click: function() { app.quit(); }
-                },
+                    click() { app.quit(); }
+                }
             ]
         });
     }

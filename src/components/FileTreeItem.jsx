@@ -93,7 +93,7 @@ export default class FileTreeItem extends Component
         FileTreeActions.select(this.props.path);
     }
 
-    dblClick(e)
+    dblClick()
     {
         if (this.props.type == FileTreeItem.TYPE_FILE) {
             AppActions.openFile(this.props.path);

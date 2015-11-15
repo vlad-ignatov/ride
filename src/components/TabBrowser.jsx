@@ -6,6 +6,11 @@ import FileTreeActions          from '../actions/FileTreeActions';
 
 export default class TabBrowser extends Component
 {
+    static propTypes = {
+        files        : PropTypes.array,
+        selectedPath : PropTypes.string
+    };
+
     constructor()
     {
         super();

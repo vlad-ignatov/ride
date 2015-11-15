@@ -1,3 +1,4 @@
+/* global ipc, ace, remote */
 import { PropTypes, Component } from 'react';
 import { default as fs } from 'fs';
 import { stateStore } from '../stores/StateStore';

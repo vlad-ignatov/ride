@@ -57,8 +57,8 @@ app.on('ready', function() {
         'title-bar-style': 'hidden',
         webSecurity : false,
         allowDisplayingInsecureContent: true,
-        allowRunningInsecureContent: true,
-        overlayScrollbars: true
+        allowRunningInsecureContent: true//,
+        // overlayScrollbars: true
     });
 
     // and load the index.html of the app.

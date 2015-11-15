@@ -3,24 +3,30 @@ var appDispatcher = require('../Dispatcher');
 
 var AppActions = {
 
-    openFile: function(path) {
+    openFile(path) {
         appDispatcher.handleViewAction({
             actionType: Constants.APP_OPEN_FILE,
-            path      : path
+            path
         });
     },
 
-    closeFile: function(path) {
+    closeFile(path) {
         appDispatcher.handleViewAction({
             actionType: Constants.APP_CLOSE_FILE,
-            path      : path
+            path
         });
     },
 
-    save: function() {
+    save() {
         appDispatcher.handleViewAction({
-            actionType: Constants.APP_SAVE_FILE,
-            path      : path
+            actionType: Constants.APP_SAVE_FILE
+        });
+    },
+
+    setLeftSidebarWidth(width) {
+        appDispatcher.handleViewAction({
+            actionType: Constants.APP_SET_LEFT_SIDEBAR_WIDTH,
+            width
         });
     }
 

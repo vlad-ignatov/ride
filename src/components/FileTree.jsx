@@ -1,4 +1,3 @@
-/* global fs, DISPATCHER */
 import { PropTypes, Component } from 'react';
 import FileTreeItem from './FileTreeItem';
 import fs       from 'fs';
