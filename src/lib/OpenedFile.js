@@ -23,11 +23,10 @@ export default class OpenedFile
      */
     encoding: string = 'utf8';
 
-    constructor(path)
+    constructor(path = '', text = '')
     {
-        this.encoding = 'utf8';
         this.path = path || '';
-        this.text = '';
+        this.text = text || '';
 
         if (this.path) {
             this.text = fs.readFileSync(this.path, this.encoding);
@@ -35,6 +34,9 @@ export default class OpenedFile
 
         this.editorSession = ace.createEditSession(this.path);
     }
+
+    load() {}
+    save() {}
 
     isModified(): boolean
     {

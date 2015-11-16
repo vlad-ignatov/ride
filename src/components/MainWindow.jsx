@@ -14,8 +14,12 @@ export default class MainWindow extends Component
         super();
         this.state = stateStore.getState();
         this._onChange = this._onChange.bind(this);
+
         ipc.on('openFiles', function(files) {
             files.forEach(f => AppActions.openFile(f));
+        });
+        ipc.on('toggleFileTree', function() {
+            AppActions.toggleLeftSidebar();
         });
     }
 
@@ -40,7 +44,10 @@ export default class MainWindow extends Component
             <div style={{display:'flex', height: '100%', flexDirection: 'column' }}>
                 <div className="header" style={{ textAlign: 'center' }}>React Editor</div>
                 <div className="main-row">
-                    <div className="main-sidebar-left" style={{ width: this.state.leftSidebarWidth }}>
+                    <div className="main-sidebar-left" style={{
+                        width  : this.state.leftSidebarWidth,
+                        display: this.state.fileTree.visible ? 'block' : 'none'
+                    }}>
                         <FileTree type="dir"
                             path={ ENV.HOME }
                             name={ ENV.HOME }

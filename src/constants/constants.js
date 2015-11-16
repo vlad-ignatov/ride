@@ -14,6 +14,7 @@
     'FILETREE_COLLAPSE_ITEM',
     'FILETREE_TOGGLE_ITEM',
     'FILETREE_REVEAL_PATH',
+    'FILETREE_TOGGLE',
 
     // File Events ---------------------------------------------------------------
     'EVENT_FILE_OPENED',

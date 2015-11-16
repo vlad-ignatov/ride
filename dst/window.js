@@ -157,10 +157,14 @@
 
 	        _this.state = _StateStore.stateStore.getState();
 	        _this._onChange = _this._onChange.bind(_this);
+
 	        ipc.on('openFiles', function (files) {
 	            files.forEach(function (f) {
 	                return _AppActions2.default.openFile(f);
 	            });
+	        });
+	        ipc.on('toggleFileTree', function () {
+	            _AppActions2.default.toggleLeftSidebar();
 	        });
 	        return _this;
 	    }
@@ -196,7 +200,10 @@
 	                    { className: 'main-row' },
 	                    React.createElement(
 	                        'div',
-	                        { className: 'main-sidebar-left', style: { width: this.state.leftSidebarWidth } },
+	                        { className: 'main-sidebar-left', style: {
+	                                width: this.state.leftSidebarWidth,
+	                                display: this.state.fileTree.visible ? 'block' : 'none'
+	                            } },
 	                        React.createElement(_FileTree.FileTree, { type: 'dir',
 	                            path: ENV.HOME,
 	                            name: ENV.HOME,
@@ -552,7 +559,7 @@
 	'APP_OPEN_FILE', 'APP_CLOSE_FILE', 'APP_SAVE_FILE', 'APP_SAVE_FILE_AS', 'APP_NOTIFY_FILE_CHANGED', 'APP_SET_LEFT_SIDEBAR_WIDTH',
 
 	// FileTree Actions ----------------------------------------------------------
-	'FILETREE_SELECT_ITEM', 'FILETREE_EXPAND_ITEM', 'FILETREE_COLLAPSE_ITEM', 'FILETREE_TOGGLE_ITEM', 'FILETREE_REVEAL_PATH',
+	'FILETREE_SELECT_ITEM', 'FILETREE_EXPAND_ITEM', 'FILETREE_COLLAPSE_ITEM', 'FILETREE_TOGGLE_ITEM', 'FILETREE_REVEAL_PATH', 'FILETREE_TOGGLE',
 
 	// File Events ---------------------------------------------------------------
 	'EVENT_FILE_OPENED', 'EVENT_FILE_OPENED_FOR_PREVIEW', 'EVENT_FILE_CHANGED', 'EVENT_FILE_CHANGED_OUTSIDE', 'EVENT_FILE_UNCHANGED', 'EVENT_FILE_SAVED', 'EVENT_FILE_CLOSED'].forEach(function (x) {
@@ -674,6 +681,11 @@
 	        appDispatcher.handleViewAction({
 	            actionType: Constants.APP_SET_LEFT_SIDEBAR_WIDTH,
 	            width: width
+	        });
+	    },
+	    toggleLeftSidebar: function toggleLeftSidebar() {
+	        appDispatcher.handleViewAction({
+	            actionType: Constants.FILETREE_TOGGLE
 	        });
 	    }
 	};
@@ -862,6 +874,11 @@
 	            var action = payload.action,
 	                idx;
 	            switch (action.actionType) {
+
+	                case Constants.FILETREE_TOGGLE:
+	                    _STATE2.default.fileTree.visible = !_STATE2.default.fileTree.visible;
+	                    store.emitChange();
+	                    break;
 
 	                // This is slightly different from open. It loads the selected
 	                // file in for preview reusable session
@@ -1190,7 +1207,8 @@
 	var STATE = exports.STATE = jQuery.extend(true, {
 	    leftSidebarWidth: 300,
 	    fileTree: {
-	        selectedPath: ''
+	        selectedPath: '',
+	        visible: true
 	    },
 	    openFiles: [],
 	    currentFile: '',

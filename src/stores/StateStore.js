@@ -22,6 +22,11 @@ class Store extends StoreBase
             var action = payload.action, idx;
             switch(action.actionType) {
 
+            case Constants.FILETREE_TOGGLE:
+                STATE.fileTree.visible = !STATE.fileTree.visible;
+                store.emitChange();
+                break;
+
             // This is slightly different from open. It loads the selected
             // file in for preview reusable session
             case Constants.FILETREE_SELECT_ITEM:

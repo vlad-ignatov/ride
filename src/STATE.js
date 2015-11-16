@@ -14,7 +14,8 @@ catch (err) {
 export const STATE = jQuery.extend(true, {
     leftSidebarWidth: 300,
     fileTree: {
-        selectedPath: ''
+        selectedPath: '',
+        visible: true
     },
     openFiles: [],
     currentFile: '',

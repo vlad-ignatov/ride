@@ -136,6 +136,15 @@ function setMainMenu(mainWindow)
                     }
                 },
                 {
+                    label      : 'Toggle Left Sitebar',
+                    accelerator: 'CmdOrCtrl+\\',
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
+                            focusedWindow.webContents.send('toggleFileTree')
+                        }
+                    }
+                },
+                {
                     label: 'Editor Theme',
                     submenu: [
                         'ambiance',

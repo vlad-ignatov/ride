@@ -28,6 +28,12 @@ var AppActions = {
             actionType: Constants.APP_SET_LEFT_SIDEBAR_WIDTH,
             width
         });
+    },
+
+    toggleLeftSidebar() {
+        appDispatcher.handleViewAction({
+            actionType: Constants.FILETREE_TOGGLE
+        });
     }
 
 };
