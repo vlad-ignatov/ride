@@ -82,6 +82,32 @@ export function previewFile(path) {
     return openFile(path, true);
 }
 
+export function newFile() {
+    // Create new session and switch to it
+    let path = '';
+    let session  = ace.createEditSession('', 'ace/mode/text');
+    let hash = md5('');
+    STATE.openFiles.push({
+        path,
+        session,
+        isPreview : true,
+        hash
+    });
+    session.on("change", () => {
+        appDispatcher.handleViewAction({
+            actionType: Constants.APP_NOTIFY_FILE_CHANGED,
+            path
+        });
+    });
+
+    // Set the new session as bith current and selected
+    STATE.currentFile = path;
+    STATE.fileTree.selectedPath = path;
+
+    // Indicates that something has changed
+    return true;
+}
+
 export function closeFile(path) {
     var idx = STATE.openFiles.findIndex(f => f.path === path);
     if (idx > -1) {

@@ -29,6 +29,15 @@ function setMainMenu(mainWindow)
                     }
                 },
                 {
+                    label: 'New',
+                    accelerator: 'CmdOrCtrl+N',
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
+                            focusedWindow.webContents.send('newFile');
+                        }
+                    }
+                },
+                {
                     label: 'Save',
                     accelerator: 'CmdOrCtrl+S',
                     click(item, focusedWindow) {

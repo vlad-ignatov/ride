@@ -2,6 +2,7 @@
 'use strict';
 
 import { default as appDispatcher } from '../Dispatcher';
+import { default as ipc           } from 'ipc';
 import * as lib       from '../lib';
 import StoreBase      from './StoreBase';
 import STATE          from '../STATE';
@@ -14,6 +15,8 @@ class Store extends StoreBase
         super();
 
         var store = this;
+
+        ipc.on('newFile', lib.newFile);
 
         this.dispatcherIndex = appDispatcher.register(function(payload) {
             var action = payload.action, idx;

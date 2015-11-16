@@ -816,6 +816,10 @@
 
 	var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
 
+	var _ipc = __webpack_require__(48);
+
+	var _ipc2 = _interopRequireDefault(_ipc);
+
 	var _lib = __webpack_require__(13);
 
 	var lib = _interopRequireWildcard(_lib);
@@ -851,6 +855,8 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Store).call(this));
 
 	        var store = _this;
+
+	        _ipc2.default.on('newFile', lib.newFile);
 
 	        _this.dispatcherIndex = _Dispatcher2.default.register(function (payload) {
 	            var action = payload.action,
@@ -955,6 +961,7 @@
 	exports.md5 = md5;
 	exports.openFile = openFile;
 	exports.previewFile = previewFile;
+	exports.newFile = newFile;
 	exports.closeFile = closeFile;
 	exports.writeFile = writeFile;
 	exports.saveCurrentFile = saveCurrentFile;
@@ -1062,6 +1069,32 @@
 
 	function previewFile(path) {
 	    return openFile(path, true);
+	}
+
+	function newFile() {
+	    // Create new session and switch to it
+	    var path = '';
+	    var session = ace.createEditSession('', 'ace/mode/text');
+	    var hash = md5('');
+	    _STATE2.default.openFiles.push({
+	        path: path,
+	        session: session,
+	        isPreview: true,
+	        hash: hash
+	    });
+	    session.on("change", function () {
+	        _Dispatcher2.default.handleViewAction({
+	            actionType: Constants.APP_NOTIFY_FILE_CHANGED,
+	            path: path
+	        });
+	    });
+
+	    // Set the new session as bith current and selected
+	    _STATE2.default.currentFile = path;
+	    _STATE2.default.fileTree.selectedPath = path;
+
+	    // Indicates that something has changed
+	    return true;
 	}
 
 	function closeFile(path) {
@@ -5592,6 +5625,12 @@
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26).Buffer))
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	module.exports = ipc;
 
 /***/ }
 /******/ ]);
