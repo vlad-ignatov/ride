@@ -1,8 +1,6 @@
-'use strict';
-
-import { PropTypes, Component } from 'react';
-import AppActions               from '../actions/AppActions';
-import FileTreeActions          from '../actions/FileTreeActions';
+import { PropTypes, Component } from 'react'
+import fileActions from '../actions/file-actions'
+import fileStore   from '../stores/file-store'
 
 export default class TabBrowser extends Component
 {
@@ -11,39 +9,49 @@ export default class TabBrowser extends Component
         selectedPath : PropTypes.string
     };
 
-    constructor()
-    {
-        super();
+    constructor() {
+        super()
+        this.state = fileStore.getState()
+        this.onOpenedFilesChange = this.onOpenedFilesChange.bind(this)
     }
 
-    close(path, e)
-    {
+    componentDidMount() {
+        fileStore.listen(this.onOpenedFilesChange)
+    }
+
+    componentWillUnmount() {
+        fileStore.unlisten(this.onOpenedFilesChange)
+    }
+
+    onOpenedFilesChange() {
+        this.setState(fileStore.getState())
+    }
+
+    closeFile(id, e) {
         e.stopPropagation();
-        AppActions.closeFile(path);
+        fileActions.closeFile(id);
     }
 
-    select(path)
-    {
-        FileTreeActions.select(path);
+    setCurrentFile(id) {
+        fileActions.setCurrentFile(id);
     }
 
-    render()
-    {
-        var files = this.props.files.map(f => {
+    render() {
+        var files = this.state.files.map(f => {
             let file = f.path;
             return (
                 <div className={
                         'tab' +
-                        (this.props.selectedPath == file ? ' active' : '') +
+                        (this.state.current && this.state.current === f ? ' active' : '') +
                         (f.isPreview ? ' preview' : '') +
                         (f.modified ? ' modified' : '')
                     }
-                    key={file}
+                    key={f.id}
                     title={file}
-                    onClick={ this.select.bind(this, file) }>
+                    onClick={ this.setCurrentFile.bind(this, f.id) }>
                     <span className="close-tab icon icon-close"
                         title="Close Tab"
-                        onClick={ this.close.bind(this, file) }/>
+                        onClick={ this.closeFile.bind(this, f.id) }/>
                     {file.substr(file.lastIndexOf('/') + 1)}
                 </div>
             );
