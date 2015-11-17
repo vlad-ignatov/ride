@@ -4,10 +4,18 @@ import { default as STATE  } from '../STATE';
 import appDispatcher         from '../Dispatcher';
 import * as Constants        from '../constants/constants';
 import { default as remote } from 'remote';
-import { default as crypto } from 'crypto';
+var _crypto = require('crypto');
+
+
+export var uid = (function() {
+    var uid_counter = 1;
+    return function() {
+        return 'uid_' + uid_counter++;
+    };
+})();
 
 export function md5(str) {
-    return crypto.createHash('md5').update(str).digest("hex");
+    return _crypto.createHash('md5').update(str).digest("hex");
 }
 /**
  * If the file is already opened just switches to it py setting STATE.currentFile
