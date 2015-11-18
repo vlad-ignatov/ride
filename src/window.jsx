@@ -2,9 +2,34 @@
 import MainWindow from './components/MainWindow.jsx';
 import { default as $ } from 'jquery';
 // import * as lib from './lib';
-import AppActions from './actions/AppActions';
+// import AppActions from './actions/AppActions';
+import configActions from './actions/config-actions';
 
-window.AppActions = AppActions;
+
+
+ipc.on('setSyntaxTheme', theme => {
+    configActions.setEditorTheme(theme);
+});
+ipc.on('toggleFileTree', () => {
+    configActions.toggleSidebarVisible();
+});
+ipc.on('fontIncrease', () => {
+    configActions.increaseFontSize();
+});
+ipc.on('fontDecrease', () => {
+    configActions.decreaseFontSize();
+});
+// ipc.on('openFiles', function(files) {
+//     files.forEach(f => AppActions.openFile(f));
+// });
+// ipc.on('toggleFileTree', function() {
+//     AppActions.toggleLeftSidebar();
+// });
+
+
+
+
+// window.AppActions = AppActions;
 
 $(function() {
     $(document).on('selectstart', false);
@@ -40,7 +65,7 @@ $(function() {
                 cursor: 'default',
                 pointerEvents: 'auto'
             });
-            AppActions.setLeftSidebarWidth(leftSidebar.outerWidth());
+            configActions.setSidebarWidth(leftSidebar.outerWidth());
         });
         return false;
     });

@@ -1,76 +1,90 @@
 /* global ipc, ace, remote */
 import { PropTypes, Component } from 'react';
-import { default as fs } from 'fs';
-import { stateStore } from '../stores/StateStore';
-import * as lib from '../lib';
+// import { default as fs } from 'fs';
+// import { stateStore } from '../stores/StateStore';
+// import * as lib from '../lib';
+
+import fileStore   from '../stores/file-store'
+import configStore from '../stores/config-store'
 
 export default class Editor extends Component
 {
-    static propTypes = {
-        filePath : PropTypes.string
-    };
-
-    static defaultProps = {
-        filePath : ''
-    };
+    // static propTypes = {
+    //     filePath : PropTypes.string
+    // };
+    //
+    // static defaultProps = {
+    //     filePath : ''
+    // };
 
     constructor(props)
     {
         super(props);
         this.state = {
-            filePath : props.filePath || ''
+            config : configStore.getState()
         };
         this._onChange = this._onChange.bind(this);
     }
 
     componentWillUnmount()
     {
-        stateStore.removeChangeListener(this._onChange);
-        ipc.removeListener('setSyntaxTheme');
+        fileStore.unlisten(this._onChange);
+        configStore.unlisten(this._onChange);
+        // ipc.removeListener('setSyntaxTheme');
     }
 
     _onChange()
     {
-        var state = stateStore.getCurrentSession();
-        if (state) {
-            // console.log(JSON.stringify(state.session, null, 2))
-            this.editor.setSession(state.session);
+        let cfg = configStore.getState()
+
+        this.editor.setTheme(cfg.editor.theme);
+        this.editor.setDisplayIndentGuides(false);
+        this.editor.setFontSize(this.state.config.editor.fontSize);
+
+        let currentFile = fileStore.getState().current;
+        if (currentFile) {
+            this.editor.setSession(currentFile.session);
         }
         else {
-            this.editor.setValue('');
+            this.editor.setSession(
+                ace.createEditSession('')
+            );
         }
     }
 
     componentDidMount()
     {
-        stateStore.addChangeListener(this._onChange);
+        fileStore.listen(this._onChange);
+        configStore.listen(this._onChange);
         this.editor = ace.edit(this.refs.wrapper);
         this.editor.$blockScrolling = Infinity;
-        this.editor.setTheme("ace/theme/twilight");
-        this.editor.setDisplayIndentGuides(false);
-        ipc.on('setSyntaxTheme', theme => {
-            this.editor.setTheme(theme);
-        });
-        ipc.on('saveFile', lib.saveCurrentFile);
-        ipc.on('saveFileAs', () => {
-            var dialog = remote.require('dialog');
-            var path = dialog.showSaveDialog(null, {
-                title: 'Save As'
-            });
-
-            if (path) {
-                try {
-                    fs.writeFileSync(path, this.editor.getValue(), 'utf8');
-                } catch (ex) {
-                    dialog.showMessageBox(null, {
-                        type: 'error',
-                        title: 'Error saving file',
-                        message: ex.message,
-                        detail: ex.stack
-                    });
-                }
-            }
-        });
+        this.editor.setTheme(this.state.config.editor.theme);
+        this.editor.setFontSize(this.state.config.editor.fontSize);
+        // this.editor.setTheme("ace/theme/twilight");
+        // this.editor.setDisplayIndentGuides(false);
+        // ipc.on('setSyntaxTheme', theme => {
+        //     this.editor.setTheme(theme);
+        // });
+        // ipc.on('saveFile', lib.saveCurrentFile);
+        // ipc.on('saveFileAs', () => {
+        //     var dialog = remote.require('dialog');
+        //     var path = dialog.showSaveDialog(null, {
+        //         title: 'Save As'
+        //     });
+        //
+        //     if (path) {
+        //         try {
+        //             fs.writeFileSync(path, this.editor.getValue(), 'utf8');
+        //         } catch (ex) {
+        //             dialog.showMessageBox(null, {
+        //                 type: 'error',
+        //                 title: 'Error saving file',
+        //                 message: ex.message,
+        //                 detail: ex.stack
+        //             });
+        //         }
+        //     }
+        // });
     }
 
     render()
