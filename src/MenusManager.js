@@ -145,6 +145,24 @@ function setMainMenu(mainWindow)
                     }
                 },
                 {
+                    label      : 'Increase font size',
+                    accelerator: 'CmdOrCtrl+=',
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
+                            focusedWindow.webContents.send('fontIncrease')
+                        }
+                    }
+                },
+                {
+                    label      : 'Decrease font size',
+                    accelerator: 'CmdOrCtrl+-',
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
+                            focusedWindow.webContents.send('fontDecrease')
+                        }
+                    }
+                },
+                {
                     label: 'Editor Theme',
                     submenu: [
                         'ambiance',
