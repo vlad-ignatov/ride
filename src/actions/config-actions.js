@@ -2,28 +2,25 @@ import alt from '../alt'
 
 class ConfigActions {
 
-    setSidebarWidth(w) {
-        this.dispatch(w);
+    constructor() {
+        this.generateActions(
+            'reload',
+            'save',
+            'mixin',
+            'setSidebarWidth',
+            'setSidebarVisible',
+            'toggleSidebarVisible',
+            'setEditorTheme',
+            'increaseFontSize',
+            'decreaseFontSize'
+        );
     }
 
-    setSidebarVisible(bVisible) {
-        this.dispatch(bVisible);
-    }
-
-    toggleSidebarVisible() {
-        this.dispatch();
-    }
-
-    setEditorTheme(theme) {
-        this.dispatch(theme);
-    }
-
-    increaseFontSize() {
-        this.dispatch();
-    }
-
-    decreaseFontSize() {
-        this.dispatch();
+    invoke(commandId, ...args) {
+        this.dispatch({
+            commandId,
+            args
+        });
     }
 }
 
