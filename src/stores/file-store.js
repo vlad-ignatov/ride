@@ -73,6 +73,8 @@ class FilesStore
                 fileActions.checkFileForModifications(entry.id);
             });
 
+            // console.log(entry.session);
+
             this.files.push(entry)
 
             this.current = entry
@@ -89,7 +91,10 @@ class FilesStore
         let idx = this.files.findIndex(f => f.id === id);
         if (idx > -1) {
             let meta = this.files[idx]
+            meta.session.removeAllListeners();
+            meta.session.destroy();
             this.files.splice(idx, 1);
+
             if (this.current == meta) {
                 this.current = null;
                 let len  = this.files.length;
