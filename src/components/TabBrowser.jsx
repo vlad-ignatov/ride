@@ -4,11 +4,6 @@ import fileStore   from '../stores/file-store'
 
 export default class TabBrowser extends Component
 {
-    static propTypes = {
-        files        : PropTypes.array,
-        selectedPath : PropTypes.string
-    };
-
     constructor() {
         super()
         this.state = fileStore.getState()
