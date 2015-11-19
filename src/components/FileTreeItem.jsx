@@ -1,7 +1,6 @@
 import { PropTypes, Component } from 'react';
 import fs                       from 'fs';
-import FileTreeActions          from '../actions/FileTreeActions';
-import AppActions               from '../actions/AppActions';
+import fileActions              from '../actions/file-actions'
 
 export default class FileTreeItem extends Component
 {
@@ -90,13 +89,14 @@ export default class FileTreeItem extends Component
                 expanded : !this.state.expanded
             });
         }
-        FileTreeActions.select(this.props.path);
+        else
+            fileActions.previewFile(this.props.path)
     }
 
     dblClick()
     {
         if (this.props.type == FileTreeItem.TYPE_FILE) {
-            AppActions.openFile(this.props.path);
+            fileActions.openFile(this.props.path)
         }
     }
 
