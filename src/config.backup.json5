@@ -1,0 +1,27 @@
+{
+    "leftSidebar": {
+        "visible": true,
+        "width": 300
+    },
+
+    // Contains the setings for the editor component
+    "editor": {
+        "theme": "ace/theme/twilight",
+        "fontSize": 14,
+        "animatedScroll": false,
+
+        // The auto-pairing of special characters, like
+        // quotation marks, parenthesis, or brackets.
+        "autoPairing": true,
+
+        "displayIndentGuides": false,
+        "highlightActiveLine": true,
+        "highlightGutterLine": true,
+        "highlightSelectedWord": true,
+        "showPrintMargin": true,
+        "printMarginColumn": 80,
+        "scrollSpeed": 1,
+        "showFoldWidgets": true,
+        "showInvisibles": false
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "leftSidebar": {
+        "visible": true,
+        "width": 316
+    },
+    "editor": {
+        "theme": "ambiance",
+        "fontSize": 16,
+        "animatedScroll": false,
+        "autoPairing": true,
+        "displayIndentGuides": false,
+        "highlightActiveLine": true,
+        "highlightGutterLine": true,
+        "highlightSelectedWord": true,
+        "showPrintMargin": true,
+        "printMarginColumn": 80,
+        "scrollSpeed": 1,
+        "showFoldWidgets": true,
+        "showInvisibles": false
+    }
+}
