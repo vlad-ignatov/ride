@@ -37,9 +37,21 @@ export default class Editor extends Component
     {
         let cfg = configStore.getState()
 
-        this.editor.setTheme(cfg.editor.theme);
-        this.editor.setDisplayIndentGuides(false);
-        this.editor.setFontSize(this.state.config.editor.fontSize);
+        this.editor.setTheme('ace/theme/' + cfg.editor.theme)
+        this.editor.setDisplayIndentGuides(false)
+        this.editor.setFontSize(this.state.config.editor.fontSize)
+        this.editor.setAnimatedScroll(this.state.config.editor.animatedScroll)
+        this.editor.setBehavioursEnabled(this.state.config.editor.autoPairing)
+        this.editor.setDisplayIndentGuides(this.state.config.editor.displayIndentGuides)
+        this.editor.setHighlightActiveLine(this.state.config.editor.highlightActiveLine)
+        this.editor.setHighlightGutterLine(this.state.config.editor.highlightGutterLine)
+        this.editor.setHighlightSelectedWord(this.state.config.editor.highlightSelectedWord)
+        this.editor.setShowPrintMargin(this.state.config.editor.showPrintMargin)
+        this.editor.setPrintMarginColumn(this.state.config.editor.printMarginColumn)
+        this.editor.setScrollSpeed(this.state.config.editor.scrollSpeed)
+        this.editor.setShowFoldWidgets(this.state.config.editor.showFoldWidgets)
+        this.editor.setShowInvisibles(this.state.config.editor.showInvisibles)
+
 
         let currentFile = fileStore.getState().current;
         if (currentFile) {
@@ -58,8 +70,9 @@ export default class Editor extends Component
         configStore.listen(this._onChange);
         this.editor = ace.edit(this.refs.wrapper);
         this.editor.$blockScrolling = Infinity;
-        this.editor.setTheme(this.state.config.editor.theme);
-        this.editor.setFontSize(this.state.config.editor.fontSize);
+        // this.editor.setTheme(this.state.config.editor.theme);
+        // this.editor.setFontSize(this.state.config.editor.fontSize);
+        this._onChange()
         // this.editor.setTheme("ace/theme/twilight");
         // this.editor.setDisplayIndentGuides(false);
         // ipc.on('setSyntaxTheme', theme => {
