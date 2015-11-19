@@ -2,32 +2,23 @@ import alt from '../alt'
 
 class FileActions
 {
+    constructor() {
+        this.generateActions(
+            'closeFile',
+            'setCurrentFile',
+            'setFileModified',
+            'setFileUnmodified',
+            'checkFileForModifications',
+            'save'
+        );
+    }
+
     openFile(path = '') {
-        this.dispatch(path);
+        this.dispatch({ path });
     }
 
     previewFile(path = '') {
         this.dispatch(path);
-    }
-
-    closeFile(id) {
-        this.dispatch(id);
-    }
-
-    setCurrentFile(id) {
-        this.dispatch(id);
-    }
-
-    setFileModified(path) {
-        this.dispatch(path);
-    }
-
-    setFileUnmodified(path) {
-        this.dispatch(path);
-    }
-
-    checkFileForModifications(id) {
-        this.dispatch(id);
     }
 
     moveFile(fromIndex, toIndex) {
