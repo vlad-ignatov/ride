@@ -62,8 +62,18 @@ export default class MainWindow extends Component
                         </div>
                     </div>
                 </div>
-                <div className="main-status-bar">
-                    { this.state.openFiles.current ? this.state.openFiles.current.path : 'Nothing selected' }
+                <div className="main-status-bar" style={{display:'flex', flexDirection: 'row' }}>
+                    <span>
+                        { this.state.openFiles.current ? this.state.openFiles.current.path : 'Nothing selected' }
+                    </span>
+                    <span style={{ flex: 1}}/>
+                    <span>
+                    {
+                        this.state.openFiles.current ?
+                            this.state.openFiles.current.mode.caption :
+                            ''
+                    }
+                    </span>
                 </div>
             </div>
         );
