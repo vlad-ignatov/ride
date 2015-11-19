@@ -1,35 +1,19 @@
 /* global ReactDOM, ipc */
-import MainWindow from './components/MainWindow.jsx';
+import MainWindow       from './components/MainWindow.jsx';
 import { default as $ } from 'jquery';
-// import * as lib from './lib';
-// import AppActions from './actions/AppActions';
-import configActions from './actions/config-actions';
+import configActions    from './actions/config-actions';
+import fileActions      from './actions/file-actions';
 
-
-
-ipc.on('setSyntaxTheme', theme => {
-    configActions.setEditorTheme(theme);
+// Proxy comands from the main process app menu to the window
+ipc.on('setSyntaxTheme', configActions.setEditorTheme)
+ipc.on('toggleFileTree', configActions.toggleSidebarVisible)
+ipc.on('fontIncrease'  , configActions.increaseFontSize)
+ipc.on('fontDecrease'  , configActions.decreaseFontSize)
+ipc.on('saveFile'      , fileActions.save)
+ipc.on('openFiles', files => {
+    files.forEach(f => fileActions.openFile(f));
 });
-ipc.on('toggleFileTree', () => {
-    configActions.toggleSidebarVisible();
-});
-ipc.on('fontIncrease', () => {
-    configActions.increaseFontSize();
-});
-ipc.on('fontDecrease', () => {
-    configActions.decreaseFontSize();
-});
-// ipc.on('openFiles', function(files) {
-//     files.forEach(f => AppActions.openFile(f));
-// });
-// ipc.on('toggleFileTree', function() {
-//     AppActions.toggleLeftSidebar();
-// });
 
-
-
-
-// window.AppActions = AppActions;
 
 $(function() {
     $(document).on('selectstart', false);
