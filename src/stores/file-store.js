@@ -1,7 +1,8 @@
-/* global ace, fs */
+/* global ace, fs, jQuery */
 import alt from '../alt'
 import * as lib from '../lib'
 import fileActions from '../actions/file-actions'
+import { readJSON5, writeJSON } from '../lib'
 
 var modelist = ace.require("ace/ext/modelist");
 
@@ -22,6 +23,18 @@ class FilesStore
             handleFileSave      : fileActions.SAVE,
             handleCheckFile     : fileActions.CHECK_FILE_FOR_MODIFICATIONS
         });
+
+        this.on('init', () => {
+            let state = readJSON5('./src/session.json') || { files: [] }
+            state.files.forEach(f => {
+                console.log(f)
+                this.handleFileAdded(f)
+            })
+            if (state.current) {
+                this.handleSetCurrentFile(this.findByPath(state.current).id)
+            }
+            // this.__is_loaded = true
+        })
     }
 
     isPathOpened(path) {
@@ -38,6 +51,19 @@ class FilesStore
 
     byId(id) {
         return this.files.filter(f => f.id === id)[0]
+    }
+
+    saveToSession() {
+        let json = {
+            files: this.files.map(f => {
+                return {
+                    path: f.path,
+                    isPreview: f.isPreview
+                }
+            }),
+            current: this.current ? this.current.path : null
+        }
+        writeJSON('./src/session.json', json, 4)
     }
 
     // handlers ------------------------------------------------------------------
@@ -84,6 +110,7 @@ class FilesStore
 
             this.current = entry
         }
+        this.saveToSession()
         return this.current
     }
 
@@ -119,11 +146,13 @@ class FilesStore
                     }
                 }
             }
+            this.saveToSession()
         }
     }
 
     handleSetCurrentFile(id) {
         this.current = this.byId(id);
+        this.saveToSession()
     }
 
     handleFileModified(path) {
@@ -140,6 +169,7 @@ class FilesStore
 
     handleFileMoved({ fromIndex, toIndex }) {
         this.files.splice(toIndex, 0, this.files.splice(fromIndex, 1))
+        this.saveToSession()
     }
 
     handleCheckFile(id) {
