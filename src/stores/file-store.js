@@ -19,6 +19,7 @@ class FilesStore
             handleFileModified  : fileActions.SET_FILE_MODIFIED,
             handleFileUnmodified: fileActions.SET_FILE_UNMODIFIED,
             handleFileMoved     : fileActions.MOVE_FILE,
+            handleFileSave      : fileActions.SAVE,
             handleCheckFile     : fileActions.CHECK_FILE_FOR_MODIFICATIONS
         });
     }
@@ -41,14 +42,15 @@ class FilesStore
 
     // handlers ------------------------------------------------------------------
 
-    handleFileAdded(path) {
+    handleFileAdded({ path, isPreview }) {
 
         // This path is already opened just switch to it insteat of re-opening
         if (path && this.isPathOpened(path)) {
             this.current = this.findByPath(path)
+            this.current.isPreview = !!isPreview;
         }
         else {
-            let mode = path ? modelist.getModeForPath(path).mode : 'ace/mode/text';
+            let mode = path ? modelist.getModeForPath(path) : 'ace/mode/text';
             let text = '';
 
             if (path) {
@@ -64,16 +66,19 @@ class FilesStore
                 id: lib.uid(),
                 path,
                 hash: lib.md5(text),
-                session : ace.createEditSession(text, mode),
-                isPreview : false,
+                session : ace.createEditSession(text, mode.mode),
+                mode,
+                isPreview : !!isPreview,
                 modified : false
             }
+            // console.log(modelist.getModeForPath(path))
 
             entry.session.on("change", () => {
-                fileActions.checkFileForModifications(entry.id);
+                fileActions.checkFileForModifications(entry.id)
             });
 
-            // console.log(entry.session);
+            // Close the existing reusable session (if any)
+            this.files = this.files.filter(o => !o.isPreview)
 
             this.files.push(entry)
 
@@ -83,8 +88,10 @@ class FilesStore
     }
 
     handlePreviewFile(path) {
-        let entry = this.handleFileAdded(path)
-        entry.isPreview = true
+        this.handleFileAdded({
+            path,
+            isPreview: true
+        })
     }
 
     handleFileRemoved(id) {
@@ -144,6 +151,19 @@ class FilesStore
         }
         else {
             entry.modified = lib.md5(entry.session.getValue()) !== entry.hash
+        }
+    }
+
+    handleFileSave() {
+        if (!this.current) {
+            throw new Error('No "current" file to save');
+        }
+
+        let text = this.current.session.getValue();
+        if (lib.writeFile(this.current.path, text)) {
+            this.current.modified = false;
+            this.current.hash = lib.md5(text);
+            this.current.isPreview = false;
         }
     }
 }
