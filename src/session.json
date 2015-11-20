@@ -1,0 +1,17 @@
+{
+    "files": [
+        {
+            "path": "/Users/vlad/dev/ride/src/STATE.js",
+            "isPreview": false
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/commands/index.js",
+            "isPreview": false
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/components/FileTreeItem.jsx",
+            "isPreview": true
+        }
+    ],
+    "current": "/Users/vlad/dev/ride/src/components/FileTreeItem.jsx"
+}
