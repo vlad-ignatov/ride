@@ -53,7 +53,8 @@ module.exports = {
         'events'    : 'events',
         'ipc'       : 'ipc',
         'remote'    : 'remote',
-        'crypto'    : 'crypto',
+        // 'menu'      : 'Menu',
+        // 'crypto'    : 'crypto',
         // 'app'            : 'app',
         // 'browser-window' : 'browser-window',
         // 'crash-reporter' : 'crash-reporter'

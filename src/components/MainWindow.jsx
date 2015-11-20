@@ -1,9 +1,10 @@
-/* global ENV, ipc */
+/* global ENV, ipc, ace */
 require('../style/main.less');
 import { Component  } from 'react';
 import { FileTree   } from './FileTree';
 import   Editor       from './Editor';
 import   TabBrowser   from './TabBrowser';
+import   ModeSelect   from './ModeSelect';
 // import { stateStore } from '../stores/StateStore';
 // import   AppActions   from '../actions/AppActions';
 // import   fileActions  from '../actions/file-actions';
@@ -49,6 +50,7 @@ export default class MainWindow extends Component
                             <FileTree type="dir"
                                 path={ ENV.HOME }
                                 name={ ENV.HOME }
+                                openFiles={ this.state.openFiles }
                                 selectedPath={ this.state.openFiles.current ? this.state.openFiles.current.path : '' }
                                 expanded />
                             <div className="resizer vertical" style={{ left: this.state.config.leftSidebar.width }}/>
@@ -67,13 +69,11 @@ export default class MainWindow extends Component
                         { this.state.openFiles.current ? this.state.openFiles.current.path : 'Nothing selected' }
                     </span>
                     <span style={{ flex: 1}}/>
-                    <span>
-                    {
+                    <ModeSelect mode={
                         this.state.openFiles.current ?
                             this.state.openFiles.current.mode.caption :
                             ''
-                    }
-                    </span>
+                    }/>
                 </div>
             </div>
         );

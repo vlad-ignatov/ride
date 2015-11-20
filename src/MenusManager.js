@@ -4,9 +4,11 @@ var Menu     = require('menu');
 // var MenuItem = require('menu-item');
 var dialog   = require('dialog');
 // var fs       = require('fs');
+var lib = require('./lib');
 
 function setMainMenu(mainWindow)
 {
+    var cfg = lib.readJSON5('./src/config.json')
     var template = [
         {
             label: 'File',
@@ -203,10 +205,10 @@ function setMainMenu(mainWindow)
                         return {
                             label: name,
                             type: 'radio',
-                            checked: name == 'twilight',
+                            checked: name == cfg.editor.theme,
                             click(item, focusedWindow) {
                                 if (focusedWindow) {
-                                    focusedWindow.webContents.send('setSyntaxTheme', 'ace/theme/' + name);
+                                    focusedWindow.webContents.send('setSyntaxTheme', name);
                                 }
                             }
                         };

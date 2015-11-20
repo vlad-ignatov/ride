@@ -1,8 +1,10 @@
-/* global ReactDOM, ipc */
+/* global ReactDOM, ipc, Menu */
 import MainWindow       from './components/MainWindow.jsx';
 import { default as $ } from 'jquery';
 import configActions    from './actions/config-actions';
 import fileActions      from './actions/file-actions';
+// import { default as Menu } from 'menu';
+import remote           from 'remote';
 
 // Proxy comands from the main process app menu to the window
 ipc.on('setSyntaxTheme', configActions.setEditorTheme)
@@ -20,6 +22,7 @@ $(function() {
 
     ReactDOM.render(<MainWindow />, document.querySelector('.main-wrap'));
 
+    // Left sidebar resizing ----------------------------------------------------
     var leftSidebar = $('.main-sidebar-left');
     leftSidebar.find('> .resizer.vertical')
     .on('mousedown', function(evt) {
@@ -54,7 +57,26 @@ $(function() {
         return false;
     });
 
+    // Toggle maximized state of the window -------------------------------------
     $('.header').on('dblclick', function() {
         ipc.send('toggleMaximize');
     });
+
+    // context menus ------------------------------------------------------------
+    window.addEventListener('contextmenu', function(e) {
+        if (!e.menuTemplate) {
+            e.menuTemplate = []
+        }
+    }, true);
+
+    window.addEventListener('contextmenu', function(e) {
+        if (!e.defaultPrevented && e.menuTemplate) {
+            // e.preventDefault();
+            setTimeout(() => {
+                Menu.buildFromTemplate(e.menuTemplate).popup(
+                    remote.getCurrentWindow()
+                );
+            }, 50)
+        }
+    }, false);
 });
