@@ -6,6 +6,7 @@ import { PropTypes, Component } from 'react';
 
 import fileStore   from '../stores/file-store'
 import configStore from '../stores/config-store'
+import fileActions from '../actions/file-actions'
 
 export default class Editor extends Component
 {
@@ -54,7 +55,7 @@ export default class Editor extends Component
 
 
         let currentFile = fileStore.getState().current;
-        if (currentFile) {
+        if (currentFile && currentFile.session) {
             this.editor.setSession(currentFile.session);
         }
         else {
@@ -100,8 +101,14 @@ export default class Editor extends Component
         // });
     }
 
+    onContextMenu(e) {
+        e.nativeEvent.menuTemplate.push(
+            { label: 'New File', click: () => { fileActions.newFile() } }
+        );
+    }
+
     render()
     {
-        return (<div ref="wrapper" id="editor"/>);
+        return (<div ref="wrapper" id="editor" onContextMenu={ this.onContextMenu }/>);
     }
 }

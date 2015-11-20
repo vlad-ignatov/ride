@@ -31,6 +31,20 @@ export default class TabBrowser extends Component
         fileActions.setCurrentFile(id);
     }
 
+    onContextMenu(file, e) {
+        this.setCurrentFile(file.id)
+        e.nativeEvent.menuTemplate.push(
+            { label: 'Close Tab', click: () => fileActions.closeFile(file.id) },
+            { type: 'separator' },
+            { label: 'Close Other Tabs', click: () => fileActions.closeOthers(file.id) },
+            { label: 'Close Saved Tabs', click: () => fileActions.closeSaved() },
+            { label: 'Close Tabs to the Left', click: () => fileActions.closeAllBefore(file.id)},
+            { label: 'Close Tabs to the Right', click: () => fileActions.closeAllAfter(file.id)},
+            { type: 'separator' },
+            { label: 'Close All Tabs', click: () => fileActions.closeAll() }
+        );
+    }
+
     render() {
         var files = this.state.files.map(f => {
             let file = f.path;
@@ -43,7 +57,8 @@ export default class TabBrowser extends Component
                     }
                     key={f.id}
                     title={file}
-                    onClick={ this.setCurrentFile.bind(this, f.id) }>
+                    onMouseDown={ this.setCurrentFile.bind(this, f.id) }
+                    onContextMenu={ this.onContextMenu.bind(this, f) }>
                     <span className="close-tab icon icon-close"
                         title="Close Tab"
                         onClick={ this.closeFile.bind(this, f.id) }/>

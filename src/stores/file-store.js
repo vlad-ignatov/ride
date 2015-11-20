@@ -21,13 +21,20 @@ class FilesStore
             handleFileUnmodified: fileActions.SET_FILE_UNMODIFIED,
             handleFileMoved     : fileActions.MOVE_FILE,
             handleFileSave      : fileActions.SAVE,
-            handleCheckFile     : fileActions.CHECK_FILE_FOR_MODIFICATIONS
+            handleCheckFile     : fileActions.CHECK_FILE_FOR_MODIFICATIONS,
+            onCloseAll          : fileActions.CLOSE_ALL,
+            onCloseAllBefore    : fileActions.CLOSE_ALL_BEFORE,
+            onCloseAllAfter     : fileActions.CLOSE_ALL_AFTER,
+            onCloseOthers       : fileActions.CLOSE_OTHERS,
+            onCloseSaved        : fileActions.CLOSE_SAVED,
+            onNewFile           : fileActions.NEW_FILE,
+            onSetMode           : fileActions.SET_MODE
         });
 
         this.on('init', () => {
             let state = readJSON5('./src/session.json') || { files: [] }
             state.files.forEach(f => {
-                console.log(f)
+                // console.log(f)
                 this.handleFileAdded(f)
             })
             if (state.current) {
@@ -54,6 +61,9 @@ class FilesStore
     }
 
     saveToSession() {
+        if (this.__ignore_save__) {
+            return;
+        }
         let json = {
             files: this.files.map(f => {
                 return {
@@ -67,6 +77,81 @@ class FilesStore
     }
 
     // handlers ------------------------------------------------------------------
+    onCloseAll() {
+        this.files = this.files.filter(f => {
+            f.session.removeAllListeners();
+            f.session.destroy();
+            return false
+        })
+        this.current = null;
+        this.saveToSession()
+    }
+
+    onCloseAllBefore(id) {
+        var found = false
+        this.files = this.files.filter(f => {
+            if (found) {
+                return true
+            }
+            if (f.id === id) {
+                found = true
+                return true
+            }
+            f.session.removeAllListeners();
+            f.session.destroy();
+            return false
+        })
+        this.saveToSession()
+    }
+
+    onCloseAllAfter(id) {
+        for (let i = this.files.length - 1, f; i >= 0; i--) {
+            f = this.files[i]
+            if (f.id === id) {
+                break;
+            }
+            this.handleFileRemoved(f.id)
+        }
+    }
+
+    onCloseOthers(id) {
+        // this.__ignore_save__ = true
+        this.files = this.files.filter(f => {
+            if (f.id === id) {
+                return true
+            }
+            this.handleFileRemoved(f.id)
+            // f.session.removeAllListeners();
+            // f.session.destroy();
+            return false
+        })
+        // this.__ignore_save__ = false
+        this.saveToSession()
+    }
+
+    onCloseSaved() {
+        for (let i = this.files.length - 1, f; i >= 0; i--) {
+            f = this.files[i]
+            if (!f.modified) {
+                this.handleFileRemoved(f.id)
+            }
+        }
+    }
+
+    onNewFile() {
+        this.handleFileAdded({
+            path : '',
+            isPreview: true
+        })
+    }
+
+    onSetMode({ mode, id }) {
+        let item = id ? this.byId(id) : this.current
+        if (item) {
+            item.session.setMode(mode)
+            this.emitChange()
+        }
+    }
 
     handleFileAdded({ path, isPreview }) {
 
@@ -128,8 +213,7 @@ class FilesStore
             meta.session.removeAllListeners();
             meta.session.destroy();
             this.files.splice(idx, 1);
-
-            if (this.current == meta) {
+            if (this.current && this.current.id == meta.id) {
                 this.current = null;
                 let len  = this.files.length;
                 if (len) {
@@ -137,17 +221,16 @@ class FilesStore
                     if (next < 0) {
                         next = this.files.length - 1;
                     }
-                    if (next >= 0) {
+                    if (next >= 0 && next < this.files.length) {
                         next = this.files[next];
+                    } else {
+                        next = null
                     }
-
-                    if (next) {
-                        this.current = next;
-                    }
+                    this.current = next;
                 }
             }
-            this.saveToSession()
         }
+        this.saveToSession()
     }
 
     handleSetCurrentFile(id) {

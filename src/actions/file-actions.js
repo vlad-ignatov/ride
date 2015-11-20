@@ -5,11 +5,17 @@ class FileActions
     constructor() {
         this.generateActions(
             'closeFile',
+            'closeAll',
+            'closeAllBefore',
+            'closeAllAfter',
+            'closeOthers',
+            'closeSaved',
             'setCurrentFile',
             'setFileModified',
             'setFileUnmodified',
             'checkFileForModifications',
-            'save'
+            'save',
+            'newFile'
         );
     }
 
@@ -23,6 +29,10 @@ class FileActions
 
     moveFile(fromIndex, toIndex) {
         this.dispatch({ fromIndex, toIndex });
+    }
+
+    setMode(mode, id) {
+        this.dispatch({ mode, id });
     }
 }
 
