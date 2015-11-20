@@ -5,12 +5,13 @@ import fileActions              from '../actions/file-actions'
 export default class FileTreeItem extends Component
 {
     static propTypes = {
-        path     : PropTypes.string,
-        expanded : PropTypes.bool,
-        name     : PropTypes.string,
-        type     : PropTypes.string.isRequired,
-        level    : PropTypes.number,
-        selectedPath : PropTypes.string
+        path         : PropTypes.string,
+        expanded     : PropTypes.bool,
+        name         : PropTypes.string,
+        type         : PropTypes.string.isRequired,
+        level        : PropTypes.number,
+        selectedPath : PropTypes.string,
+        openFiles    : PropTypes.object
     };
 
     static TYPE_FILE = 'file';
@@ -20,7 +21,8 @@ export default class FileTreeItem extends Component
         path    : '/',
         expanded: false,
         level   : 0,
-        selectedPath : ''
+        selectedPath : '',
+        openFiles : { files: [] }
     };
 
     constructor(props)
@@ -31,6 +33,12 @@ export default class FileTreeItem extends Component
         this.state = {
             expanded : props.expanded
         };
+
+
+        this.state.expanded = props.type === FileTreeItem.TYPE_DIR &&
+            props.openFiles.files.some(
+                f => f.path && f.path.indexOf(props.path) === 0
+            );
     }
 
     getChildren()
@@ -73,7 +81,7 @@ export default class FileTreeItem extends Component
             ));
 
             return (<ul>{ items.map(item => (
-                <FileTreeItem { ...item } />)
+                <FileTreeItem { ...item } openFiles={ this.props.openFiles } />)
             ) }</ul>);
         }
 

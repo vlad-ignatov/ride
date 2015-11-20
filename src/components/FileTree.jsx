@@ -2,13 +2,19 @@ import { PropTypes, Component } from 'react';
 import FileTreeItem from './FileTreeItem';
 import fs       from 'fs';
 
+/**
+ * This is just a wrapper arround recursive structure of FileTreeItem
+ * components. It creates the outer-most UL element, reads the root directory
+ * and passes the state down the tree.
+ */
 export class FileTree extends Component
 {
     static propTypes = {
         path         : PropTypes.string,
         name         : PropTypes.string,
         expanded     : PropTypes.bool,
-        selectedPath : PropTypes.string
+        selectedPath : PropTypes.string,
+        openFiles    : PropTypes.object
     };
 
     static defaultProps = {
@@ -17,11 +23,6 @@ export class FileTree extends Component
         expanded: false,
         selectedPath : ''
     };
-
-    constructor(...args)
-    {
-        super(...args);
-    }
 
     render()
     {
@@ -36,7 +37,8 @@ export class FileTree extends Component
                     name={ this.props.name }
                     type={ type }
                     expanded={ this.props.expanded }
-                    selectedPath={ this.props.selectedPath } />
+                    selectedPath={ this.props.selectedPath }
+                    openFiles={ this.props.openFiles } />
             </ul>
         );
     }
