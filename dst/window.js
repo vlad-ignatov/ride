@@ -50,7 +50,7 @@
 
 	var _MainWindow2 = _interopRequireDefault(_MainWindow);
 
-	var _jquery = __webpack_require__(55);
+	var _jquery = __webpack_require__(56);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -62,17 +62,26 @@
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
-	var _remote = __webpack_require__(56);
+	var _remote = __webpack_require__(57);
 
 	var _remote2 = _interopRequireDefault(_remote);
 
+	var _alt = __webpack_require__(8);
+
+	var _alt2 = _interopRequireDefault(_alt);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// Proxy comands from the main process app menu to the window
-	ipc.on('setSyntaxTheme', _configActions2.default.setEditorTheme);
-	// import { default as Menu } from 'menu';
 	/* global ReactDOM, ipc, Menu */
 
+	window.alt = _alt2.default;
+
+	var path = __webpack_require__(58);
+	var fs = __webpack_require__(6);
+
+	// Proxy comands from the main process app to the window
+	// ------------------------------------------------------------------------------
+	ipc.on('setSyntaxTheme', _configActions2.default.setEditorTheme);
 	ipc.on('toggleFileTree', _configActions2.default.toggleSidebarVisible);
 	ipc.on('fontIncrease', _configActions2.default.increaseFontSize);
 	ipc.on('fontDecrease', _configActions2.default.decreaseFontSize);
@@ -82,11 +91,41 @@
 	        return _fileActions2.default.openFile(f);
 	    });
 	});
+	ipc.on('fluxAction', function (actionsClass, actionName) {
+	    for (var _len = arguments.length, rest = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+	        rest[_key - 2] = arguments[_key];
+	    }
+
+	    console.log('fluxAction handler args: ', arguments);
+	    try {
+	        var _alt$actions$actionsC;
+
+	        (_alt$actions$actionsC = _alt2.default.actions[actionsClass])[actionName].apply(_alt$actions$actionsC, rest);
+	    } catch (ex) {
+	        console.error(ex);
+	    }
+	});
 
 	(0, _jquery2.default)(function () {
 	    (0, _jquery2.default)(document).on('selectstart', false);
 
 	    ReactDOM.render(React.createElement(_MainWindow2.default, null), document.querySelector('.main-wrap'));
+
+	    // Load all the extension packages that are interested in working with the
+	    // borwser window
+	    // ------------------------------------------------------------------------------
+	    var pkg = __webpack_require__(59);
+	    for (var name in pkg.ride.packages) {
+	        var ext = undefined;
+	        try {
+	            ext = __webpack_require__(60)("./" + name + '/ride-main-window.js');
+	            if (typeof ext == 'function') {
+	                ext.call(window);
+	            }
+	        } catch (ex) {
+	            console.error(ex);
+	        }
+	    }
 
 	    // Left sidebar resizing ----------------------------------------------------
 	    var leftSidebar = (0, _jquery2.default)('.main-sidebar-left');
@@ -167,7 +206,7 @@
 
 	var _TabBrowser2 = _interopRequireDefault(_TabBrowser);
 
-	var _ModeSelect = __webpack_require__(58);
+	var _ModeSelect = __webpack_require__(50);
 
 	var _ModeSelect2 = _interopRequireDefault(_ModeSelect);
 
@@ -188,7 +227,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	/* global ENV, ipc, ace */
-	__webpack_require__(50);
+	__webpack_require__(51);
 	// import { stateStore } from '../stores/StateStore';
 	// import   AppActions   from '../actions/AppActions';
 	// import   fileActions  from '../actions/file-actions';
@@ -7145,13 +7184,85 @@
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(3);
+
+	var _fileActions = __webpack_require__(7);
+
+	var _fileActions2 = _interopRequireDefault(_fileActions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global ace */
+
+	var modelist = ace.require("ace/ext/modelist");
+	console.log(modelist);
+
+	var ModeSelect = (function (_Component) {
+	    _inherits(ModeSelect, _Component);
+
+	    function ModeSelect() {
+	        _classCallCheck(this, ModeSelect);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ModeSelect).apply(this, arguments));
+	    }
+
+	    _createClass(ModeSelect, [{
+	        key: 'onContextMenu',
+	        value: function onContextMenu(e) {
+	            e.nativeEvent.menuTemplate = e.nativeEvent.menuTemplate.concat(modelist.modes.map(function (m) {
+	                return {
+	                    label: m.caption,
+	                    click: function click() {
+	                        _fileActions2.default.setMode(m.mode);
+	                    }
+	                };
+	            }));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'span',
+	                { onContextMenu: this.onContextMenu.bind(this) },
+	                this.props.mode
+	            );
+	        }
+	    }]);
+
+	    return ModeSelect;
+	})(_react.Component);
+
+	exports.default = ModeSelect;
+	ModeSelect.propTypes = {
+	    mode: _react.PropTypes.string
+	};
+	ModeSelect.defaultProps = {
+	    mode: 'text'
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(51);
+	var content = __webpack_require__(52);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(54)(content, {});
+	var update = __webpack_require__(55)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -7168,21 +7279,21 @@
 	}
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(52)();
+	exports = module.exports = __webpack_require__(53)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #2F3129;\n  color: #797A75;\n}\nbody {\n  font: menu;\n  background: #2F3129;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: #797A75;\n  -webkit-app-region: drag;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(53) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-pencil-square:before {\n  content: \"\\F14B\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n.icon-radio-checked2:before {\n  content: \"\\E901\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n  box-shadow: 0 0 1px 0px rgba(255, 255, 255, 0.16) inset;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n  width: 12px;\n  height: 12px;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: rgba(200, 200, 200, 0.05);\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #1E1F18;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: overlay;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2.2em;\n  background: linear-gradient(#1E1F1A, #272822);\n  position: relative;\n  padding-bottom: 3px;\n}\n.main-tabs::after {\n  content: '';\n  height: 3px;\n  display: block;\n  background: #2F3129;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);\n  z-index: 3;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #34372e;\n  color: #fff;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab.modified {\n  color: orange;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n  color: rgba(255, 255, 255, 0.4);\n  transition: all 0.2s;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-tabs .tab.modified .close-tab:not(:hover) {\n  opacity: 1;\n}\n.main-tabs .tab.modified .close-tab:not(:hover)::before {\n  content: '\\F14B';\n  color: orange;\n  text-shadow: 0px 0px 1px #000;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 4px 1px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #111;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n#editor.ace-twilight .ace_fold {\n  background-color: #2f3129;\n  border-color: #ab8657;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.filetree-toolbar {\n  box-shadow: 0 1px 5px 0 #000;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #2F3129;\n  color: #797A75;\n}\nbody {\n  font: menu;\n  background: #2F3129;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: #797A75;\n  -webkit-app-region: drag;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(54) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-pencil-square:before {\n  content: \"\\F14B\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n.icon-radio-checked2:before {\n  content: \"\\E901\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n  box-shadow: 0 0 1px 0px rgba(255, 255, 255, 0.16) inset;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n  width: 12px;\n  height: 12px;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: rgba(200, 200, 200, 0.05);\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #1E1F18;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: overlay;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n  position: relative;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2.2em;\n  background: linear-gradient(#1E1F1A, #272822);\n  position: relative;\n  padding-bottom: 3px;\n}\n.main-tabs::after {\n  content: '';\n  height: 3px;\n  display: block;\n  background: #2F3129;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);\n  z-index: 3;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #34372e;\n  color: #fff;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab.modified {\n  color: orange;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n  color: rgba(255, 255, 255, 0.4);\n  transition: all 0.2s;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-tabs .tab.modified .close-tab:not(:hover) {\n  opacity: 1;\n}\n.main-tabs .tab.modified .close-tab:not(:hover)::before {\n  content: '\\F14B';\n  color: orange;\n  text-shadow: 0px 0px 1px #000;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 4px 1px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #111;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n#editor.ace-twilight .ace_fold {\n  background-color: #2f3129;\n  border-color: #ab8657;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.filetree-toolbar {\n  box-shadow: 0 1px 5px 0 #000;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports) {
 
 	/*
@@ -7238,13 +7349,13 @@
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = "data:application/font-woff;base64,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"
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7498,89 +7609,370 @@
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
 	module.exports = jQuery;
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports) {
 
 	module.exports = remote;
 
 /***/ },
-/* 57 */,
 /* 58 */
+/***/ function(module, exports) {
+
+	module.exports = path;
+
+/***/ },
+/* 59 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"name": "ride",
+		"version": "0.0.1",
+		"description": "React Editor",
+		"main": "index.js",
+		"scripts": {
+			"test": "echo \"Error: no test specified\" && exit 1",
+			"start": "electron index.js",
+			"install-package": "node install-package"
+		},
+		"repository": {
+			"type": "git",
+			"url": "git+https://github.com/vlad-ignatov/ride.git"
+		},
+		"keywords": [
+			"React",
+			"Editor",
+			"IDE",
+			"Flux",
+			"JSX"
+		],
+		"author": "Vladimir Ignatov",
+		"license": "MIT",
+		"bugs": {
+			"url": "https://github.com/vlad-ignatov/ride/issues"
+		},
+		"homepage": "https://github.com/vlad-ignatov/ride#readme",
+		"devDependencies": {
+			"babel": "^6.1.5",
+			"babel-core": "^6.1.4",
+			"babel-eslint": "^4.1.5",
+			"babel-loader": "^6.1.0",
+			"babel-plugin-syntax-jsx": "^6.1.4",
+			"babel-preset-es2015": "^6.1.4",
+			"babel-preset-react": "^6.1.4",
+			"babel-preset-stage-0": "^6.1.2",
+			"electron-prebuilt": "^0.34.3",
+			"eslint": "^1.9.0",
+			"eslint-plugin-react": "^3.8.0",
+			"file-loader": "^0.8.4",
+			"less": "^2.5.3",
+			"less-loader": "^2.2.1",
+			"style-loader": "^0.13.0",
+			"url-loader": "^0.5.6",
+			"webpack": "^1.12.4"
+		},
+		"dependencies": {
+			"alt": "^0.17.9",
+			"babel-runtime": "^6.1.4",
+			"command-palette": "file:../ride-packages/command-palette",
+			"css-loader": "^0.22.0",
+			"jquery": "^2.1.4",
+			"json-loader": "^0.5.3",
+			"react": "^0.14.2",
+			"require-directory": "^2.1.1"
+		},
+		"ride": {
+			"packages": {
+				"command-palette": "^1.0.0"
+			}
+		}
+	};
+
+/***/ },
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var map = {
+		"./command-palette/ride-main-window.js": 61
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 60;
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
 
-	var _react = __webpack_require__(3);
+	/* WEBPACK VAR INJECTION */(function(global) {__webpack_require__(62)
 
-	var _fileActions = __webpack_require__(7);
+	function hlt(str, q) {
+	    var out  = '',
+	        _str = str.toLowerCase(),
+	        _q   = q.toLowerCase(),
+	        next = _str.indexOf(_q),
+	        len  = _q.length,
+	        last = 0;
 
-	var _fileActions2 = _interopRequireDefault(_fileActions);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global ace */
-
-	var modelist = ace.require("ace/ext/modelist");
-	console.log(modelist);
-
-	var ModeSelect = (function (_Component) {
-	    _inherits(ModeSelect, _Component);
-
-	    function ModeSelect() {
-	        _classCallCheck(this, ModeSelect);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ModeSelect).apply(this, arguments));
+	    if (!len) {
+	        return str;
 	    }
 
-	    _createClass(ModeSelect, [{
-	        key: 'onContextMenu',
-	        value: function onContextMenu(e) {
-	            e.nativeEvent.menuTemplate = e.nativeEvent.menuTemplate.concat(modelist.modes.map(function (m) {
-	                return {
-	                    label: m.caption,
-	                    click: function click() {
-	                        _fileActions2.default.setMode(m.mode);
-	                    }
-	                };
-	            }));
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'span',
-	                { onContextMenu: this.onContextMenu.bind(this) },
-	                this.props.mode
-	            );
-	        }
-	    }]);
+	    while (next > -1) {
+	        out += str.substring(last, next);
+	        out += '<span class="search-match">';
+	        out += str.substr(next, len);
+	        out += '</span>';
+	        last = next + len;
+	        next = _str.indexOf(_q, last);
+	    }
 
-	    return ModeSelect;
-	})(_react.Component);
+	    out += str.substr(last);
+	    return out;
+	}
 
-	exports.default = ModeSelect;
-	ModeSelect.propTypes = {
-	    mode: _react.PropTypes.string
-	};
-	ModeSelect.defaultProps = {
-	    mode: 'text'
-	};
+	module.exports = function() {
+	    var $     = global.jQuery,
+	        fs    = __webpack_require__(6),
+	        Path  = __webpack_require__(58),
+	        lastVal,
+	        state = {
+	            input : '',
+	            items : []
+	        },
+	        $wrap;
+
+	    function setState(newState) {
+	        $.extend(true, state, newState);
+	        render();
+	    }
+
+	    function render() {
+	        if (lastVal != state.input) {
+	            lastVal = state.input
+	            $wrap.find('input').val(state.input);
+	        }
+	        if (state.items.length) {
+	            var q = Path.basename(state.input)
+	            var $list = $wrap.find('.list').html(state.items.map(item => {
+	                return `<div class="list-item ${item.active ? 'active' : ''}">
+	                    <span class="icon ${item.dir ? 'icon-folder' : 'icon-file-text2'}"/>
+	                    ${hlt(item.name, q)}
+	                    <footer>${item.path}</footer>
+	                </div>`
+	            })).show();
+
+	            var active = $list.find('.list-item.active');
+	            if (active.length) {
+	                $list[0].scrollTop = active[0].offsetTop - $list[0].offsetTop - 1
+	            }
+	        } else {
+	            $wrap.find('.list').hide()
+	        }
+	    }
+
+	    function up() {
+	        var length = state.items.length, current
+
+	        if (!length) {
+	            return;
+	        }
+
+	        current = state.items.findIndex(o => o.active) - 1
+	        if (current < 0) {
+	            current = length - 1
+	        }
+	        state.items.forEach((o, i) => o.active = i === current)
+	    }
+
+	    function down() {
+	        var length = state.items.length, current
+
+	        if (!length) {
+	            return;
+	        }
+
+	        current = state.items.findIndex(o => !!o.active) + 1
+	        if (current >= length) {
+	            current = 0
+	        }
+	        state.items.forEach((o, i) => {
+	            o.active = (i === current)
+	        })
+
+	        render()
+	    }
+
+	    function selectItem() {
+	        var item = state.items.find(o => o.active)
+	        if (item) {
+	            if (item.dir) {
+	                search(item.path + '/')
+	            } else {
+	                window.alt.actions.FileActions.openFile(item.path)
+	                $wrap.hide();
+	            }
+	        }
+	    }
+
+	    function getPanel() {
+	        if (!$wrap) {
+	            $wrap = $('<div class="command-palette"/>').appendTo('.main-stage')
+	            $wrap.append('<input type="text" style="width:100%"/>')
+	            $wrap.append(`<div class="list"></div>`)
+	            $wrap.on('keydown', 'input', function(e) {
+	                switch(e.keyCode) {
+	                    case 38:
+	                        e.preventDefault()
+	                        up();
+	                        render();
+	                    break;
+	                    case 40:
+	                        e.preventDefault()
+	                        down();
+	                    break;
+	                    case 13:
+	                        e.preventDefault()
+	                        selectItem()
+	                    break;
+	                    // default:
+	                    //     search(this.value);
+	                    // break;
+	                }
+	            })
+	            $wrap.on('input', 'input', function() {
+	                search(this.value);
+	            })
+	        }
+	        return $wrap;
+	    }
+
+	    function togglePanel() {
+	        if ($wrap && $wrap.length && $wrap.is(':visible')) {
+	            $wrap.hide();
+	        }
+	        else {
+	            getPanel().show().find('input').trigger('focus');
+	        }
+	    }
+
+	    function search(q) {
+	        if (q == state.input) {
+	            return;
+	        }
+	        var idx = q.lastIndexOf('/'),
+	            dir = q.substr(0, idx + 1),
+	            search = q.substr(idx + 1),
+	            items,
+	            list_items = [];
+
+	        // if (idx > -1) {
+	        //     dir = q.substr(0, idx + 1)
+	        // }
+
+	        if (dir) {
+	            dir = Path.normalize(dir)
+	            try {
+	                items = fs.readdirSync(dir);
+	            } catch (ex) {
+	                // console.error(ex);
+	            }
+
+	            var hasActive = false
+
+	            for (var i in items) {
+	                if (search && items[i].indexOf(search) == -1) {
+	                    continue;
+	                }
+	                var path = dir + '' + items[i],
+	                    stats;
+	                try {
+	                    stats = fs.statSync(path);
+	                } catch (ex) {
+	                    // console.error(ex);
+	                    continue;
+	                }
+
+	                list_items.push({
+	                    name  : items[i],
+	                    path  : path,
+	                    dir   : stats.isDirectory(),
+	                    active: search && !hasActive
+	                })
+
+	                if (search && !hasActive)
+	                    hasActive = 1
+	            }
+	        }
+
+	        state.items = list_items
+	        setState({ input: q });
+	    }
+
+	    $(window).on('keydown', function(e) {
+	        // console.log(e)
+	        if (e.metaKey &&  e.keyCode == 80) {
+	            // alert('will show command palette')
+	            togglePanel();
+	        }
+	    })
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(63);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(55)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../css-loader/index.js!./../less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../css-loader/index.js!./../less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(53)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".command-palette {\n  position: absolute;\n  z-index: 1000;\n  top: 30px;\n  left: 10%;\n  width: 80%;\n  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 6px 10px 2px rgba(0, 0, 0, 0.5);\n  background: #333;\n  padding: 10px;\n  border-radius: 0 0 4px 4px;\n}\n.command-palette input {\n  box-sizing: border-box;\n  width: 100%;\n  border: 1px solid #000;\n  background: #222;\n  color: #CCC;\n  font-size: 20px;\n  padding: 5px 10px;\n}\n.command-palette input:focus {\n  border-color: #926426;\n  outline: none;\n}\n.command-palette .list {\n  max-height: 400px;\n  overflow: auto;\n  background: #000;\n  margin-top: 10px;\n}\n.command-palette .list .list-item {\n  margin: 1px;\n  padding: 6px 12px;\n  background: #222;\n}\n.command-palette .list .list-item .icon {\n  opacity: 0.6;\n}\n.command-palette .list .list-item footer {\n  font-size: 86%;\n  opacity: 0.5;\n  font-family: Menlo, monospace;\n  font-weight: 400;\n}\n.command-palette .list .list-item .search-match {\n  background: #926426;\n  border-radius: 2px;\n  color: #222;\n}\n.command-palette .list .list-item:hover {\n  background: #292929;\n}\n.command-palette .list .list-item.active {\n  background: #926426;\n  color: #000;\n}\n.command-palette .list .list-item.active .search-match {\n  background: #222;\n  color: #926426;\n}\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);

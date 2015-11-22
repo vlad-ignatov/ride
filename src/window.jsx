@@ -1,26 +1,62 @@
 /* global ReactDOM, ipc, Menu */
-import MainWindow       from './components/MainWindow.jsx';
-import { default as $ } from 'jquery';
-import configActions    from './actions/config-actions';
-import fileActions      from './actions/file-actions';
-// import { default as Menu } from 'menu';
-import remote           from 'remote';
+import MainWindow       from './components/MainWindow.jsx'
+import { default as $ } from 'jquery'
+import configActions    from './actions/config-actions'
+import fileActions      from './actions/file-actions'
+import remote           from 'remote'
+import alt              from './alt'
 
-// Proxy comands from the main process app menu to the window
+window.alt = alt;
+
+var path = require('path');
+var fs = require('fs');
+
+// Proxy comands from the main process app to the window
+// ------------------------------------------------------------------------------
 ipc.on('setSyntaxTheme', configActions.setEditorTheme)
 ipc.on('toggleFileTree', configActions.toggleSidebarVisible)
 ipc.on('fontIncrease'  , configActions.increaseFontSize)
 ipc.on('fontDecrease'  , configActions.decreaseFontSize)
 ipc.on('saveFile'      , fileActions.save)
 ipc.on('openFiles', files => {
-    files.forEach(f => fileActions.openFile(f));
+    files.forEach(f => fileActions.openFile(f))
+})
+ipc.on('fluxAction', function(actionsClass, actionName, ...rest) {
+    console.log('fluxAction handler args: ', arguments)
+    try {
+        alt.actions[actionsClass][actionName](...rest)
+    } catch (ex) {
+        console.error(ex)
+    }
 });
+
+
+
+
+
+
 
 
 $(function() {
     $(document).on('selectstart', false);
 
     ReactDOM.render(<MainWindow />, document.querySelector('.main-wrap'));
+
+    // Load all the extension packages that are interested in working with the
+    // borwser window
+    // ------------------------------------------------------------------------------
+    var pkg = require('../package.json');
+    for (var name in pkg.ride.packages) {
+        let ext
+        try {
+            ext = require('../node_modules/' + name + '/ride-main-window.js')
+            if (typeof ext == 'function') {
+                ext.call(window)
+            }
+        } catch (ex) {
+            console.error(ex)
+        }
+    }
 
     // Left sidebar resizing ----------------------------------------------------
     var leftSidebar = $('.main-sidebar-left');
