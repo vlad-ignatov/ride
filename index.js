@@ -1,16 +1,29 @@
-/* global __dirname, process */
-var app           = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+/* global __dirname */
+var app           = require('app');
+var BrowserWindow = require('browser-window');
 var ipc           = require('ipc');
-var Menu          = require('menu');
-var MenuItem      = require('menu-item');
-var dialog        = require('dialog');
 var MenusManager  = require('./src/MenusManager.js');
 
 require("babel-core/register");
 
 // Report crashes to our server.
 require('crash-reporter').start();
+
+// Load all the extension packages that are interested in working with the
+// main process
+// ------------------------------------------------------------------------------
+var pkg = require('./package.json');
+for (var name in pkg.ride.packages) {
+    var ext
+    try {
+        ext = require('./node_modules/' + name + '/ride-main-process.js')
+    } catch (err) {
+        // ignore
+    }
+    if (typeof ext == 'function') {
+        ext.call(this)
+    }
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -27,21 +40,6 @@ ipc.on('toggleMaximize', function() {
     }
 });
 
-// Pass actions from the browser window to the global dispatcher
-// on the main process
-// ipc.on('handleViewAction', function(event, action) {
-//     return AppDispatcher.handleViewAction(action);
-// });
-//
-// ipc.on('registerDispatch', function(event, fn) {
-//     return AppDispatcher.register(fn);
-// });
-
-// app.on('open-file', function(event, filePath) {
-//     event.preventDefault()
-//     console.log(arguments);
-// });
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
@@ -53,12 +51,10 @@ app.on('ready', function() {
         center      : true,
         'min-width' : 400,
         'min-height': 200,
-        //   frame       : false,
         'title-bar-style': 'hidden',
         webSecurity : false,
         allowDisplayingInsecureContent: true,
-        allowRunningInsecureContent: true//,
-        // overlayScrollbars: true
+        allowRunningInsecureContent: true
     });
 
     // and load the index.html of the app.
