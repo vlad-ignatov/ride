@@ -24,7 +24,7 @@ module.exports = {
             },
             {
                 test   : /\.less$/,
-                exclude: /node_modules/,
+                // exclude: /node_modules/,
                 loaders: [
                     'style-loader',
                     'css-loader',
@@ -34,6 +34,10 @@ module.exports = {
             {
                 test: /\.woff$/,
                 loader: 'url?limit=100000'
+            },
+            {
+                test   : /\.json$/,
+                loader: "json"
             }
             // {
             //     test : /\.css$/,
@@ -53,6 +57,7 @@ module.exports = {
         'events'    : 'events',
         'ipc'       : 'ipc',
         'remote'    : 'remote',
+        'path'      : 'path',
         // 'menu'      : 'Menu',
         // 'crypto'    : 'crypto',
         // 'app'            : 'app',
@@ -61,7 +66,7 @@ module.exports = {
         'AppDispatcher' : 'AppDispatcher'
     },
     resolve : {
-        extensions : [ '', '.js', '.jsx' ]//,
+        extensions : [ '', '.js', '.jsx', '.json' ]//,
         // packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
     }//,
     // plugins: [ 'syntax-jsx' ]
