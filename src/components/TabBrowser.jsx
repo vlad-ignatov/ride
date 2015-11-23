@@ -1,6 +1,6 @@
-import { PropTypes, Component } from 'react'
-import fileActions from '../actions/file-actions'
-import fileStore   from '../stores/file-store'
+import { Component } from 'react'
+import fileActions   from '../actions/file-actions'
+import fileStore     from '../stores/file-store'
 
 export default class TabBrowser extends Component
 {

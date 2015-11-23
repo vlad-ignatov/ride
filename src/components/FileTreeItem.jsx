@@ -108,14 +108,6 @@ export default class FileTreeItem extends Component
         }
     }
 
-    // componentDidMount()
-    // {
-    //     console.log(this.refs.li, this.props)
-    //     if (jQuery(this.refs.li).is('.selected')) {
-    //         this.refs.li.scrollIntoViewIfNeeded();
-    //     }
-    // }
-
     render()
     {
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;

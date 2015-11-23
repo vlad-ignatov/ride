@@ -1,13 +1,10 @@
-/* global ENV, ipc, ace */
+/* global ENV */
 require('../style/main.less');
 import { Component  } from 'react';
 import { FileTree   } from './FileTree';
 import   Editor       from './Editor';
 import   TabBrowser   from './TabBrowser';
 import   ModeSelect   from './ModeSelect';
-// import { stateStore } from '../stores/StateStore';
-// import   AppActions   from '../actions/AppActions';
-// import   fileActions  from '../actions/file-actions';
 import   fileStore    from '../stores/file-store';
 import   configStore  from '../stores/config-store';
 

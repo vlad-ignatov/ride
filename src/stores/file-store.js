@@ -1,4 +1,4 @@
-/* global ace, fs, jQuery */
+/* global ace, fs */
 import alt from '../alt'
 import * as lib from '../lib'
 import fileActions from '../actions/file-actions'

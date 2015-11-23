@@ -1,37 +1,24 @@
-/* global ipc, ace, remote */
-import { PropTypes, Component } from 'react';
-// import { default as fs } from 'fs';
-// import { stateStore } from '../stores/StateStore';
-// import * as lib from '../lib';
-
-import fileStore   from '../stores/file-store'
-import configStore from '../stores/config-store'
-import fileActions from '../actions/file-actions'
+/* global ace */
+import { Component } from 'react'
+import fileStore     from '../stores/file-store'
+import configStore   from '../stores/config-store'
+import fileActions   from '../actions/file-actions'
 
 export default class Editor extends Component
 {
-    // static propTypes = {
-    //     filePath : PropTypes.string
-    // };
-    //
-    // static defaultProps = {
-    //     filePath : ''
-    // };
-
     constructor(props)
     {
         super(props);
         this.state = {
             config : configStore.getState()
         };
-        this._onChange = this._onChange.bind(this);
+        this._onChange = this._onChange.bind(this)
     }
 
     componentWillUnmount()
     {
-        fileStore.unlisten(this._onChange);
-        configStore.unlisten(this._onChange);
-        // ipc.removeListener('setSyntaxTheme');
+        fileStore.unlisten(this._onChange)
+        configStore.unlisten(this._onChange)
     }
 
     _onChange()
@@ -54,61 +41,32 @@ export default class Editor extends Component
         this.editor.setShowInvisibles(this.state.config.editor.showInvisibles)
 
 
-        let currentFile = fileStore.getState().current;
+        let currentFile = fileStore.getState().current
         if (currentFile && currentFile.session) {
-            this.editor.setSession(currentFile.session);
+            this.editor.setSession(currentFile.session)
         }
         else {
-            this.editor.setSession(
-                ace.createEditSession('')
-            );
+            this.editor.setSession(ace.createEditSession(''))
         }
     }
 
     componentDidMount()
     {
-        fileStore.listen(this._onChange);
-        configStore.listen(this._onChange);
-        this.editor = ace.edit(this.refs.wrapper);
-        this.editor.$blockScrolling = Infinity;
-        // this.editor.setTheme(this.state.config.editor.theme);
-        // this.editor.setFontSize(this.state.config.editor.fontSize);
+        fileStore.listen(this._onChange)
+        configStore.listen(this._onChange)
+        this.editor = ace.edit(this.refs.wrapper)
+        this.editor.$blockScrolling = Infinity
         this._onChange()
-        // this.editor.setTheme("ace/theme/twilight");
-        // this.editor.setDisplayIndentGuides(false);
-        // ipc.on('setSyntaxTheme', theme => {
-        //     this.editor.setTheme(theme);
-        // });
-        // ipc.on('saveFile', lib.saveCurrentFile);
-        // ipc.on('saveFileAs', () => {
-        //     var dialog = remote.require('dialog');
-        //     var path = dialog.showSaveDialog(null, {
-        //         title: 'Save As'
-        //     });
-        //
-        //     if (path) {
-        //         try {
-        //             fs.writeFileSync(path, this.editor.getValue(), 'utf8');
-        //         } catch (ex) {
-        //             dialog.showMessageBox(null, {
-        //                 type: 'error',
-        //                 title: 'Error saving file',
-        //                 message: ex.message,
-        //                 detail: ex.stack
-        //             });
-        //         }
-        //     }
-        // });
     }
 
     onContextMenu(e) {
         e.nativeEvent.menuTemplate.push(
             { label: 'New File', click: () => { fileActions.newFile() } }
-        );
+        )
     }
 
     render()
     {
-        return (<div ref="wrapper" id="editor" onContextMenu={ this.onContextMenu }/>);
+        return (<div ref="wrapper" id="editor" onContextMenu={ this.onContextMenu }/>)
     }
 }

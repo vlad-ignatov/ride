@@ -527,15 +527,6 @@
 	                _fileActions2.default.openFile(this.props.path);
 	            }
 	        }
-
-	        // componentDidMount()
-	        // {
-	        //     console.log(this.refs.li, this.props)
-	        //     if (jQuery(this.refs.li).is('.selected')) {
-	        //         this.refs.li.scrollIntoViewIfNeeded();
-	        //     }
-	        // }
-
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -2292,21 +2283,10 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global ipc, ace, remote */
-
-	// import { default as fs } from 'fs';
-	// import * as lib from '../lib';
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global ace */
 
 	var Editor = (function (_Component) {
 	    _inherits(Editor, _Component);
-
-	    // static propTypes = {
-	    //     filePath : PropTypes.string
-	    // };
-	    //
-	    // static defaultProps = {
-	    //     filePath : ''
-	    // };
 
 	    function Editor(props) {
 	        _classCallCheck(this, Editor);
@@ -2325,7 +2305,6 @@
 	        value: function componentWillUnmount() {
 	            _fileStore2.default.unlisten(this._onChange);
 	            _configStore2.default.unlisten(this._onChange);
-	            // ipc.removeListener('setSyntaxTheme');
 	        }
 	    }, {
 	        key: '_onChange',
@@ -2361,34 +2340,7 @@
 	            _configStore2.default.listen(this._onChange);
 	            this.editor = ace.edit(this.refs.wrapper);
 	            this.editor.$blockScrolling = Infinity;
-	            // this.editor.setTheme(this.state.config.editor.theme);
-	            // this.editor.setFontSize(this.state.config.editor.fontSize);
 	            this._onChange();
-	            // this.editor.setTheme("ace/theme/twilight");
-	            // this.editor.setDisplayIndentGuides(false);
-	            // ipc.on('setSyntaxTheme', theme => {
-	            //     this.editor.setTheme(theme);
-	            // });
-	            // ipc.on('saveFile', lib.saveCurrentFile);
-	            // ipc.on('saveFileAs', () => {
-	            //     var dialog = remote.require('dialog');
-	            //     var path = dialog.showSaveDialog(null, {
-	            //         title: 'Save As'
-	            //     });
-	            //
-	            //     if (path) {
-	            //         try {
-	            //             fs.writeFileSync(path, this.editor.getValue(), 'utf8');
-	            //         } catch (ex) {
-	            //             dialog.showMessageBox(null, {
-	            //                 type: 'error',
-	            //                 title: 'Error saving file',
-	            //                 message: ex.message,
-	            //                 detail: ex.stack
-	            //             });
-	            //         }
-	            //     }
-	            // });
 	        }
 	    }, {
 	        key: 'onContextMenu',
@@ -2415,7 +2367,7 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })(); /* global ace, fs, jQuery */
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })(); /* global ace, fs */
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -2786,10 +2738,6 @@
 
 	/* global ace, fs */
 
-	// import { default as STATE  } from '../STATE';
-	// import appDispatcher         from '../Dispatcher';
-	// import * as Constants        from '../constants/constants';
-	// var remote  = require('remote');
 	var fs = __webpack_require__(6);
 	var Crypto = __webpack_require__(24);
 
@@ -2803,104 +2751,6 @@
 	function md5(str) {
 	    return Crypto.createHash('md5').update(str).digest("hex");
 	}
-	/**
-	 * If the file is already opened just switches to it py setting STATE.currentFile
-	 * to it's full path.
-	 */
-	// export function openFile(path, isPreview) {
-	//
-	//     // TODO: browse for file of the path is empty
-	//
-	//     // If already opened just switch to it
-	//     var idx = STATE.openFiles.findIndex(f => f.path === path), stats;
-	//     if (idx > -1) {
-	//         let meta = STATE.openFiles[idx];
-	//         if (meta.path !== STATE.currentFile || !!meta.isPreview !== !!isPreview) {
-	//             STATE.currentFile = meta.path;
-	//             STATE.fileTree.selectedPath = path;
-	//             meta.isPreview = !!isPreview;
-	//             return true; // did switch
-	//         }
-	//         return false; // did nothing
-	//     }
-	//
-	//     // Skip directories
-	//     try {
-	//         stats = fs.statSync(path);
-	//         if (stats.isDirectory()) {
-	//             return false;
-	//         }
-	//     }
-	//     catch (ex) {
-	//         console.error(ex);
-	//         return false;
-	//     }
-	//
-	//     // Try to read the file
-	//     let text = '';
-	//     try {
-	//         text = fs.readFileSync(path, 'utf8');
-	//     }
-	//     catch (err) {
-	//         console.error(err);
-	//         return false;
-	//     }
-	//
-	//     // Detect mode
-	//     let modelist = ace.require("ace/ext/modelist");
-	//     let mode     = modelist.getModeForPath(path).mode;
-	//
-	//     // Close the existing reusable session (if any)
-	//     STATE.openFiles = STATE.openFiles.filter(o => !o.isPreview);
-	//
-	//     // Create new session and switch to it
-	//     let session  = ace.createEditSession(text, mode);
-	//     let hash = md5(text);
-	//     STATE.openFiles.push({ path, session, isPreview, hash });
-	//     session.on("change", () => {
-	//         appDispatcher.handleViewAction({
-	//             actionType: Constants.APP_NOTIFY_FILE_CHANGED,
-	//             path
-	//         });
-	//     });
-	//
-	//     // Set the new session as bith current and selected
-	//     STATE.currentFile = path;
-	//     STATE.fileTree.selectedPath = path;
-	//
-	//     // Indicates that something has changed
-	//     return true;
-	// }
-	//
-	// export function previewFile(path) {
-	//     return openFile(path, true);
-	// }
-
-	// function newFile() {
-	//     // Create new session and switch to it
-	//     let path = '';
-	//     let session  = ace.createEditSession('', 'ace/mode/text');
-	//     let hash = md5('');
-	//     STATE.openFiles.push({
-	//         path,
-	//         session,
-	//         isPreview : true,
-	//         hash
-	//     });
-	//     session.on("change", () => {
-	//         appDispatcher.handleViewAction({
-	//             actionType: Constants.APP_NOTIFY_FILE_CHANGED,
-	//             path
-	//         });
-	//     });
-	//
-	//     // Set the new session as bith current and selected
-	//     STATE.currentFile = path;
-	//     STATE.fileTree.selectedPath = path;
-	//
-	//     // Indicates that something has changed
-	//     return true;
-	// }
 
 	function writeFile(path, contents, encoding) {
 	    if (path) {
