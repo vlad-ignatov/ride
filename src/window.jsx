@@ -8,9 +8,6 @@ import alt              from './alt'
 
 window.alt = alt;
 
-var path = require('path');
-var fs = require('fs');
-
 // Proxy comands from the main process app to the window
 // ------------------------------------------------------------------------------
 ipc.on('setSyntaxTheme', configActions.setEditorTheme)
