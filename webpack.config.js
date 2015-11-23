@@ -58,8 +58,9 @@ module.exports = {
         'ipc'       : 'ipc',
         'remote'    : 'remote',
         'path'      : 'path',
-        // 'menu'      : 'Menu',
-        // 'crypto'    : 'crypto',
+        // 'dialog'    : 'Dialog',
+        'crypto'    : 'Crypto',
+        'menu'      : 'Menu',
         // 'app'            : 'app',
         // 'browser-window' : 'browser-window',
         // 'crash-reporter' : 'crash-reporter'

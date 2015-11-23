@@ -5,7 +5,7 @@
 // import * as Constants        from '../constants/constants';
 // var remote  = require('remote');
 var fs = require('fs');
-var _crypto = require('crypto');
+var Crypto = require('crypto');
 
 
 var uid = (function() {
@@ -16,7 +16,7 @@ var uid = (function() {
 })();
 
 function md5(str) {
-    return _crypto.createHash('md5').update(str).digest("hex");
+    return Crypto.createHash('md5').update(str).digest("hex");
 }
 /**
  * If the file is already opened just switches to it py setting STATE.currentFile
