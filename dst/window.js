@@ -2472,7 +2472,8 @@
 	                files: this.files.map(function (f) {
 	                    return {
 	                        path: f.path,
-	                        isPreview: f.isPreview
+	                        isPreview: f.isPreview,
+	                        mode: f.mode
 	                    };
 	                }),
 	                current: this.current ? this.current.path : null
@@ -2566,8 +2567,9 @@
 
 	            var item = id ? this.byId(id) : this.current;
 	            if (item) {
-	                item.session.setMode(mode);
-	                this.emitChange();
+	                item.mode = mode;
+	                item.session.setMode(mode.mode);
+	                this.saveToSession();
 	            }
 	        }
 	    }, {
@@ -2577,6 +2579,7 @@
 
 	            var path = _ref2.path;
 	            var isPreview = _ref2.isPreview;
+	            var mode = _ref2.mode;
 
 	            // This path is already opened just switch to it insteat of re-opening
 	            if (path && this.isPathOpened(path)) {
@@ -2584,7 +2587,7 @@
 	                this.current.isPreview = !!isPreview;
 	            } else {
 	                var _ret = (function () {
-	                    var mode = path ? modelist.getModeForPath(path) : 'ace/mode/text';
+	                    mode = mode || (path ? modelist.getModeForPath(path) : 'ace/mode/text');
 	                    var text = '';
 
 	                    if (path) {
@@ -3159,7 +3162,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global ace */
 
 	var modelist = ace.require("ace/ext/modelist");
-	console.log(modelist);
+	// console.log(modelist)
 
 	var ModeSelect = (function (_Component) {
 	    _inherits(ModeSelect, _Component);
@@ -3177,7 +3180,7 @@
 	                return {
 	                    label: m.caption,
 	                    click: function click() {
-	                        _fileActions2.default.setMode(m.mode);
+	                        _fileActions2.default.setMode(m);
 	                    }
 	                };
 	            }));

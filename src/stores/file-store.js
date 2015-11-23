@@ -68,7 +68,8 @@ class FilesStore
             files: this.files.map(f => {
                 return {
                     path: f.path,
-                    isPreview: f.isPreview
+                    isPreview: f.isPreview,
+                    mode: f.mode
                 }
             }),
             current: this.current ? this.current.path : null
@@ -148,12 +149,13 @@ class FilesStore
     onSetMode({ mode, id }) {
         let item = id ? this.byId(id) : this.current
         if (item) {
-            item.session.setMode(mode)
-            this.emitChange()
+            item.mode = mode
+            item.session.setMode(mode.mode)
+            this.saveToSession()
         }
     }
 
-    handleFileAdded({ path, isPreview }) {
+    handleFileAdded({ path, isPreview, mode }) {
 
         // This path is already opened just switch to it insteat of re-opening
         if (path && this.isPathOpened(path)) {
@@ -161,7 +163,9 @@ class FilesStore
             this.current.isPreview = !!isPreview;
         }
         else {
-            let mode = path ? modelist.getModeForPath(path) : 'ace/mode/text';
+            mode = mode || (
+                path ? modelist.getModeForPath(path) : 'ace/mode/text'
+            );
             let text = '';
 
             if (path) {

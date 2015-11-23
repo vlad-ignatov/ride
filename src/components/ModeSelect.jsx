@@ -2,7 +2,7 @@
 import { PropTypes, Component } from 'react'
 import fileActions from '../actions/file-actions'
 var modelist = ace.require("ace/ext/modelist")
-console.log(modelist)
+// console.log(modelist)
 
 export default class ModeSelect extends Component
 {
@@ -20,7 +20,7 @@ export default class ModeSelect extends Component
                 return {
                     label: m.caption,
                     click: () => {
-                        fileActions.setMode(m.mode)
+                        fileActions.setMode(m)
                     }
                 }
             })
