@@ -95,16 +95,32 @@ $(function() {
         ipc.send('toggleMaximize');
     });
 
-    // context menus ------------------------------------------------------------
+    // native context menus and popup menus -------------------------------------
     window.addEventListener('contextmenu', function(e) {
         if (!e.menuTemplate) {
             e.menuTemplate = []
         }
     }, true);
 
+    window.addEventListener('click', function(e) {
+        if (!e.menuTemplate) {
+            e.menuTemplate = []
+        }
+    }, true);
+
     window.addEventListener('contextmenu', function(e) {
-        if (!e.defaultPrevented && e.menuTemplate) {
-            // e.preventDefault();
+        if (!e.defaultPrevented && e.menuTemplate && e.menuTemplate.length) {
+            setTimeout(() => {
+                Menu.buildFromTemplate(e.menuTemplate).popup(
+                    remote.getCurrentWindow()
+                );
+            }, 50)
+        }
+    }, false);
+
+    window.addEventListener('click', function(e) {
+        if (!e.defaultPrevented && e.menuTemplate && e.menuTemplate.length) {
+            e.preventDefault();
             setTimeout(() => {
                 Menu.buildFromTemplate(e.menuTemplate).popup(
                     remote.getCurrentWindow()

@@ -2,7 +2,6 @@
 import { PropTypes, Component } from 'react'
 import fileActions from '../actions/file-actions'
 var modelist = ace.require("ace/ext/modelist")
-// console.log(modelist)
 
 export default class ModeSelect extends Component
 {
@@ -14,7 +13,7 @@ export default class ModeSelect extends Component
         mode: 'text'
     }
 
-    onContextMenu(e) {
+    onClick(e) {
         e.nativeEvent.menuTemplate = e.nativeEvent.menuTemplate.concat(
             modelist.modes.map(m => {
                 return {
@@ -29,9 +28,9 @@ export default class ModeSelect extends Component
 
     render() {
         return (
-            <span onContextMenu={ this.onContextMenu.bind(this) }>
+            <a onClick={ this.onClick.bind(this) } href="javascript:void 0">
                 { this.props.mode }
-            </span>
+            </a>
         )
     }
 }
