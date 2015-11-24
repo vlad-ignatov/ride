@@ -1,11 +1,11 @@
 {
     "leftSidebar": {
         "visible": true,
-        "width": 316
+        "width": 312
     },
     "editor": {
-        "theme": "ambiance",
-        "fontSize": 16,
+        "theme": "twilight",
+        "fontSize": 15,
         "animatedScroll": false,
         "autoPairing": true,
         "displayIndentGuides": false,

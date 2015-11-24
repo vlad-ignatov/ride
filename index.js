@@ -9,6 +9,15 @@ require("babel-core/register");
 // Report crashes to our server.
 require('crash-reporter').start();
 
+// console.log('app.getAppPath()           -> ', app.getAppPath());
+// console.log('app.getPath("home")        -> ', app.getPath('home'));
+// console.log('app.getPath("appData")     -> ', app.getPath('appData'));
+// console.log('app.getPath("userData")    -> ', app.getPath('userData'));
+// console.log('app.getPath("temp")        -> ', app.getPath('temp'));
+// console.log('app.getPath("userDesktop") -> ', app.getPath('userDesktop'));
+// console.log('app.getPath("exe")         -> ', app.getPath('exe'));
+// console.log('app.getPath("module")      -> ', app.getPath('module'));
+
 // Load all the extension packages that are interested in working with the
 // main process
 // ------------------------------------------------------------------------------
