@@ -1,20 +1,32 @@
+
+// VARIABLES
+// -----------------------------------------------------------------------------
+@color-ui       : #8BADB9;//#2F3129;
+@color-ui-dark  : #3D6775;//#1E1F18;
+@color-ui-light : #C4F0FF;//#484B3F;
+@color-ui-accent: #BB801E;//#484B3F;
+
 * {
     box-sizing: border-box;
 }
+
 html {
-    overflow: hidden;
-    height: 100%;
-    background: #2F3129;
-    color: #797A75;
+    overflow  : hidden;
+    height    : 100%;
+    background: @color-ui;
 }
+
 body {
-    font: menu;
-    background: #2F3129;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    cursor: default;
-    color: #797A75;
+    // font       : menu;
+    background : @color-ui;
+    margin     : 0;
+    padding    : 0;
+    height     : 100%;
+    cursor     : default;
+    color      : fade(contrast(@color-ui), 60%);//#797A75;
+    font-weight: 300;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-size  : 13px;
     -webkit-app-region: drag;
 }
 
@@ -121,7 +133,7 @@ a {
     display: flex;
     flex: 1;
     flex-direction: row;
-    background: #1E1F18;
+    background: @color-ui-dark;
     -webkit-app-region: no-drag;
 }
 .main-sidebar-left {
@@ -143,7 +155,7 @@ a {
     display       : flex;
     flex-direction: row;
     height        : 2.2em;
-    background    : linear-gradient(#1E1F1A, #272822);
+    background    : linear-gradient(@color-ui-dark, @color-ui);
     position      : relative;
     padding-bottom: 3px;
 
@@ -151,7 +163,7 @@ a {
         content: '';
         height : 3px;
         display: block;
-        background: #2F3129;
+        background: @color-ui;
         position: absolute;
         top: 100%;
         left: 0;
