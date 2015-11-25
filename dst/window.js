@@ -46,27 +46,27 @@
 
 	'use strict';
 
-	var _MainWindow = __webpack_require__(2);
+	var _MainWindow = __webpack_require__(3);
 
 	var _MainWindow2 = _interopRequireDefault(_MainWindow);
 
-	var _jquery = __webpack_require__(34);
+	var _jquery = __webpack_require__(35);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _configActions = __webpack_require__(26);
+	var _configActions = __webpack_require__(27);
 
 	var _configActions2 = _interopRequireDefault(_configActions);
 
-	var _fileActions = __webpack_require__(7);
+	var _fileActions = __webpack_require__(8);
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
-	var _remote = __webpack_require__(35);
+	var _remote = __webpack_require__(36);
 
 	var _remote2 = _interopRequireDefault(_remote);
 
-	var _alt = __webpack_require__(8);
+	var _alt = __webpack_require__(9);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
@@ -111,11 +111,11 @@
 	    // Load all the extension packages that are interested in working with the
 	    // borwser window
 	    // ------------------------------------------------------------------------------
-	    var pkg = __webpack_require__(36);
+	    var pkg = __webpack_require__(37);
 	    for (var name in pkg.ride.packages) {
 	        var ext = undefined;
 	        try {
-	            ext = __webpack_require__(37)("./" + name + '/ride-main-window.js');
+	            ext = __webpack_require__(38)("./" + name + '/ride-main-window.js');
 	            if (typeof ext == 'function') {
 	                ext.call(window);
 	            }
@@ -194,7 +194,8 @@
 
 /***/ },
 /* 1 */,
-/* 2 */
+/* 2 */,
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -205,27 +206,27 @@
 	    value: true
 	});
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(4);
 
-	var _FileTree = __webpack_require__(4);
+	var _FileTree = __webpack_require__(5);
 
-	var _Editor = __webpack_require__(21);
+	var _Editor = __webpack_require__(22);
 
 	var _Editor2 = _interopRequireDefault(_Editor);
 
-	var _TabBrowser = __webpack_require__(27);
+	var _TabBrowser = __webpack_require__(28);
 
 	var _TabBrowser2 = _interopRequireDefault(_TabBrowser);
 
-	var _ModeSelect = __webpack_require__(28);
+	var _ModeSelect = __webpack_require__(29);
 
 	var _ModeSelect2 = _interopRequireDefault(_ModeSelect);
 
-	var _fileStore = __webpack_require__(22);
+	var _fileStore = __webpack_require__(23);
 
 	var _fileStore2 = _interopRequireDefault(_fileStore);
 
-	var _configStore = __webpack_require__(25);
+	var _configStore = __webpack_require__(26);
 
 	var _configStore2 = _interopRequireDefault(_configStore);
 
@@ -238,7 +239,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	/* global ENV */
-	__webpack_require__(29);
+	__webpack_require__(30);
 
 	var MainWindow = (function (_Component) {
 	    _inherits(MainWindow, _Component);
@@ -333,13 +334,13 @@
 	exports.default = MainWindow;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = React;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -351,13 +352,13 @@
 	});
 	exports.FileTree = undefined;
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(4);
 
-	var _FileTreeItem = __webpack_require__(5);
+	var _FileTreeItem = __webpack_require__(6);
 
 	var _FileTreeItem2 = _interopRequireDefault(_FileTreeItem);
 
-	var _fs = __webpack_require__(6);
+	var _fs = __webpack_require__(7);
 
 	var _fs2 = _interopRequireDefault(_fs);
 
@@ -421,7 +422,7 @@
 	};
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -434,13 +435,13 @@
 	    value: true
 	});
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(4);
 
-	var _fs = __webpack_require__(6);
+	var _fs = __webpack_require__(7);
 
 	var _fs2 = _interopRequireDefault(_fs);
 
-	var _fileActions = __webpack_require__(7);
+	var _fileActions = __webpack_require__(8);
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
@@ -593,13 +594,13 @@
 	};
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	module.exports = fs;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -610,7 +611,7 @@
 	    value: true
 	});
 
-	var _alt = __webpack_require__(8);
+	var _alt = __webpack_require__(9);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
@@ -659,7 +660,7 @@
 	exports.default = filesActions;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -668,7 +669,7 @@
 	  value: true
 	});
 
-	var _alt = __webpack_require__(9);
+	var _alt = __webpack_require__(10);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
@@ -679,7 +680,7 @@
 	exports.default = alt;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* global window */
@@ -704,25 +705,25 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _flux = __webpack_require__(10);
+	var _flux = __webpack_require__(11);
 
-	var _utilsStateFunctions = __webpack_require__(13);
+	var _utilsStateFunctions = __webpack_require__(14);
 
 	var StateFunctions = _interopRequireWildcard(_utilsStateFunctions);
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
-	var _store = __webpack_require__(15);
+	var _store = __webpack_require__(16);
 
 	var store = _interopRequireWildcard(_store);
 
-	var _utilsAltUtils = __webpack_require__(16);
+	var _utilsAltUtils = __webpack_require__(17);
 
 	var utils = _interopRequireWildcard(_utilsAltUtils);
 
-	var _actions = __webpack_require__(20);
+	var _actions = __webpack_require__(21);
 
 	var _actions2 = _interopRequireDefault(_actions);
 
@@ -1016,7 +1017,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1028,11 +1029,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 
-	module.exports.Dispatcher = __webpack_require__(11)
+	module.exports.Dispatcher = __webpack_require__(12)
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1049,7 +1050,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(12);
+	var invariant = __webpack_require__(13);
 
 	var _lastID = 1;
 	var _prefix = 'ID_';
@@ -1288,7 +1289,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	/**
@@ -1347,7 +1348,7 @@
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1362,7 +1363,7 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
@@ -1424,7 +1425,7 @@
 	}
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1472,7 +1473,7 @@
 	}
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1497,19 +1498,19 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _utilsAltUtils = __webpack_require__(16);
+	var _utilsAltUtils = __webpack_require__(17);
 
 	var utils = _interopRequireWildcard(_utilsAltUtils);
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
-	var _AltStore = __webpack_require__(17);
+	var _AltStore = __webpack_require__(18);
 
 	var _AltStore2 = _interopRequireDefault(_AltStore);
 
-	var _StoreMixin = __webpack_require__(19);
+	var _StoreMixin = __webpack_require__(20);
 
 	var _StoreMixin2 = _interopRequireDefault(_StoreMixin);
 
@@ -1660,7 +1661,7 @@
 	}
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1681,7 +1682,7 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
@@ -1773,7 +1774,7 @@
 	function NoopClass() {}
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1790,11 +1791,11 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
-	var _transmitter = __webpack_require__(18);
+	var _transmitter = __webpack_require__(19);
 
 	var _transmitter2 = _interopRequireDefault(_transmitter);
 
@@ -1924,7 +1925,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1957,7 +1958,7 @@
 	module.exports = transmitter;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1970,11 +1971,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _transmitter = __webpack_require__(18);
+	var _transmitter = __webpack_require__(19);
 
 	var _transmitter2 = _interopRequireDefault(_transmitter);
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
@@ -2168,7 +2169,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2185,11 +2186,11 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _utilsFunctions = __webpack_require__(14);
+	var _utilsFunctions = __webpack_require__(15);
 
 	var fn = _interopRequireWildcard(_utilsFunctions);
 
-	var _utilsAltUtils = __webpack_require__(16);
+	var _utilsAltUtils = __webpack_require__(17);
 
 	var utils = _interopRequireWildcard(_utilsAltUtils);
 
@@ -2266,7 +2267,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2277,17 +2278,17 @@
 	    value: true
 	});
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(4);
 
-	var _fileStore = __webpack_require__(22);
+	var _fileStore = __webpack_require__(23);
 
 	var _fileStore2 = _interopRequireDefault(_fileStore);
 
-	var _configStore = __webpack_require__(25);
+	var _configStore = __webpack_require__(26);
 
 	var _configStore2 = _interopRequireDefault(_configStore);
 
-	var _fileActions = __webpack_require__(7);
+	var _fileActions = __webpack_require__(8);
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
@@ -2376,7 +2377,7 @@
 	exports.default = Editor;
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2387,15 +2388,15 @@
 	    value: true
 	});
 
-	var _alt = __webpack_require__(8);
+	var _alt = __webpack_require__(9);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
-	var _lib = __webpack_require__(23);
+	var _lib = __webpack_require__(24);
 
 	var lib = _interopRequireWildcard(_lib);
 
-	var _fileActions = __webpack_require__(7);
+	var _fileActions = __webpack_require__(8);
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
@@ -2748,15 +2749,15 @@
 	exports.default = filesStore;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* global ace, fs */
 
-	var fs = __webpack_require__(6);
-	var Crypto = __webpack_require__(24);
+	var fs = __webpack_require__(7);
+	var Crypto = __webpack_require__(25);
 
 	var uid = (function () {
 	    var uid_counter = 1;
@@ -2816,13 +2817,13 @@
 	};
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	module.exports = Crypto;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2833,15 +2834,15 @@
 	    value: true
 	});
 
-	var _alt = __webpack_require__(8);
+	var _alt = __webpack_require__(9);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
-	var _configActions = __webpack_require__(26);
+	var _configActions = __webpack_require__(27);
 
 	var _configActions2 = _interopRequireDefault(_configActions);
 
-	var _lib = __webpack_require__(23);
+	var _lib = __webpack_require__(24);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2982,7 +2983,7 @@
 	exports.default = configStore;
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2993,7 +2994,7 @@
 	    value: true
 	});
 
-	var _alt = __webpack_require__(8);
+	var _alt = __webpack_require__(9);
 
 	var _alt2 = _interopRequireDefault(_alt);
 
@@ -3029,7 +3030,7 @@
 	exports.default = configActions;
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3040,13 +3041,13 @@
 	    value: true
 	});
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(4);
 
-	var _fileActions = __webpack_require__(7);
+	var _fileActions = __webpack_require__(8);
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
-	var _fileStore = __webpack_require__(22);
+	var _fileStore = __webpack_require__(23);
 
 	var _fileStore2 = _interopRequireDefault(_fileStore);
 
@@ -3150,7 +3151,7 @@
 	exports.default = TabBrowser;
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3161,9 +3162,9 @@
 	    value: true
 	});
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(4);
 
-	var _fileActions = __webpack_require__(7);
+	var _fileActions = __webpack_require__(8);
 
 	var _fileActions2 = _interopRequireDefault(_fileActions);
 
@@ -3221,16 +3222,16 @@
 	};
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(30);
+	var content = __webpack_require__(31);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(33)(content, {});
+	var update = __webpack_require__(34)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3247,21 +3248,21 @@
 	}
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(31)();
+	exports = module.exports = __webpack_require__(32)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #8BADB9;\n}\nbody {\n  background: #8BADB9;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  color: rgba(255, 255, 255, 0.6);\n  font-weight: 300;\n  font-family: Roboto, 'Helvetica Neue', sans-serif;\n  font-size: 13px;\n  -webkit-app-region: drag;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  text-decoration: underline;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(32) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-pencil-square:before {\n  content: \"\\F14B\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n.icon-radio-checked2:before {\n  content: \"\\E901\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n  box-shadow: 0 0 1px 0px rgba(255, 255, 255, 0.16) inset;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(200, 200, 200, 0.3);\n  width: 12px;\n  height: 12px;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(200, 200, 200, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n/*::-webkit-scrollbar-track:hover {\n  background: rgba(200, 200, 200, 0.05);\n}\n::-webkit-scrollbar-track:active {\n  background: #333333;\n}*/\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n/*div, iframe {\n    box-shadow: 0 0 0 0.5px #CCC;\n}*/\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #3D6775;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  border-right: 1px solid rgba(0, 0, 0, 0.4);\n  overflow: overlay;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n  position: relative;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  height: 2.2em;\n  background: linear-gradient(#3D6775, #8BADB9);\n  position: relative;\n  padding-bottom: 3px;\n}\n.main-tabs::after {\n  content: '';\n  height: 3px;\n  display: block;\n  background: #8BADB9;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);\n  z-index: 3;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 4px 8px;\n  max-width: 40%;\n  border-radius: 3px 3px 0 0;\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  margin: 1px 2px 0 0;\n  background: #2F3129;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-shadow: 0px -1px 0px #000;\n}\n.main-tabs .tab:hover {\n  background: #34372e;\n  color: #fff;\n}\n.main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: linear-gradient(#4a4d40, #3c3f35);\n  color: #fff;\n  z-index: 4;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n  text-shadow: none;\n}\n.main-tabs .tab.modified {\n  color: orange;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n  color: rgba(255, 255, 255, 0.4);\n  transition: all 0.2s;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n  opacity: 1;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 2px #000 inset;\n}\n.main-tabs .tab.modified .close-tab:not(:hover) {\n  opacity: 1;\n}\n.main-tabs .tab.modified .close-tab:not(:hover)::before {\n  content: '\\F14B';\n  color: orange;\n  text-shadow: 0px 0px 1px #000;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n  background: #272822;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 4px 1px;\n  border-top: 1px solid rgba(255, 255, 255, 0.1);\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  text-shadow: 0 0 1px #000;\n  color: #ccc;\n  border-bottom: 1px solid #111;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border-top: 1px solid #000;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n#editor.ace-twilight .ace_fold {\n  background-color: #2f3129;\n  border-color: #ab8657;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: rgba(169, 142, 76, 0.7);\n}\n.file-tree .icon.icon-file-text2 {\n  color: rgba(141, 163, 171, 0.7);\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #666;\n}\n.file-tree li.expanded > div:before {\n  border-color: #666 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 1px #000;\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: #BB801E;\n  box-shadow: 0 0 1px 0 #000;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.file-tree li.selected > div .icon-folder-open,\n.file-tree li.selected > div .icon-folder {\n  color: rgba(169, 142, 76, 0.9);\n}\n.file-tree li.selected > div .icon-file-text2 {\n  color: rgba(141, 163, 171, 0.9);\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.filetree-toolbar {\n  box-shadow: 0 1px 5px 0 #000;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #DDD;\n}\nbody {\n  background: #DDD;\n  color: #525252;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  font-family: Roboto, 'Helvetica Neue', sans-serif;\n  font-size: 13px;\n  -webkit-app-region: drag;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  text-decoration: underline;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(33) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-pencil-square:before {\n  content: \"\\F14B\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n.icon-radio-checked2:before {\n  content: \"\\E901\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n  box-shadow: 0 0 1px 0px rgba(238, 238, 238, 0.2) inset;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(238, 238, 238, 0.3);\n  width: 12px;\n  height: 12px;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(238, 238, 238, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #DDD;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  overflow: auto;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n  position: relative;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  position: relative;\n  padding-bottom: 3px;\n  background: #DDD;\n}\n.main-tabs::after {\n  content: '';\n  height: 2px;\n  display: block;\n  background: #EEE;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  z-index: 3;\n  border: 1px solid #AAA;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 3px 8px 4px;\n  max-width: 180px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  border: 1px solid #CCC;\n  border-bottom: 0;\n  margin: 3px -1px -1px 0;\n  text-align: center;\n  background: #EEE;\n  color: #AAA;\n}\n.main-tabs .tab:last-child {\n  border-top-right-radius: 3px;\n}\n.main-tabs .tab:first-child {\n  border-top-left-radius: 3px;\n}\n.main-tabs .tab:hover {\n  color: #525252;\n}\n.main-tabs .tab.active {\n  z-index: 4;\n  border-radius: 3px 3px 0 0;\n  margin: 0 -1px -1px 0;\n  padding: 6px 8px 4px;\n  color: #525252;\n  border-color: #AAA;\n  background: linear-gradient(#ffffff, #EEE);\n  box-shadow: 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(0, 102, 204, 0.4) inset;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n}\n.main-tabs .tab.modified {\n  color: #06C;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  background: rgba(0, 0, 0, 0);\n  color: #CCC;\n  transition: all 0.2s;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 3px #000 inset;\n}\n.main-tabs .tab.modified .close-tab:not(:hover) {\n  opacity: 1;\n}\n.main-tabs .tab.modified .close-tab:not(:hover)::before {\n  content: '\\F14B';\n  color: #06C;\n}\n/* DARK THEME --------------------------------------------------------------- */\n.dark .main-tabs {\n  background: #DDD;\n}\n.dark .main-tabs::after {\n  background: #DDD;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);\n}\n.dark .main-tabs .tab {\n  box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.2), 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: #DDD;\n  text-shadow: 0px -1px 0px #000;\n}\n.dark .main-tabs .tab:hover {\n  background: #34372e;\n  color: #fff;\n}\n.dark .main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.5), 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px #06C inset;\n  background: linear-gradient(#EEE, #DDD);\n  color: #fff;\n}\n.dark .main-tabs .tab.modified {\n  color: orange;\n}\n.dark .main-tabs .tab.modified .close-tab:not(:hover)::before {\n  color: orange;\n  text-shadow: 0px 0px 1px #000;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 4px 1px;\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border: 1px solid #AAA;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n#editor.ace-twilight .ace_fold {\n  background-color: #2f3129;\n  border-color: #ab8657;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: #6699cc;\n  -webkit-text-stroke: 0.25px #000;\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #525252;\n}\n.file-tree li.expanded > div:before {\n  border-color: #525252 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: #6fa2d5;\n  box-shadow: 0 0 1px 0 #000 inset;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	/*
@@ -3317,13 +3318,13 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = "data:application/font-woff;base64,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"
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -3577,19 +3578,19 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports) {
 
 	module.exports = jQuery;
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	module.exports = remote;
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -3656,11 +3657,11 @@
 	};
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./command-palette/ride-main-window.js": 38
+		"./command-palette/ride-main-window.js": 39
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -3673,14 +3674,14 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 37;
+	webpackContext.id = 38;
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {__webpack_require__(39)
+	/* WEBPACK VAR INJECTION */(function(global) {__webpack_require__(40)
 
 	function hlt(str, q) {
 	    var out  = '',
@@ -3709,8 +3710,8 @@
 
 	module.exports = function() {
 	    var $     = global.jQuery,
-	        fs    = __webpack_require__(6),
-	        Path  = __webpack_require__(41),
+	        fs    = __webpack_require__(7),
+	        Path  = __webpack_require__(42),
 	        lastVal,
 	        state = {
 	            input : '',
@@ -3897,16 +3898,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(40);
+	var content = __webpack_require__(41);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(33)(content, {});
+	var update = __webpack_require__(34)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3923,10 +3924,10 @@
 	}
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(31)();
+	exports = module.exports = __webpack_require__(32)();
 	// imports
 
 
@@ -3937,7 +3938,7 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = path;
