@@ -1,0 +1,153 @@
+.main-tabs {
+    display       : flex;
+    flex-direction: row;
+    position      : relative;
+    padding-bottom: 3px;
+    background    : @color-ui;
+
+    &::after {
+        content   : '';
+        height    : 2px;
+        display   : block;
+        background: @color-ui-light;
+        position  : absolute;
+        top       : 100%;
+        left      : 0;
+        width     : 100%;
+        margin-top: -3px;
+        z-index   : 3;
+        border    : 1px solid @color-ui-darkest;
+    }
+
+    .tab {
+        flex         : 1;
+        position     : relative;
+        z-index      : 2;
+        padding      : 3px 8px 4px;
+        max-width    : 180px;
+        white-space  : nowrap;
+        overflow     : hidden;
+        text-overflow: ellipsis;
+        border       : 1px solid @color-ui-dark;
+        border-bottom: 0;
+        margin       : 3px -1px -1px 0;
+        text-align   : center;
+        background   : @color-ui-light;
+        color        : @color-ui-darkest;
+        
+        &:last-child {
+            border-top-right-radius: 3px;
+        }
+        &:first-child {
+            border-top-left-radius: 3px;
+        }
+
+        &:hover {
+            color: @color;
+        }
+
+        &.active {
+            z-index: 4;
+            border-radius: 3px 3px 0 0;
+            margin       : 0 -1px -1px 0;
+            padding      : 6px 8px 4px;
+            color        : @color;
+            border-color : @color-ui-darkest;
+            background   : linear-gradient(
+                lighten(@color-ui-light, 10%),
+                @color-ui-light
+            );
+            box-shadow: 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset,
+                        0 10px 0 -8px fade(@color-ui-accent, 40%) inset;
+        }
+
+        &.preview {
+            font-style: italic;
+        }
+
+        &.modified {
+            color: @color-ui-accent;
+        }
+
+        .close-tab {
+            float        : right;
+            display      : inline-block;
+            width        : 16px;
+            height       : 16px;
+            border-radius: 2px;
+            margin       : 1px -3px auto 3px;
+            font-size    : 14px;
+            line-height  : 16px;
+            text-align   : center;
+            padding      : 0;
+            position     : relative;
+            z-index      : 2;
+            background   : rgba(0, 0, 0, 0);
+            color        : @color-ui-dark;
+            transition   : all 0.2s;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.3);
+                color     : #fff;
+            }
+
+            &:active {
+                box-shadow: 1px 1px 3px #000 inset;
+            }
+        }
+
+        &.modified .close-tab:not(:hover) {
+            opacity: 1;
+            &::before {
+                content: '\f14b';
+                color  : @color-ui-accent;
+            }
+        }
+    }
+}
+
+/* DARK THEME --------------------------------------------------------------- */
+.dark .main-tabs {
+    // background    : linear-gradient(@color-ui-dark, @color-ui);
+    background: @color-ui;
+    
+    &::after {
+        background: @color-ui;
+        box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+    }
+    .tab {
+        box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.2),
+                    0 1px 2px -2px rgba(255, 255, 255, 0.5) inset,
+                    0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
+        background: @color-ui;
+        text-shadow: 0px -1px 0px #000;
+
+        &:hover {
+            background: lighten(#2F3129, 2%);
+            color: #fff;
+        }
+
+        &.active {
+            // border-top: 2px solid rgba(255, 165, 0, 0.4);
+            box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.5),
+                        0 2px 1px -2px rgba(255, 255, 255, 0.8) inset,
+                        0 10px 0 -8px @color-ui-accent inset;
+            background: linear-gradient(
+                @color-ui-light,
+                @color-ui
+            );
+            color: #fff;
+        }
+
+        &.modified {
+            color: orange;
+        }
+
+        &.modified .close-tab:not(:hover) {
+            &::before {
+                color: orange;
+                text-shadow: 0px 0px 1px #000;
+            }
+        }
+    }
+}
