@@ -1,29 +1,33 @@
 .file-tree {
 
     &, ul {
-        margin : 0;
-        padding: 0;
-        display: table;
+        margin   : 0;
+        padding  : 0;
+        display  : table;
         min-width: 100%;
     }
 
     .icon {
-        display: inline-block;
+        display       : inline-block;
         vertical-align: top;
-        width: 20px;
-        height: 20px;
-        font-size: 16px;
-        line-height: 20px;
-        text-align: left;
-        margin-right: 4px;
+        width         : 20px;
+        height        : 20px;
+        font-size     : 16px;
+        line-height   : 20px;
+        text-align    : left;
+        margin-right  : 4px;
 
         &.icon-folder-open,
         &.icon-folder {
-            color: rgba(169, 142, 76, 0.7);
+            // color: rgba(169, 142, 76, 0.7);
+            color: mix(@color-ui-accent, @color-ui-dark);
+            -webkit-text-stroke: 0.25px #000;
         }
 
         &.icon-file-text2 {
-            color: rgba(141, 163, 171, 0.7);
+            // color: rgba(141, 163, 171, 0.7);
+            // color: contrast(@color-ui, #FFF, #000, 30%);
+            // text-shadow: 0 1px 0 fade(contrast(@color, #000, #FFF, 70%), 10%);
         }
     }
 
@@ -54,17 +58,17 @@
             margin: 0px 3px 0px 9px;
         }
         &.dir > div:before {
-            border-color: transparent transparent transparent #666;
+            border-color: transparent transparent transparent @color;
         }
         &.expanded > div:before {
-            border-color: #666 transparent transparent transparent;
+            border-color: @color transparent transparent transparent;
             border-style: solid inset inset inset;
             margin: 6px 6px -3px 6px;
         }
 
         > div:hover {
             background: rgba(0, 0, 0, 0.2);
-            text-shadow : 0 1px 1px #000;
+            text-shadow : 0 1px 0 fade(contrast(@color), 10%);
             box-shadow: 0 0 1px 0 #000;
         }
 
@@ -73,20 +77,21 @@
         }
 
         &.selected > div {
-            background: @color-ui-accent;//rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 1px 0 #000;
+            background: mix(@color-ui-accent, @color-ui);//rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 1px 0 #000 inset;
             outline: none;
             color: #FFF;
             text-shadow : 0 1px 1px #000;
 
-            .icon-folder-open,
-            .icon-folder {
-                color: rgba(169, 142, 76, 0.9);
-            }
+            // .icon-folder-open,
+            // .icon-folder {
+            //     color: rgba(169, 142, 76, 0.9);
+            //     -webkit-text-stroke: 0.5px @color;
+            // }
 
-            .icon-file-text2 {
-                color: rgba(141, 163, 171, 0.9);
-            }
+            // .icon-file-text2 {
+            //     color: rgba(141, 163, 171, 0.9);
+            // }
         }
 
         // &.selected > div {

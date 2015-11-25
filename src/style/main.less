@@ -1,10 +1,28 @@
 
 // VARIABLES
-// -----------------------------------------------------------------------------
-@color-ui       : #8BADB9;//#2F3129;
-@color-ui-dark  : #3D6775;//#1E1F18;
-@color-ui-light : #C4F0FF;//#484B3F;
-@color-ui-accent: #BB801E;//#484B3F;
+// ---------------------------------------------------------------------------
+
+// light
+@color-ui        : #DDD;//#2F3129;//#8BADB9;
+@color-ui-dark   : #CCC;//#1E1F18;//#3D6775;
+@color-ui-light  : #EEE;//#484B3F;//#C4F0FF;
+@color-ui-darkest: #AAA;//#484B3F;//#C4F0FF;
+@color-ui-accent : #06C;//#BB801E;//#484B3F;
+
+// dark
+// @color-ui        : #232833;//#8BADB9;
+// @color-ui-dark   : #1E1F18;//#3D6775;
+// @color-ui-light  : #4D5673;//#C4F0FF;
+// @color-ui-darkest: #000C27;//#C4F0FF;
+// @color-ui-accent : #D48400;//#484B3F;
+
+
+@color: contrast(
+    @color-ui-dark,
+    mix(@color-ui-dark, #000, 40%),
+    mix(@color-ui-dark, #FFF, 60%),
+    30%
+);
 
 * {
     box-sizing: border-box;
@@ -19,12 +37,12 @@ html {
 body {
     // font       : menu;
     background : @color-ui;
+    color      : @color;
     margin     : 0;
     padding    : 0;
     height     : 100%;
     cursor     : default;
-    color      : fade(contrast(@color-ui), 60%);//#797A75;
-    font-weight: 300;
+    // font-weight: 300;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
     font-size  : 13px;
     -webkit-app-region: drag;
@@ -99,31 +117,23 @@ a {
 ::-webkit-scrollbar-thumb {
   background: rgba(200, 200, 200, 0.1);
   border-radius: 5px;
-  box-shadow: 0 0 1px 0px rgba(255, 255, 255, 0.16) inset;
+  box-shadow: 0 0 1px 0px fade(@color-ui-light, 20%) inset;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 200, 200, 0.3);
+  background: fade(@color-ui-light, 30%);
   width: 12px;
   height: 12px;
 }
 ::-webkit-scrollbar-thumb:active {
-  background: rgba(200, 200, 200, 0.5);
+  background: fade(@color-ui-light, 50%);
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-/*::-webkit-scrollbar-track:hover {
-  background: rgba(200, 200, 200, 0.05);
-}
-::-webkit-scrollbar-track:active {
-  background: #333333;
-}*/
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
-/*div, iframe {
-    box-shadow: 0 0 0 0.5px #CCC;
-}*/
+
 .main-wrap {
     display: flex;
     flex-direction: column;
@@ -133,14 +143,14 @@ a {
     display: flex;
     flex: 1;
     flex-direction: row;
-    background: @color-ui-dark;
+    background: @color-ui;
     -webkit-app-region: no-drag;
 }
 .main-sidebar-left {
     padding     : 3px;
     width       : 300px;
-    border-right: 1px solid rgba(0, 0, 0, 0.4);
-    overflow    : overlay;
+    // border-right: 1px solid rgba(0, 0, 0, 0.4);
+    overflow    : auto;
     position    : relative;
 }
 
@@ -151,104 +161,7 @@ a {
     position: relative;
 }
 
-.main-tabs {
-    display       : flex;
-    flex-direction: row;
-    height        : 2.2em;
-    background    : linear-gradient(@color-ui-dark, @color-ui);
-    position      : relative;
-    padding-bottom: 3px;
-
-    &::after {
-        content: '';
-        height : 3px;
-        display: block;
-        background: @color-ui;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        margin-top: -3px;
-        box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.5);
-        z-index: 3;
-    }
-    .tab {
-        // display: flex;
-        flex: 1;
-        position: relative;
-        z-index: 2;
-        padding: 4px 8px;
-        max-width: 40%;
-        border-radius: 3px 3px 0 0;
-        box-shadow: 0px -1px 0px 1px #1E1F18, 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
-        margin: 1px 2px 0 0;
-        background: #2F3129;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-shadow: 0px -1px 0px #000;
-
-        &:hover {
-            background: lighten(#2F3129, 2%);
-            color: #fff;
-            // z-index: 4;
-        }
-
-        &.active {
-            // border-top: 2px solid rgba(255, 165, 0, 0.4);
-            box-shadow: 0px -1px 0px 1px #1E1F18, 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 135, 0, 0.4) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
-            background: linear-gradient(lighten(#2F3129, 10%), lighten(#2F3129, 5%));
-            color: #fff;
-            z-index: 4;
-        }
-
-        &.preview {
-            font-style: italic;
-            text-shadow: none;
-        }
-
-        &.modified {
-            color: orange;
-        }
-
-        .close-tab {
-            float: right;
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border-radius: 2px;
-            margin: 1px -3px auto 3px;
-            font-size: 14px;
-            line-height: 16px;
-            text-align: center;
-            padding: 0;
-            position: relative;
-            z-index: 2;
-            opacity: 0.5;
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.2s;
-
-            &:hover {
-                background: rgba(0, 0, 0, 0.3);
-                color: #fff;
-                opacity: 1;
-            }
-
-            &:active {
-                box-shadow: 1px 1px 2px #000 inset;
-            }
-        }
-
-        &.modified .close-tab:not(:hover) {
-            opacity: 1;
-            &::before {
-                content: '\f14b';
-                color: orange;
-                text-shadow: 0px 0px 1px #000;
-            }
-        }
-    }
-}
+@import "tabs.less";
 
 .main-frame {
     display: flex;
@@ -263,7 +176,7 @@ a {
     display : flex;
     flex    : 5;
     position: relative;
-    background: #272822;
+    // background: @color-ui-dark;
     // border-top: 2px solid #2F3129;
 }
 
@@ -272,13 +185,14 @@ a {
     display: flex;
     padding: 4px;
     flex   : 2;
-    border-left : 1px solid rgba(255, 255, 255, 0.1);
+    // border-left : 1px solid rgba(255, 255, 255, 0.1);
     overflow: auto;
 }
+
 .main-status-bar {
     display: flex;
     padding: 0 4px 1px;
-    border-top : 1px solid rgba(255, 255, 255, 0.1);
+    // border-top : 1px solid rgba(255, 255, 255, 0.1);
     -webkit-app-region: drag;
 }
 
@@ -286,16 +200,15 @@ a {
     height: 23px;
     line-height: 22px;
     font-size: 14px;
-    text-shadow: 0 0 1px #000;
-    color: #ccc;
-    border-bottom: 1px solid #111;
+    // text-shadow: 0 0 1px contrast(@color);
+    // border-bottom: 1px solid darken(@color-ui-dark, 20%);
     position: relative;
     z-index: 5;
 }
 
 #editor {
     position: absolute;
-    border-top: 1px solid #000;
+    border: 1px solid @color-ui-darkest;
     top: 0;
     right: 0;
     bottom: 0;
@@ -352,10 +265,6 @@ a {
     //     background: orange;
     //     opacity: 0.5;
     // }
-}
-
-.filetree-toolbar {
-    box-shadow: 0 1px 5px 0 #000;
 }
 
 .btn {
