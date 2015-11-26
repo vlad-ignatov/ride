@@ -3,18 +3,18 @@
 // ---------------------------------------------------------------------------
 
 // light
-@color-ui        : #DDD;//#2F3129;//#8BADB9;
-@color-ui-dark   : #CCC;//#1E1F18;//#3D6775;
-@color-ui-light  : #EEE;//#484B3F;//#C4F0FF;
-@color-ui-darkest: #AAA;//#484B3F;//#C4F0FF;
-@color-ui-accent : #06C;//#BB801E;//#484B3F;
+// @color-ui        : #DDD;//#2F3129;//#8BADB9;
+// @color-ui-dark   : #CCC;//#1E1F18;//#3D6775;
+// @color-ui-light  : #EEE;//#484B3F;//#C4F0FF;
+// @color-ui-darkest: #AAA;//#484B3F;//#C4F0FF;
+// @color-ui-accent : #06C;//#BB801E;//#484B3F;
 
 // dark
-// @color-ui        : #232833;//#8BADB9;
-// @color-ui-dark   : #1E1F18;//#3D6775;
-// @color-ui-light  : #4D5673;//#C4F0FF;
-// @color-ui-darkest: #000C27;//#C4F0FF;
-// @color-ui-accent : #D48400;//#484B3F;
+@color-ui        : #232833;//#8BADB9;
+@color-ui-dark   : #1E1F18;//#3D6775;
+@color-ui-light  : #4D5673;//#C4F0FF;
+@color-ui-darkest: #000C27;//#C4F0FF;
+@color-ui-accent : #B36E00;//#484B3F;
 
 
 @color: contrast(
@@ -107,25 +107,29 @@ a {
 }
 // Scrollbars ==================================================================
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width : 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-button {
-  width: 0px;
+  width : 0px;
   height: 0px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(200, 200, 200, 0.1);
-  border-radius: 5px;
-  box-shadow: 0 0 1px 0px fade(@color-ui-light, 20%) inset;
+  background     : fade(contrast(@color-ui), 10%);
+  border-radius  : 5px;
+  width          : 6px;
+  height         : 6px;
+  border         : 1px solid transparent;
+  background-clip: content-box;
+//   box-shadow     : 0 0 1px 0px fade(contrast(@color-ui), 25%) inset;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: fade(@color-ui-light, 30%);
-  width: 12px;
-  height: 12px;
+  background: fade(contrast(@color-ui), 20%);
+  background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:active {
-  background: fade(@color-ui-light, 50%);
+  background: fade(contrast(@color-ui), 30%);
+  background-clip: content-box;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -222,6 +226,12 @@ a {
         font-weight: 300;
         text-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 1);
         /*opacity: 0.8;*/
+        background: fade(@color-ui-darkest, 20%);
+        
+        .ace_gutter {
+            background: fade(@color-ui-light, 10%);
+            color: fade(#FFF, 40%);
+        }
     }
     &.ace-ambiance .ace_gutter {
         color: #000 !important;
