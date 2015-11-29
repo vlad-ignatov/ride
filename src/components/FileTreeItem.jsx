@@ -1,3 +1,4 @@
+/* global path */
 import { PropTypes, Component } from 'react';
 import fs                       from 'fs';
 import fileActions              from '../actions/file-actions'
@@ -25,11 +26,12 @@ export default class FileTreeItem extends Component
         openFiles : { files: [] }
     };
 
-    constructor(props)
-    {
-        super(props);
-        this.onClick  = this.onClick.bind(this);
-        this.dblClick = this.dblClick.bind(this);
+    constructor(props) {
+        super(props)
+        this.onClick       = this.onClick.bind(this)
+        this.dblClick      = this.dblClick.bind(this)
+        this.onContextMenu = this.onContextMenu.bind(this)
+
         this.state = {
             expanded : props.expanded
         };
@@ -41,8 +43,7 @@ export default class FileTreeItem extends Component
             );
     }
 
-    getChildren()
-    {
+    getChildren() {
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;
         if (this.state.expanded && isDir) {
             var files, items = [];
@@ -88,10 +89,9 @@ export default class FileTreeItem extends Component
         return null;
     }
 
-    onClick(e)
-    {
+    onClick(e) {
         e.stopPropagation();
-        e.preventDefault();
+        // e.preventDefault();
         if (this.props.type == FileTreeItem.TYPE_DIR) {
             this.setState({
                 expanded : !this.state.expanded
@@ -101,15 +101,42 @@ export default class FileTreeItem extends Component
             fileActions.previewFile(this.props.path)
     }
 
-    dblClick()
-    {
+    dblClick() {
         if (this.props.type == FileTreeItem.TYPE_FILE) {
             fileActions.openFile(this.props.path)
         }
     }
 
-    render()
-    {
+    onContextMenu(e) {
+        var isDir = this.props.type == FileTreeItem.TYPE_DIR;
+        if (isDir) {
+            e.nativeEvent.menuTemplate.push(
+                {
+                    label: 'New File',
+                    click: () => {
+                        // Need to defer to prevent focus/blur conflicts
+                        setTimeout(() => {
+                            fileActions.newFile(this.props.path + path.sep)
+                        }, 0)
+                        return true;
+                    }
+                },
+                { label: 'New Folder'}
+            )
+        }
+
+        e.nativeEvent.menuTemplate.push(
+            { type : 'separator' },
+            { label: 'Cut'       },
+            { label: 'Copy'      },
+            { label: 'Paste'     },
+            { label: 'Rename'    },
+            { type : 'separator' },
+            { label: 'Delete'    }
+        )
+    }
+
+    render() {
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;
         if (this.props.selectedPath === this.props.path) {
             setTimeout(() => { this.refs.li.scrollIntoViewIfNeeded(); });
@@ -121,6 +148,7 @@ export default class FileTreeItem extends Component
                 }>
                 <div onClick={ this.onClick }
                      onDoubleClick={ this.dblClick }
+                     onContextMenu={ this.onContextMenu }
                      style={{ paddingLeft: this.props.level * 18, opacity: this.props.name.indexOf('.') === 0 ? 0.5 : 1 }}
                      tabIndex="0">
                      <span className={ 'icon ' + (

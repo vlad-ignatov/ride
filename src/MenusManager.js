@@ -35,7 +35,7 @@ function setMainMenu(mainWindow)
                     accelerator: 'CmdOrCtrl+N',
                     click(item, focusedWindow) {
                         if (focusedWindow) {
-                            focusedWindow.webContents.send('newFile');
+                            focusedWindow.webContents.send('fluxAction', 'FileActions', 'newFile');
                         }
                     }
                 },

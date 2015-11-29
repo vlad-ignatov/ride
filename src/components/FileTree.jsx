@@ -1,6 +1,6 @@
 import { PropTypes, Component } from 'react';
-import FileTreeItem from './FileTreeItem';
-import fs       from 'fs';
+import FileTreeItem             from './FileTreeItem';
+import fs                       from 'fs';
 
 /**
  * This is just a wrapper arround recursive structure of FileTreeItem
@@ -23,15 +23,21 @@ export class FileTree extends Component
         expanded: false,
         selectedPath : ''
     };
+    
+    onContextMenu(e) {
+        e.nativeEvent.menuTemplate.push(
+            { type : 'separator' },
+            { label: 'Add Project Folder' }
+        )
+    }
 
-    render()
-    {
+    render() {
         var type = fs.statSync(this.props.path).isDirectory() ?
             FileTreeItem.TYPE_DIR :
             FileTreeItem.TYPE_FILE;
 
         return (
-            <ul className="file-tree">
+            <ul className="file-tree" onContextMenu={ this.onContextMenu }>
                 <FileTreeItem
                     path={ this.props.path }
                     name={ this.props.name }
