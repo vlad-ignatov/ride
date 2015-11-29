@@ -46,7 +46,9 @@
   },
   "dependencies": {
     "alt": "^0.17.9",
+    "async": "^1.5.0",
     "babel-runtime": "^6.1.4",
+    "bluebird": "^3.0.5",
     "command-palette": "file:../ride-packages/command-palette",
     "css-loader": "^0.22.0",
     "jquery": "^2.1.4",
