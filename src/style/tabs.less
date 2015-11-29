@@ -5,15 +5,15 @@
     padding-bottom: 3px;
     background    : @color-ui;
 
-    &::after {
-        content   : '';
+    &:not(:empty)::after {
+        content   : ''; 
         height    : 2px;
         display   : block;
         background: @color-ui-light;
         position  : absolute;
         top       : 100%;
         left      : 0;
-        width     : 100%;
+        width     : 100%; 
         margin-top: -3px; 
         z-index   : 3;
         border    : 1px solid @color-ui-darkest;
@@ -22,7 +22,7 @@
     .tab {
         flex         : 1;
         position     : relative;
-        z-index      : 2;
+        z-index      : 2; 
         padding      : 3px 8px 4px;
         max-width    : 180px;
         white-space  : nowrap;
@@ -66,9 +66,9 @@
             font-style: italic;
         }
 
-        &.modified {
-            color: @color-ui-accent;
-        }
+        // &.modified {
+        //     color: @color-ui-accent;
+        // }
 
         .close-tab {
             float        : right;
@@ -117,11 +117,14 @@
         // box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);
     }
     .tab {
+        @bg: mix(@color-ui, @color-ui-light);
         // box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.2),
         //             0 1px 2px -2px rgba(255, 255, 255, 0.5) inset,
         //             0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;
-        background: mix(@color-ui, @color-ui-light);
-        color     : rgba(255, 255, 255, 0.3);
+        background  : @bg;
+        color       : rgba(255, 255, 255, 0.3);
+        border-color: lighten(@bg, 3%);
+        margin      : 3px 0 -1px 1px;
         // text-shadow: 0px -1px 0px #000;
 
         // &:hover {
@@ -139,7 +142,10 @@
                 @color-ui-light
             );
             color: #fff;
-            text-shadow: 0 1px 0 @color-ui;
+            text-shadow: 0 1px 0 @color-ui, 0 1px 0 @color-ui;
+            border-color : @color-ui-darkest;
+            margin       : 0 -1px -1px 0;
+            padding      : 6px 9px 4px;
             
             .close-tab {
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -148,7 +154,7 @@
 
         &.modified {
             color: @color-ui-accent;
-            text-shadow: 0 0 1px @color-ui-dark;
+            text-shadow: 0 1px 0px #000, 0 1px 2px rgba(0, 0, 0, 0.5);
             .close-tab {
                 text-shadow: 0 0 1px @color-ui-dark;
             }

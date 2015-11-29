@@ -14,7 +14,7 @@
 @color-ui-dark   : #1E1F18;//#3D6775;
 @color-ui-light  : #4D5673;//#C4F0FF;
 @color-ui-darkest: #000C27;//#C4F0FF;
-@color-ui-accent : #B36E00;//#484B3F;
+@color-ui-accent : #FF9D00;//#484B3F;
 
 
 @color: contrast(
@@ -23,6 +23,31 @@
     mix(@color-ui-dark, #FFF, 60%),
     30%
 );
+
+input {
+    width: 100%;
+    background-color: @color-ui;
+    font-size: 140%;
+    color: contrast(@color-ui);
+    border: 1px solid @color-ui-darkest;
+    border-radius: 3px;
+    padding: 4px 8px;
+    
+    &:focus {
+        border-color: @color-ui-accent;
+        outline: none;
+    }
+}
+
+.dialog {
+    background: @color-ui-light;
+    padding: 8px;
+    box-shadow: 0 0 1px 0 @color-ui-darkest,
+                0 1px 5px -1px rgba(0, 0, 0, 0.5),
+                0 0 0px 1px lighten(@color-ui-light, 10%) inset;
+    color: contrast(@color-ui);
+    border-radius: 7px;
+}
 
 * {
     box-sizing: border-box;
@@ -195,7 +220,7 @@ a {
 
 .main-status-bar {
     display: flex;
-    padding: 0 4px 1px;
+    padding: 0 6px 1px;
     // border-top : 1px solid rgba(255, 255, 255, 0.1);
     -webkit-app-region: drag;
 }
