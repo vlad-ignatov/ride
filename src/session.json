@@ -1,7 +1,7 @@
 {
     "files": [
         {
-            "path": "/Users/vlad/dev/ride/src/lib/index.js",
+            "path": "/Users/vlad/dev/ride/src/stores/file-store.js",
             "isPreview": false,
             "mode": {
                 "name": "javascript",
@@ -9,39 +9,40 @@
                 "mode": "ace/mode/javascript",
                 "extensions": "js|jsm|jsx",
                 "extRe": {}
+            },
+            "session": {
+                "scrollLeft": 0,
+                "scrollTop": 2940
             }
         },
         {
-            "path": "/Users/vlad/dev/ride/src/window.jsx",
+            "path": "/Users/vlad/dev/ride/src/stores/config-store.js",
             "isPreview": false,
             "mode": {
-                "name": "jsx",
-                "caption": "JSX",
-                "mode": "ace/mode/jsx",
-                "extensions": "jsx",
+                "name": "javascript",
+                "caption": "JavaScript",
+                "mode": "ace/mode/javascript",
+                "extensions": "js|jsm|jsx",
                 "extRe": {}
+            },
+            "session": {
+                "scrollLeft": 100,
+                "scrollTop": 1081
             }
         },
         {
-            "path": "/Users/vlad/dev/ride/dst/index.html",
+            "path": "/Users/vlad/dev/ride/src/config.json",
             "isPreview": false,
             "mode": {
-                "name": "html",
-                "caption": "HTML",
-                "mode": "ace/mode/html",
-                "extensions": "html|htm|xhtml",
+                "name": "json",
+                "caption": "JSON",
+                "mode": "ace/mode/json",
+                "extensions": "json",
                 "extRe": {}
-            }
-        },
-        {
-            "path": "/Users/vlad/dev/ride/src/stores/file-store.js",
-            "isPreview": false,
-            "mode": {
-                "name": "jsx",
-                "caption": "JSX",
-                "mode": "ace/mode/jsx",
-                "extensions": "jsx",
-                "extRe": {}
+            },
+            "session": {
+                "scrollLeft": 0,
+                "scrollTop": 0
             }
         },
         {
@@ -53,30 +54,12 @@
                 "mode": "ace/mode/javascript",
                 "extensions": "js|jsm|jsx",
                 "extRe": {}
-            }
-        },
-        {
-            "path": "/Users/vlad/dev/ride/src/style/tabs.less",
-            "isPreview": false,
-            "mode": {
-                "name": "less",
-                "caption": "LESS",
-                "mode": "ace/mode/less",
-                "extensions": "less",
-                "extRe": {}
-            }
-        },
-        {
-            "path": "/Users/vlad/dev/ride/src/session.json",
-            "isPreview": false,
-            "mode": {
-                "name": "json",
-                "caption": "JSON",
-                "mode": "ace/mode/json",
-                "extensions": "json",
-                "extRe": {}
+            },
+            "session": {
+                "scrollLeft": 0,
+                "scrollTop": 0
             }
         }
     ],
-    "current": "/Users/vlad/dev/ride/src/stores/file-store.js"
+    "current": "/Users/vlad/dev/ride/src/stores/config-store.js"
 }

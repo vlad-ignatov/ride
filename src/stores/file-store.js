@@ -42,6 +42,11 @@ class FilesStore
             }
             // this.__is_loaded = true
         })
+
+        window.addEventListener('beforeunload', () => {
+            this.saveToSession();
+        }, false);
+
     }
 
     isPathOpened(path) {
@@ -69,7 +74,11 @@ class FilesStore
                 return {
                     path: f.path,
                     isPreview: f.isPreview,
-                    mode: f.mode
+                    mode: f.mode,
+                    session : {
+                        scrollLeft : f.session.getScrollLeft(),
+                        scrollTop : f.session.getScrollTop()
+                    }
                 }
             }),
             current: this.current ? this.current.path : null
@@ -214,7 +223,7 @@ class FilesStore
         }
     }
 
-    handleFileAdded({ path, isPreview, mode }) {
+    handleFileAdded({ path, isPreview, mode, session }) {
 
         // This path is already opened just switch to it insteat of re-opening
         if (path && this.isPathOpened(path)) {
@@ -245,7 +254,12 @@ class FilesStore
                 isPreview : !!isPreview,
                 modified : false
             }
-            // console.log(modelist.getModeForPath(path))
+
+            if (session) {
+                console.log(session)
+                entry.session.setScrollLeft(session.scrollLeft)
+                entry.session.setScrollTop(session.scrollTop)
+            }
 
             entry.session.on("change", () => {
                 fileActions.checkFileForModifications(entry.id)
@@ -371,5 +385,6 @@ class FilesStore
 }
 
 var filesStore = alt.createStore(FilesStore, 'FilesStore')
+
 
 export default filesStore
