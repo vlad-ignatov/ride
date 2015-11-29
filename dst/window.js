@@ -176,9 +176,9 @@
 
 	    window.addEventListener('contextmenu', function (e) {
 	        if (!e.defaultPrevented && e.menuTemplate && e.menuTemplate.length) {
-	            setTimeout(function () {
-	                Menu.buildFromTemplate(e.menuTemplate).popup(_remote2.default.getCurrentWindow());
-	            }, 50);
+	            // setTimeout(() => {
+	            Menu.buildFromTemplate(e.menuTemplate).popup(_remote2.default.getCurrentWindow());
+	            // }, 50);
 	        }
 	    }, false);
 
@@ -190,6 +190,49 @@
 	            }, 50);
 	        }
 	    }, false);
+
+	    // Prompt ------------------------------------------------------------------
+	    window.prompt = function prompt(msg, value) {
+	        return new Promise(function (resolve, reject) {
+	            var $prompt = (0, _jquery2.default)('#prompt');
+	            if (!$prompt.length) {
+	                $prompt = (0, _jquery2.default)('<div id="prompt" class="dialog" style="display: none">\n                        <div class="prompt-message"></div>\n                        <input type="text"/>\n                    </div>').css({
+	                    position: 'absolute',
+	                    zIndex: 1000,
+	                    top: 60,
+	                    left: '20%',
+	                    width: '60%'
+	                }).appendTo('.main-stage');
+	            }
+
+	            $prompt.find('.prompt-message').html(msg || '');
+	            $prompt.show();
+	            $prompt.find('input').val(value || '').one('blur', function () {
+	                (0, _jquery2.default)(this).off();
+	                $prompt.hide();
+	                reject('No path selected');
+	            }).on('keydown', function (e) {
+	                var val = this.value.trim();
+	                if (val && e.keyCode == 13) {
+	                    (0, _jquery2.default)(this).off().trigger('blur');
+	                    $prompt.hide();
+	                    resolve(val);
+	                } else if (e.keyCode == 27) {
+	                    (0, _jquery2.default)(this).off().trigger('blur');
+	                    $prompt.hide();
+	                    reject('Action canceled');
+	                }
+	            });
+
+	            setTimeout(function () {
+	                var input = $prompt.find('input').trigger('focus'),
+	                    len = input.val().length;
+	                input[0].selectionStart = len;
+	                input[0].selectionEnd = len;
+	                input.trigger('click');
+	            }, 20);
+	        });
+	    };
 	});
 
 /***/ },
@@ -386,13 +429,18 @@
 	    }
 
 	    _createClass(FileTree, [{
+	        key: 'onContextMenu',
+	        value: function onContextMenu(e) {
+	            e.nativeEvent.menuTemplate.push({ type: 'separator' }, { label: 'Add Project Folder' });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var type = _fs2.default.statSync(this.props.path).isDirectory() ? _FileTreeItem2.default.TYPE_DIR : _FileTreeItem2.default.TYPE_FILE;
 
 	            return React.createElement(
 	                'ul',
-	                { className: 'file-tree' },
+	                { className: 'file-tree', onContextMenu: this.onContextMenu },
 	                React.createElement(_FileTreeItem2.default, {
 	                    path: this.props.path,
 	                    name: this.props.name,
@@ -429,7 +477,7 @@
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* global path */
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -459,18 +507,20 @@
 	    function FileTreeItem(props) {
 	        _classCallCheck(this, FileTreeItem);
 
-	        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(FileTreeItem).call(this, props));
+	        var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(FileTreeItem).call(this, props));
 
-	        _this3.onClick = _this3.onClick.bind(_this3);
-	        _this3.dblClick = _this3.dblClick.bind(_this3);
-	        _this3.state = {
+	        _this4.onClick = _this4.onClick.bind(_this4);
+	        _this4.dblClick = _this4.dblClick.bind(_this4);
+	        _this4.onContextMenu = _this4.onContextMenu.bind(_this4);
+
+	        _this4.state = {
 	            expanded: props.expanded
 	        };
 
-	        _this3.state.expanded = props.type === FileTreeItem.TYPE_DIR && props.openFiles.files.some(function (f) {
+	        _this4.state.expanded = props.type === FileTreeItem.TYPE_DIR && props.openFiles.files.some(function (f) {
 	            return f.path && f.path.indexOf(props.path) === 0;
 	        });
-	        return _this3;
+	        return _this4;
 	    }
 
 	    _createClass(FileTreeItem, [{
@@ -528,7 +578,7 @@
 	        key: 'onClick',
 	        value: function onClick(e) {
 	            e.stopPropagation();
-	            e.preventDefault();
+	            // e.preventDefault();
 	            if (this.props.type == FileTreeItem.TYPE_DIR) {
 	                this.setState({
 	                    expanded: !this.state.expanded
@@ -543,14 +593,35 @@
 	            }
 	        }
 	    }, {
+	        key: 'onContextMenu',
+	        value: function onContextMenu(e) {
+	            var _this2 = this;
+
+	            var isDir = this.props.type == FileTreeItem.TYPE_DIR;
+	            if (isDir) {
+	                e.nativeEvent.menuTemplate.push({
+	                    label: 'New File',
+	                    click: function click() {
+	                        // Need to defer to prevent focus/blur conflicts
+	                        setTimeout(function () {
+	                            _fileActions2.default.newFile(_this2.props.path + path.sep);
+	                        }, 0);
+	                        return true;
+	                    }
+	                }, { label: 'New Folder' });
+	            }
+
+	            e.nativeEvent.menuTemplate.push({ type: 'separator' }, { label: 'Cut' }, { label: 'Copy' }, { label: 'Paste' }, { label: 'Rename' }, { type: 'separator' }, { label: 'Delete' });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            var isDir = this.props.type == FileTreeItem.TYPE_DIR;
 	            if (this.props.selectedPath === this.props.path) {
 	                setTimeout(function () {
-	                    _this2.refs.li.scrollIntoViewIfNeeded();
+	                    _this3.refs.li.scrollIntoViewIfNeeded();
 	                });
 	            }
 	            return React.createElement(
@@ -560,6 +631,7 @@
 	                    'div',
 	                    { onClick: this.onClick,
 	                        onDoubleClick: this.dblClick,
+	                        onContextMenu: this.onContextMenu,
 	                        style: { paddingLeft: this.props.level * 18, opacity: this.props.name.indexOf('.') === 0 ? 0.5 : 1 },
 	                        tabIndex: '0' },
 	                    React.createElement('span', { className: 'icon ' + (isDir ? this.state.expanded ? 'icon-folder-open' : 'icon-folder' : 'icon-file-text2') }),
@@ -2347,6 +2419,8 @@
 	            } else {
 	                this.editor.setSession(ace.createEditSession(''));
 	            }
+
+	            this.editor.focus();
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -2382,7 +2456,7 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })(); /* global ace, fs */
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })(); /* global ace, fs, Async, Dialog */
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -2566,12 +2640,72 @@
 	                }
 	            }
 	        }
+
+	        /**
+	         * 1. If no @base is specified it means that the user wants to just open an
+	         * empty file and decide what to do with it later. That will open new
+	         * untitled tab which can be editted and eventually saved somewhere.
+	         * 2. If the @base is provided the user will first be asked to enter a file
+	         * name then the file will be created and finally opened.
+	         * @param {String} base - The caontaining directory
+	         */
+
 	    }, {
 	        key: 'onNewFile',
-	        value: function onNewFile() {
-	            this.handleFileAdded({
-	                path: '',
-	                isPreview: true
+	        value: function onNewFile(base) {
+	            var _this3 = this;
+
+	            if (!base) {
+	                return this.handleFileAdded({
+	                    path: '',
+	                    isPreview: false
+	                });
+	            }
+
+	            prompt('Enter file name:', base || '').then(function (path) {
+	                Async.series([
+
+	                // Check if such file exists
+	                function checkIfFileExists(cb) {
+	                    fs.stat(path, function (e) {
+	                        if (e && e.code == 'ENOENT') {
+	                            return cb();
+	                        }
+
+	                        // TODO: warn if it does
+	                        if (Dialog.showMessageBox({
+	                            type: 'warning',
+	                            title: 'Error',
+	                            buttons: ['Try Again', 'Cancel'],
+	                            message: 'The selected file already exists'
+	                        }) === 1) {
+	                            cb(new Error('The file exists'));
+	                        } else {
+	                            cb('RETRY');
+	                        }
+	                    });
+	                },
+
+	                // create the file
+	                function (cb) {
+	                    fs.writeFile(path, '', cb);
+	                }], function (err) {
+	                    if (err) {
+	                        if (err == 'RETRY') {
+	                            return _this3.onNewFile(base);
+	                        }
+	                        return console.error(err);
+	                    }
+
+	                    // open the file
+	                    setTimeout(function () {
+	                        _this3.handleFileAdded({
+	                            path: path,
+	                            isPreview: false
+	                        });
+	                        _this3.setState({});
+	                    }, 100);
+	                });
 	            });
 	        }
 	    }, {
@@ -2590,7 +2724,7 @@
 	    }, {
 	        key: 'handleFileAdded',
 	        value: function handleFileAdded(_ref2) {
-	            var _this3 = this;
+	            var _this4 = this;
 
 	            var path = _ref2.path;
 	            var isPreview = _ref2.isPreview;
@@ -2632,13 +2766,13 @@
 	                    });
 
 	                    // Close the existing reusable session (if any)
-	                    _this3.files = _this3.files.filter(function (o) {
+	                    _this4.files = _this4.files.filter(function (o) {
 	                        return !o.isPreview;
 	                    });
 
-	                    _this3.files.push(entry);
+	                    _this4.files.push(entry);
 
-	                    _this3.current = entry;
+	                    _this4.current = entry;
 	                })();
 
 	                if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
@@ -2654,6 +2788,12 @@
 	                isPreview: true
 	            });
 	        }
+
+	        /**
+	         * Closes the file by removing it from the list of opened files. Check if
+	         * the file has unsaved changes and for saving if so.
+	         */
+
 	    }, {
 	        key: 'handleFileRemoved',
 	        value: function handleFileRemoved(id) {
@@ -2662,6 +2802,29 @@
 	            });
 	            if (idx > -1) {
 	                var meta = this.files[idx];
+
+	                // Check for unsaved changes
+	                if (meta.modified) {
+	                    var action = Dialog.showMessageBox({
+	                        type: 'question',
+	                        title: 'Error',
+	                        buttons: ["Don't Save", 'Cancel', 'Save'],
+	                        message: 'This file has changes, do you want to save them?',
+	                        detail: 'Your changes will be lost if you close this item without saving.'
+	                    });
+
+	                    if (action === 1) {
+	                        // Cancel
+	                        return;
+	                    } else if (action === 2) {
+	                        // Save
+
+	                        // TODO: handle virtual files
+	                        var text = meta.session.getValue();
+	                        lib.writeFile(meta.path, text);
+	                    }
+	                }
+
 	                meta.session.removeAllListeners();
 	                meta.session.destroy();
 	                this.files.splice(idx, 1);
@@ -2681,8 +2844,8 @@
 	                        this.current = next;
 	                    }
 	                }
+	                this.saveToSession();
 	            }
-	            this.saveToSession();
 	        }
 	    }, {
 	        key: 'handleSetCurrentFile',
@@ -2754,7 +2917,7 @@
 
 	'use strict';
 
-	/* global ace, fs */
+	/* global ace */
 
 	var fs = __webpack_require__(7);
 	var Crypto = __webpack_require__(25);
@@ -3051,6 +3214,10 @@
 
 	var _fileStore2 = _interopRequireDefault(_fileStore);
 
+	var _path = __webpack_require__(42);
+
+	var _path2 = _interopRequireDefault(_path);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3095,13 +3262,19 @@
 	        }
 	    }, {
 	        key: 'setCurrentFile',
-	        value: function setCurrentFile(id) {
+	        value: function setCurrentFile(id, event) {
+	            if (event) {
+	                if (event.nativeEvent.which == 3) {
+	                    return false;
+	                }
+	                event.preventDefault();
+	            }
 	            _fileActions2.default.setCurrentFile(id);
 	        }
 	    }, {
 	        key: 'onContextMenu',
 	        value: function onContextMenu(file, e) {
-	            this.setCurrentFile(file.id);
+	            // this.setCurrentFile(file.id)
 	            e.nativeEvent.menuTemplate.push({ label: 'Close Tab', click: function click() {
 	                    return _fileActions2.default.closeFile(file.id);
 	                } }, { type: 'separator' }, { label: 'Close Other Tabs', click: function click() {
@@ -3115,6 +3288,14 @@
 	                } }, { type: 'separator' }, { label: 'Close All Tabs', click: function click() {
 	                    return _fileActions2.default.closeAll();
 	                } });
+	        }
+	    }, {
+	        key: 'getLabel',
+	        value: function getLabel(file) {
+	            if (!file.path) {
+	                return file.session.doc.getLine(0) || '*Untitled';
+	            }
+	            return _path2.default.basename(file.path);
 	        }
 	    }, {
 	        key: 'render',
@@ -3133,7 +3314,7 @@
 	                    React.createElement('span', { className: 'close-tab icon icon-close',
 	                        title: 'Close Tab',
 	                        onClick: _this.closeFile.bind(_this, f.id) }),
-	                    file.substr(file.lastIndexOf('/') + 1)
+	                    _this.getLabel(f)
 	                );
 	            });
 
@@ -3256,7 +3437,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #DDD;\n}\nbody {\n  background: #DDD;\n  color: #525252;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  font-family: Roboto, 'Helvetica Neue', sans-serif;\n  font-size: 13px;\n  -webkit-app-region: drag;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  text-decoration: underline;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(33) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-pencil-square:before {\n  content: \"\\F14B\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n.icon-radio-checked2:before {\n  content: \"\\E901\";\n}\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(200, 200, 200, 0.1);\n  border-radius: 5px;\n  box-shadow: 0 0 1px 0px rgba(238, 238, 238, 0.2) inset;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(238, 238, 238, 0.3);\n  width: 12px;\n  height: 12px;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(238, 238, 238, 0.5);\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #DDD;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  overflow: auto;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n  position: relative;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  position: relative;\n  padding-bottom: 3px;\n  background: #DDD;\n}\n.main-tabs::after {\n  content: '';\n  height: 2px;\n  display: block;\n  background: #EEE;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  z-index: 3;\n  border: 1px solid #AAA;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 3px 8px 4px;\n  max-width: 180px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  border: 1px solid #CCC;\n  border-bottom: 0;\n  margin: 3px -1px -1px 0;\n  text-align: center;\n  background: #EEE;\n  color: #AAA;\n}\n.main-tabs .tab:last-child {\n  border-top-right-radius: 3px;\n}\n.main-tabs .tab:first-child {\n  border-top-left-radius: 3px;\n}\n.main-tabs .tab:hover {\n  color: #525252;\n}\n.main-tabs .tab.active {\n  z-index: 4;\n  border-radius: 3px 3px 0 0;\n  margin: 0 -1px -1px 0;\n  padding: 6px 8px 4px;\n  color: #525252;\n  border-color: #AAA;\n  background: linear-gradient(#ffffff, #EEE);\n  box-shadow: 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(0, 102, 204, 0.4) inset;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n}\n.main-tabs .tab.modified {\n  color: #06C;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  background: rgba(0, 0, 0, 0);\n  color: #CCC;\n  transition: all 0.2s;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 3px #000 inset;\n}\n.main-tabs .tab.modified .close-tab:not(:hover) {\n  opacity: 1;\n}\n.main-tabs .tab.modified .close-tab:not(:hover)::before {\n  content: '\\F14B';\n  color: #06C;\n}\n/* DARK THEME --------------------------------------------------------------- */\n.dark .main-tabs {\n  background: #DDD;\n}\n.dark .main-tabs::after {\n  background: #DDD;\n  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);\n}\n.dark .main-tabs .tab {\n  box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.2), 0 1px 2px -2px rgba(255, 255, 255, 0.5) inset, 0 -17px 16px -7px rgba(0, 0, 0, 0.2) inset;\n  background: #DDD;\n  text-shadow: 0px -1px 0px #000;\n}\n.dark .main-tabs .tab:hover {\n  background: #34372e;\n  color: #fff;\n}\n.dark .main-tabs .tab.active {\n  box-shadow: 0px -1px 0px 1px rgba(0, 0, 0, 0.5), 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px #06C inset;\n  background: linear-gradient(#EEE, #DDD);\n  color: #fff;\n}\n.dark .main-tabs .tab.modified {\n  color: orange;\n}\n.dark .main-tabs .tab.modified .close-tab:not(:hover)::before {\n  color: orange;\n  text-shadow: 0px 0px 1px #000;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 4px 1px;\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border: 1px solid #AAA;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n#editor.ace-twilight .ace_fold {\n  background-color: #2f3129;\n  border-color: #ab8657;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: #6699cc;\n  -webkit-text-stroke: 0.25px #000;\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #525252;\n}\n.file-tree li.expanded > div:before {\n  border-color: #525252 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(0, 0, 0, 0.2);\n  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);\n  box-shadow: 0 0 1px 0 #000;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: #6fa2d5;\n  box-shadow: 0 0 1px 0 #000 inset;\n  outline: none;\n  color: #FFF;\n  text-shadow: 0 1px 1px #000;\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
+	exports.push([module.id, "input {\n  width: 100%;\n  background-color: #232833;\n  font-size: 140%;\n  color: #ffffff;\n  border: 1px solid #000C27;\n  border-radius: 3px;\n  padding: 4px 8px;\n}\ninput:focus {\n  border-color: #FF9D00;\n  outline: none;\n}\n.dialog {\n  background: #4D5673;\n  padding: 8px;\n  box-shadow: 0 0 1px 0 #000C27, 0 1px 5px -1px rgba(0, 0, 0, 0.5), 0 0 0px 1px #616d92 inset;\n  color: #ffffff;\n  border-radius: 7px;\n}\n* {\n  box-sizing: border-box;\n}\nhtml {\n  overflow: hidden;\n  height: 100%;\n  background: #232833;\n}\nbody {\n  background: #232833;\n  color: #787974;\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  cursor: default;\n  font-family: Roboto, 'Helvetica Neue', sans-serif;\n  font-size: 13px;\n  -webkit-app-region: drag;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  text-decoration: underline;\n}\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(33) + ") format('woff');\n  font-weight: normal;\n  font-style: normal;\n}\n.icon {\n  font-family: 'icomoon';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.icon-cancel:before {\n  content: \"\\E205\";\n}\n.icon-close:before {\n  content: \"\\E209\";\n}\n.icon-folder:before {\n  content: \"\\F07B\";\n}\n.icon-folder-open:before {\n  content: \"\\F07C\";\n}\n.icon-folder-o:before {\n  content: \"\\F114\";\n}\n.icon-folder-open-o:before {\n  content: \"\\F115\";\n}\n.icon-pencil-square:before {\n  content: \"\\F14B\";\n}\n.icon-file-text2:before {\n  content: \"\\E900\";\n}\n.icon-radio-checked2:before {\n  content: \"\\E901\";\n}\n::-webkit-scrollbar {\n  width: 8px;\n  height: 8px;\n}\n::-webkit-scrollbar-button {\n  width: 0px;\n  height: 0px;\n}\n::-webkit-scrollbar-thumb {\n  background: rgba(255, 255, 255, 0.1);\n  border-radius: 5px;\n  width: 6px;\n  height: 6px;\n  border: 1px solid transparent;\n  background-clip: content-box;\n}\n::-webkit-scrollbar-thumb:hover {\n  background: rgba(255, 255, 255, 0.2);\n  background-clip: content-box;\n}\n::-webkit-scrollbar-thumb:active {\n  background: rgba(255, 255, 255, 0.3);\n  background-clip: content-box;\n}\n::-webkit-scrollbar-track {\n  background: transparent;\n}\n::-webkit-scrollbar-corner {\n  background: transparent;\n}\n.main-wrap {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.main-row {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n  background: #232833;\n  -webkit-app-region: no-drag;\n}\n.main-sidebar-left {\n  padding: 3px;\n  width: 300px;\n  overflow: auto;\n  position: relative;\n}\n.main-stage {\n  display: flex;\n  flex: 5;\n  flex-direction: column;\n  position: relative;\n}\n.main-tabs {\n  display: flex;\n  flex-direction: row;\n  position: relative;\n  padding-bottom: 3px;\n  background: #232833;\n}\n.main-tabs:not(:empty)::after {\n  content: '';\n  height: 2px;\n  display: block;\n  background: #4D5673;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  width: 100%;\n  margin-top: -3px;\n  z-index: 3;\n  border: 1px solid #000C27;\n}\n.main-tabs .tab {\n  flex: 1;\n  position: relative;\n  z-index: 2;\n  padding: 3px 8px 4px;\n  max-width: 180px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  border: 1px solid #1E1F18;\n  border-bottom: 0;\n  margin: 3px -1px -1px 0;\n  text-align: center;\n  background: #4D5673;\n  color: #000C27;\n}\n.main-tabs .tab:last-child {\n  border-top-right-radius: 3px;\n  margin-right: 1px !important;\n}\n.main-tabs .tab:first-child {\n  border-top-left-radius: 3px;\n}\n.main-tabs .tab:hover {\n  color: #787974;\n}\n.main-tabs .tab.active {\n  z-index: 4;\n  border-radius: 3px 3px 0 0;\n  margin: 0 -1px -1px 0;\n  padding: 6px 8px 4px;\n  color: #787974;\n  border-color: #000C27;\n  background: linear-gradient(#616d92, #4D5673);\n  box-shadow: 0 2px 1px -2px rgba(255, 255, 255, 0.8) inset, 0 10px 0 -8px rgba(255, 157, 0, 0.4) inset;\n}\n.main-tabs .tab.preview {\n  font-style: italic;\n}\n.main-tabs .tab .close-tab {\n  float: right;\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 2px;\n  margin: 1px -3px auto 3px;\n  font-size: 14px;\n  line-height: 16px;\n  text-align: center;\n  padding: 0;\n  position: relative;\n  z-index: 2;\n  background: rgba(0, 0, 0, 0);\n  color: #1E1F18;\n  transition: all 0.2s;\n}\n.main-tabs .tab .close-tab:hover {\n  background: rgba(0, 0, 0, 0.3);\n  color: #fff;\n}\n.main-tabs .tab .close-tab:active {\n  box-shadow: 1px 1px 3px #000 inset;\n}\n.main-tabs .tab.modified .close-tab:not(:hover) {\n  opacity: 1;\n}\n.main-tabs .tab.modified .close-tab:not(:hover)::before {\n  content: '\\F14B';\n  color: #FF9D00;\n}\n/* DARK THEME --------------------------------------------------------------- */\n.dark .main-tabs .tab {\n  background: #383f53;\n  color: rgba(255, 255, 255, 0.3);\n  border-color: #3e465c;\n  margin: 3px 0 -1px 1px;\n}\n.dark .main-tabs .tab.active {\n  background: linear-gradient(#616d92, #4D5673);\n  color: #fff;\n  text-shadow: 0 1px 0 #232833, 0 1px 0 #232833;\n  border-color: #000C27;\n  margin: 0 -1px -1px 0;\n  padding: 6px 9px 4px;\n}\n.dark .main-tabs .tab.active .close-tab {\n  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);\n}\n.dark .main-tabs .tab.modified {\n  color: #FF9D00;\n  text-shadow: 0 1px 0px #000, 0 1px 2px rgba(0, 0, 0, 0.5);\n}\n.dark .main-tabs .tab.modified .close-tab {\n  text-shadow: 0 0 1px #1E1F18;\n}\n.main-frame {\n  display: flex;\n  flex: 5;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  outline: 0;\n  box-sizing: border-box;\n}\n.main-inspector {\n  display: flex;\n  flex: 5;\n  position: relative;\n}\n.main-sidebar-right {\n  display: flex;\n  padding: 4px;\n  flex: 2;\n  overflow: auto;\n}\n.main-status-bar {\n  display: flex;\n  padding: 0 6px 1px;\n  -webkit-app-region: drag;\n}\n.header {\n  height: 23px;\n  line-height: 22px;\n  font-size: 14px;\n  position: relative;\n  z-index: 5;\n}\n#editor {\n  position: absolute;\n  border: 1px solid #000C27;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  -webkit-font-smoothing: subpixel-antialiased;\n  font-family: \"Roboto Mono\", \"Source Code Pro\", Menlo;\n  text-rendering: optimizeLegibility;\n  font-size: 14px;\n}\n#editor.ace_dark {\n  font-weight: 300;\n  text-shadow: 0 0.5px 0.5px #000000;\n  /*opacity: 0.8;*/\n  background: rgba(0, 12, 39, 0.2);\n}\n#editor.ace_dark .ace_gutter {\n  background: rgba(77, 86, 115, 0.1);\n  color: rgba(255, 255, 255, 0.4);\n}\n#editor.ace-ambiance .ace_gutter {\n  color: #000 !important;\n  font-weight: 400;\n}\n#editor.ace-ambiance .ace_marker-layer .ace_selected-word {\n  border-width: 1px;\n}\n#editor .ace_comment {\n  font-weight: 400;\n  letter-spacing: 0.025ex;\n}\n#editor.ace-twilight .ace_fold {\n  background-color: #2f3129;\n  border-color: #ab8657;\n}\n.file-tree,\n.file-tree ul {\n  margin: 0;\n  padding: 0;\n  display: table;\n  min-width: 100%;\n}\n.file-tree .icon {\n  display: inline-block;\n  vertical-align: top;\n  width: 20px;\n  height: 20px;\n  font-size: 16px;\n  line-height: 20px;\n  text-align: left;\n  margin-right: 4px;\n}\n.file-tree .icon.icon-folder-open,\n.file-tree .icon.icon-folder {\n  color: #91631a;\n  -webkit-text-stroke: 0.2px #000;\n}\n.file-tree li {\n  white-space: nowrap;\n  display: block;\n  min-width: 100%;\n}\n.file-tree li > div {\n  min-width: 100%;\n  display: inline-block;\n  padding-right: 4px;\n  position: relative;\n  z-index: 2;\n  border-radius: 2px;\n  line-height: 20px;\n}\n.file-tree li > div:before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  border-width: 5px;\n  border-color: transparent;\n  border-style: inset inset inset solid;\n  position: relative;\n  display: inline-block;\n  margin: 0px 3px 0px 9px;\n}\n.file-tree li.dir > div:before {\n  border-color: transparent transparent transparent #787974;\n}\n.file-tree li.expanded > div:before {\n  border-color: #787974 transparent transparent transparent;\n  border-style: solid inset inset inset;\n  margin: 6px 6px -3px 6px;\n}\n.file-tree li > div:hover {\n  background: rgba(255, 255, 255, 0.05);\n  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);\n  box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.1) inset;\n}\n.file-tree li > div:focus {\n  outline: none;\n}\n.file-tree li.selected > div {\n  background: #91631a;\n  box-shadow: 0 0 1px 0 #3a280a inset;\n  outline: none;\n  color: #ffffff;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);\n}\n.dark .file-tree li.selected > div {\n  box-shadow: 0 0 1px 0 #000C27;\n}\n.resizer {\n  position: fixed;\n  pointer-events: auto;\n  z-index: 1000;\n}\n.resizer.vertical {\n  cursor: col-resize;\n  width: 6px;\n  top: 0;\n  bottom: 0;\n}\n.resizer.horizontal {\n  cursor: row-resize;\n  height: 6px;\n  left: 0;\n  right: 0;\n}\n.btn {\n  display: inline-block;\n  width: 20px;\n  height: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n}\n.pull-right {\n  float: right;\n}\n", ""]);
 
 	// exports
 
@@ -3641,7 +3822,9 @@
 		},
 		"dependencies": {
 			"alt": "^0.17.9",
+			"async": "^1.5.0",
 			"babel-runtime": "^6.1.4",
+			"bluebird": "^3.0.5",
 			"command-palette": "file:../ride-packages/command-palette",
 			"css-loader": "^0.22.0",
 			"jquery": "^2.1.4",

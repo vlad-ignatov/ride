@@ -1,7 +1,73 @@
 {
     "files": [
         {
-            "path": "/Users/vlad/dev/ride/src/config.json",
+            "path": "/Users/vlad/dev/ride/src/lib/index.js",
+            "isPreview": false,
+            "mode": {
+                "name": "javascript",
+                "caption": "JavaScript",
+                "mode": "ace/mode/javascript",
+                "extensions": "js|jsm|jsx",
+                "extRe": {}
+            }
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/window.jsx",
+            "isPreview": false,
+            "mode": {
+                "name": "jsx",
+                "caption": "JSX",
+                "mode": "ace/mode/jsx",
+                "extensions": "jsx",
+                "extRe": {}
+            }
+        },
+        {
+            "path": "/Users/vlad/dev/ride/dst/index.html",
+            "isPreview": false,
+            "mode": {
+                "name": "html",
+                "caption": "HTML",
+                "mode": "ace/mode/html",
+                "extensions": "html|htm|xhtml",
+                "extRe": {}
+            }
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/stores/file-store.js",
+            "isPreview": false,
+            "mode": {
+                "name": "jsx",
+                "caption": "JSX",
+                "mode": "ace/mode/jsx",
+                "extensions": "jsx",
+                "extRe": {}
+            }
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/MenusManager.js",
+            "isPreview": false,
+            "mode": {
+                "name": "javascript",
+                "caption": "JavaScript",
+                "mode": "ace/mode/javascript",
+                "extensions": "js|jsm|jsx",
+                "extRe": {}
+            }
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/style/tabs.less",
+            "isPreview": false,
+            "mode": {
+                "name": "less",
+                "caption": "LESS",
+                "mode": "ace/mode/less",
+                "extensions": "less",
+                "extRe": {}
+            }
+        },
+        {
+            "path": "/Users/vlad/dev/ride/src/session.json",
             "isPreview": false,
             "mode": {
                 "name": "json",
@@ -10,29 +76,7 @@
                 "extensions": "json",
                 "extRe": {}
             }
-        },
-        {
-            "path": "/Users/vlad/dev/ride/src/style/main.less",
-            "isPreview": false,
-            "mode": {
-                "name": "less",
-                "caption": "LESS",
-                "mode": "ace/mode/less",
-                "extensions": "less",
-                "extRe": {}
-            }
-        },
-        {
-            "path": "/Users/vlad/dev/ride/src/style/FileTree.less",
-            "isPreview": true,
-            "mode": {
-                "name": "less",
-                "caption": "LESS",
-                "mode": "ace/mode/less",
-                "extensions": "less",
-                "extRe": {}
-            }
         }
     ],
-    "current": "/Users/vlad/dev/ride/src/style/main.less"
+    "current": "/Users/vlad/dev/ride/src/stores/file-store.js"
 }
