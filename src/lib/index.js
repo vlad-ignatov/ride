@@ -1,4 +1,4 @@
-/* global ace, fs */
+/* global ace */
 
 var fs = require('fs');
 var Crypto = require('crypto');
