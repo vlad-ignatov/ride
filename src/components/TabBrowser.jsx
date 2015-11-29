@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import fileActions   from '../actions/file-actions'
 import fileStore     from '../stores/file-store'
+import path          from 'path'
 
 export default class TabBrowser extends Component
 {
@@ -27,12 +28,18 @@ export default class TabBrowser extends Component
         fileActions.closeFile(id);
     }
 
-    setCurrentFile(id) {
+    setCurrentFile(id, event) {
+        if (event) {
+            if (event.nativeEvent.which == 3) {
+                return false;
+            }
+            event.preventDefault();
+        }
         fileActions.setCurrentFile(id);
     }
 
     onContextMenu(file, e) {
-        this.setCurrentFile(file.id)
+        // this.setCurrentFile(file.id)
         e.nativeEvent.menuTemplate.push(
             { label: 'Close Tab', click: () => fileActions.closeFile(file.id) },
             { type: 'separator' },
@@ -43,6 +50,13 @@ export default class TabBrowser extends Component
             { type: 'separator' },
             { label: 'Close All Tabs', click: () => fileActions.closeAll() }
         );
+    }
+
+    getLabel(file) {
+        if (!file.path) {
+            return file.session.doc.getLine(0) || '*Untitled'
+        }
+        return path.basename(file.path);
     }
 
     render() {
@@ -62,7 +76,7 @@ export default class TabBrowser extends Component
                     <span className="close-tab icon icon-close"
                         title="Close Tab"
                         onClick={ this.closeFile.bind(this, f.id) }/>
-                    {file.substr(file.lastIndexOf('/') + 1)}
+                    { this.getLabel(f) }
                 </div>
             );
         });
