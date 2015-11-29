@@ -48,6 +48,8 @@ export default class Editor extends Component
         else {
             this.editor.setSession(ace.createEditSession(''))
         }
+        
+        this.editor.focus()
     }
 
     componentDidMount()
