@@ -83,10 +83,35 @@ class FilesStore
             }),
             current: this.current ? this.current.path : null
         }
+
         writeJSON('./src/session.json', json, 4)
     }
 
-    // handlers ------------------------------------------------------------------
+    // =========================================================================
+    // handlers
+    // =========================================================================
+    
+    /**
+     * Moves a file entry from one position to another. This is used when the
+     * tabs are reordered with DnD.
+     */
+    handleFileMoved({ id, toIndex }) {
+        let fromIndex = this.files.findIndex(f => f.id === id)
+        if (fromIndex > -1 && toIndex > -1 && toIndex <= this.files.length) {
+            if (fromIndex < toIndex) {
+                toIndex -= 1
+            }
+            let item = this.files.splice(fromIndex, 1)[0]
+            this.files.splice(toIndex, 0, item)
+            this.saveToSession()
+        }
+    }
+
+    // Methods for closing tabs --------------------------------------------------
+
+    /**
+     * Closes all the opened files
+     */
     onCloseAll() {
         this.files = this.files.filter(f => {
             f.session.removeAllListeners();
@@ -256,7 +281,6 @@ class FilesStore
             }
 
             if (session) {
-                console.log(session)
                 entry.session.setScrollLeft(session.scrollLeft)
                 entry.session.setScrollTop(session.scrollTop)
             }
@@ -289,51 +313,54 @@ class FilesStore
      */
     handleFileRemoved(id) {
         let idx = this.files.findIndex(f => f.id === id);
-        if (idx > -1) {
-            let meta = this.files[idx];
-
-            // Check for unsaved changes
-            if (meta.modified) {
-                let action = Dialog.showMessageBox({
-                    type    : 'question',
-                    title   : 'Error',
-                    buttons : [ "Don't Save", 'Cancel', 'Save' ],
-                    message : 'This file has changes, do you want to save them?',
-                    detail  : 'Your changes will be lost if you close this item without saving.'
-                });
-
-                if (action === 1) { // Cancel
-                    return;
-                }
-                else if (action === 2) { // Save
-
-                    // TODO: handle virtual files
-                    let text = meta.session.getValue();
-                    lib.writeFile(meta.path, text);
-                }
-            }
-
-            meta.session.removeAllListeners();
-            meta.session.destroy();
-            this.files.splice(idx, 1);
-            if (this.current && this.current.id == meta.id) {
-                this.current = null;
-                let len  = this.files.length;
-                if (len) {
-                    let next = idx - 1;
-                    if (next < 0) {
-                        next = this.files.length - 1;
-                    }
-                    if (next >= 0 && next < this.files.length) {
-                        next = this.files[next];
-                    } else {
-                        next = null;
-                    }
-                    this.current = next;
-                }
-            }
-            this.saveToSession();
+        if (idx == -1) {
+            throw new Error(`File with id "${id}" was not found within the opened files`);
         }
+
+        let meta = this.files[idx];
+
+        // Check for unsaved changes
+        if (meta.modified) {
+            let action = Dialog.showMessageBox({
+                type    : 'question',
+                title   : 'Error',
+                buttons : [ "Don't Save", 'Cancel', 'Save' ],
+                message : 'This file has changes, do you want to save them?',
+                detail  : 'Your changes will be lost if you close this item without saving.'
+            });
+
+            if (action === 1) { // Cancel
+                return;
+            }
+            else if (action === 2) { // Save
+
+                // TODO: handle virtual files
+                let text = meta.session.getValue();
+                lib.writeFile(meta.path, text);
+            }
+        }
+
+        meta.session.removeAllListeners();
+        meta.session.destroy();
+        this.files.splice(idx, 1);
+        if (this.current && this.current.id == meta.id) {
+            this.current = null;
+            let len  = this.files.length;
+            if (len) {
+                let next = idx - 1;
+                if (next < 0) {
+                    next = this.files.length - 1;
+                }
+                if (next >= 0 && next < this.files.length) {
+                    next = this.files[next];
+                } else {
+                    next = null;
+                }
+                this.current = next;
+            }
+        }
+
+        this.saveToSession();
     }
 
     handleSetCurrentFile(id) {
@@ -343,7 +370,8 @@ class FilesStore
 
     handleFileModified(path) {
         this.findAllByPath(path).forEach(f => {
-            f.modified = true
+            f.modified = true,
+            f.isPreview = false
         });
     }
 
@@ -353,16 +381,14 @@ class FilesStore
         });
     }
 
-    handleFileMoved({ fromIndex, toIndex }) {
-        this.files.splice(toIndex, 0, this.files.splice(fromIndex, 1))
-        this.saveToSession()
-    }
-
     handleCheckFile(id) {
         let entry = this.byId(id)
         if (entry.path) {
             this.findAllByPath(entry.path).forEach(f => {
                 f.modified = lib.md5(f.session.getValue()) !== f.hash
+                if (f.modified) {
+                    f.isPreview = false
+                }
             })
         }
         else {

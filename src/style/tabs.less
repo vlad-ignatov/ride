@@ -4,17 +4,18 @@
     position      : relative;
     padding-bottom: 3px;
     background    : @color-ui;
+    user-select   : none;
 
     &:not(:empty)::after {
-        content   : ''; 
+        content   : '';
         height    : 2px;
         display   : block;
         background: @color-ui-light;
         position  : absolute;
         top       : 100%;
         left      : 0;
-        width     : 100%; 
-        margin-top: -3px; 
+        width     : 100%;
+        margin-top: -3px;
         z-index   : 3;
         border    : 1px solid @color-ui-darkest;
     }
@@ -22,7 +23,7 @@
     .tab {
         flex         : 1;
         position     : relative;
-        z-index      : 2; 
+        z-index      : 2;
         padding      : 3px 8px 4px;
         max-width    : 180px;
         white-space  : nowrap;
@@ -34,13 +35,16 @@
         text-align   : center;
         background   : @color-ui-light;
         color        : @color-ui-darkest;
+        user-select  : none;
+        border-top-left-radius: 3px;
         
+        + .tab {
+            border-top-left-radius: 0;
+        }
+
         &:last-child {
             border-top-right-radius: 3px;
             margin-right: 1px !important;
-        }
-        &:first-child {
-            border-top-left-radius: 3px;
         }
 
         &:hover {
@@ -105,13 +109,45 @@
             }
         }
     }
+
+    .preview-insert {
+        position   : absolute;
+        left       : 0;
+        top        : 4px;
+        bottom     : 4px;
+        width      : 2px;
+        margin     : 0 0 0 -1px;
+        z-index    : 10;
+        background : @color-ui-accent;
+        font-size  : 16px;
+        box-shadow : 0 0 1px 0px #000;
+        text-shadow: 0px 0px 1px #000;
+        pointer-events: none;
+        // transition: transform 0.3s ease;
+
+        &:before {
+            content : '\2B07';
+            position: absolute;
+            top     : -22px;
+            left    : -7px;
+            color   : @color-ui-accent;
+        }
+
+        &:after {
+            content : '\2B06';
+            position: absolute;
+            bottom  : -22px;
+            left    : -7px;
+            color   : @color-ui-accent;
+        }
+    }
 }
 
 /* DARK THEME --------------------------------------------------------------- */
 .dark .main-tabs {
     // background    : linear-gradient(@color-ui-dark, @color-ui);
     // background: @color-ui;
-    
+
     &::after {
         // background: @color-ui;
         // box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);
@@ -146,7 +182,7 @@
             border-color : @color-ui-darkest;
             margin       : 0 -1px -1px 0;
             padding      : 6px 9px 4px;
-            
+
             .close-tab {
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
             }

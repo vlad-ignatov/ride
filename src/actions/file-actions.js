@@ -15,7 +15,8 @@ class FileActions
             'setFileUnmodified',
             'checkFileForModifications',
             'save',
-            'newFile'
+            'newFile',
+            'moveFile'
         );
     }
 
@@ -25,10 +26,6 @@ class FileActions
 
     previewFile(path = '') {
         this.dispatch(path);
-    }
-
-    moveFile(fromIndex, toIndex) {
-        this.dispatch({ fromIndex, toIndex });
     }
 
     setMode(mode, id) {
