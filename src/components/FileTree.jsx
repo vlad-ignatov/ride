@@ -30,7 +30,7 @@ export class FileTree extends Component
             { label: 'Add Project Folder' }
         )
     }
-
+    
     render() {
         var type = fs.statSync(this.props.path).isDirectory() ?
             FileTreeItem.TYPE_DIR :
@@ -44,7 +44,8 @@ export class FileTree extends Component
                     type={ type }
                     expanded={ this.props.expanded }
                     selectedPath={ this.props.selectedPath }
-                    openFiles={ this.props.openFiles } />
+                    openFiles={ this.props.openFiles }
+                    parent={this} />
             </ul>
         );
     }

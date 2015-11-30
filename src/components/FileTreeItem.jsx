@@ -2,6 +2,7 @@
 import { PropTypes, Component } from 'react';
 import fs                       from 'fs';
 import fileActions              from '../actions/file-actions'
+import Ride                     from '../lib/Ride'
 
 export default class FileTreeItem extends Component
 {
@@ -71,7 +72,8 @@ export default class FileTreeItem extends Component
                     key  : path,
                     type : stats.isDirectory() ?
                         FileTreeItem.TYPE_DIR :
-                        FileTreeItem.TYPE_FILE
+                        FileTreeItem.TYPE_FILE,
+                    parent: this
                 });
             }
 
@@ -90,7 +92,7 @@ export default class FileTreeItem extends Component
     }
 
     onClick(e) {
-        e.stopPropagation();
+        // e.stopPropagation();
         // e.preventDefault();
         if (this.props.type == FileTreeItem.TYPE_DIR) {
             this.setState({
@@ -121,7 +123,22 @@ export default class FileTreeItem extends Component
                         return true;
                     }
                 },
-                { label: 'New Folder'}
+                {
+                    label: 'New Folder',
+                    click: () => {
+                        prompt('Enter folder name').then(
+                            name => fs.mkdir(
+                                this.props.path + path.sep + name,
+                                err => {
+                                    if (err) {
+                                        return console.error(err)
+                                    }
+                                    this.setState({})
+                                }
+                            )
+                        )
+                    }
+                }
             )
         }
 
@@ -132,14 +149,32 @@ export default class FileTreeItem extends Component
             { label: 'Paste'     },
             { label: 'Rename'    },
             { type : 'separator' },
-            { label: 'Delete'    }
+            {
+                label: 'Delete',
+                click: () => {
+                    // TODO: What if the deleted file is currently opened?
+                    if (confirm('Do you really want to delete this?')) {
+                        if (isDir) {
+                            Ride.deleteFolder(this.props.path);
+                        }
+                        else {
+                            Ride.deleteFile(this.props.path);
+                        }
+                        this.props.parent.setState({})
+                    }
+                }
+            }
         )
     }
 
     render() {
         var isDir = this.props.type == FileTreeItem.TYPE_DIR;
         if (this.props.selectedPath === this.props.path) {
-            setTimeout(() => { this.refs.li.scrollIntoViewIfNeeded(); });
+            setTimeout(() => {
+                if (this.refs.li) {
+                    this.refs.li.scrollIntoViewIfNeeded();
+                }
+            });
         }
         return (
             <li key={this.props.path} ref="li" className={
