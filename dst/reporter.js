@@ -16,13 +16,15 @@ exports.run = function (files, options, callback) {
     var paths = files.map(function (p) {
         return path.resolve(p);
     });
-
+    
     console.group(
         '%cUNIT TESTS',
         'font-weight:bold;font-size:120%;color:#096;border-bottom:2px solid'
     );
-
+    
     nodeunit.runFiles(paths, {
+         
+        // called before a module is tested
         moduleStart: function (name) {
             console.groupCollapsed(
                 '%c%s%c ',
@@ -71,10 +73,16 @@ exports.run = function (files, options, callback) {
                 }
             });
         },
+        
+        // called once all test functions within the module have completed 
+        // ALL tests within the module
         moduleDone: function () {
             console.groupEnd();
         },
+        
+        // called after all tests/modules are complete
         done: function (assertions) {
+            console.groupEnd();
             var end = new Date().getTime();
             var duration = end - start;
             if (assertions.failures()) {
@@ -102,8 +110,8 @@ exports.run = function (files, options, callback) {
                         undefined
                 );
             }
-
-            console.groupEnd();
         }
     });
+    
+    return paths;
 };

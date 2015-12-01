@@ -23,9 +23,9 @@ class ConfigStore
          */
         setState(currentState: Object, nextState: Object): Object
         {
-            let state = jQuery.extend(true, currentState, nextState)
-            write(state)
-            return state
+            jQuery.extend(true, currentState, nextState)
+            write(currentState)
+            return currentState
         }
     }
 

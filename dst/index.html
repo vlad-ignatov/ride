@@ -5,28 +5,34 @@
         <title>React Editor</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ext-modelist.js"></script>
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-with-addons.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
     </head>
     <body class="dark">
         <div class="main-wrap"></div>
         <script type="text/javascript">
-        var fs      = require('fs');
-        var path    = require('path');
-        var jQuery  = require('jquery');
-        var ipc     = require('ipc');
-        var events  = require('events');
-        var remote  = require('remote');
-        var Menu    = remote.require('menu');
-        var Dialog  = remote.require('dialog');
-        var Crypto  = require('crypto');
-        var Promise = require('bluebird');
-        var Async   = require('async');
+        var fs       = require('fs');
+        var path     = require('path');
+        var jQuery = $ = require('jquery');
+        var ipc      = require('ipc');
+        var events   = require('events');
+        var remote   = require('remote');
+        var Menu     = remote.require('menu');
+        var Dialog   = remote.require('dialog');
+        var Crypto   = require('crypto');
+        var Promise  = require('bluebird');
+        var Async    = require('async');
 
         var ENV = process.env;
         window.__dirname = __dirname;
         </script>
         <script type="text/javascript" src="./window.js"></script>
+        <script type="text/javascript">
+        if (ENV.UNIT_TEST) {
+            setTimeout(() => {
+                require('./reporter.js').run([__dirname + '/../tests']);
+            }, 100);
+        }
+        </script>
     </body>
 </html>
