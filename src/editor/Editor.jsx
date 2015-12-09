@@ -1,76 +1,7 @@
 
-import { Component } from 'react'
-import Line from './Line'
-// import fs   from 'fs'
+import { Component }  from 'react'
 import fileStore      from '../stores/file-store'
 import EditorDocument from './EditorDocument'
-// import fileActions    from '../actions/file-actions'
-// import istextorbinary from 'istextorbinary'
-
-// const RE_EOL = /(\r\n|\r|\n)/
-////////////////////////////////////////////////////////////////////////////////
-var reKeyword = new RegExp(
-    "const|yield|import|get|set|break|case|catch|continue|default|" +
-    "delete|do|else|finally|for|function|if|in|instanceof|new|return|" +
-    "switch|throw|try|typeof|let|var|while|with|debugger|__parent__|" +
-    "__count__|escape|unescape|with|__proto__|class|enum|extends|" +
-    "super|export|implements|private|public|interface|package|" +
-    "protected|static|from|as"
-);
-
-var lexer = [
-    {
-        token:"multi-comment",
-        match: str => str.match(/\/\*/),
-        next : str => str.match(/\*\//)
-    },
-    {
-        token: "string",
-        match: str => str.match(/"/),
-        next : str => str.match(/"/)
-    },
-    {
-        token: "string-singlequoted",
-        match: str => str.match(/'/),
-        next : str => str.match(/'/)
-    },
-    {
-        token: "comment-line",
-        match: str => str.match(/\/\//),
-        next : str => str.match(/\n/)
-    },
-    // {
-    //     token: "identifier",
-    //     match: str => str.match(
-    //         new RegExp("[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*?")
-    //     ) && !str.match(reKeyword)
-    // },
-    // regexp: {
-    //     match: str => str.match(/\/.+?\//),
-    //     block: true
-    // },
-    {
-        token: "keyword",
-        match: str => str.match(reKeyword) //&& !str.match("[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*")
-    },
-    // {
-    //     token: "operator",
-    //     match: str => str.match(/--|\+\+|\.{3}|===|==|=|!=|!==|<+=?|>+=?|!|&&|\|\||\?\:|[!$%&*+\-~\/^]=?/)
-    // },
-    // {
-    //     token: "punctoator",
-    //     match: str => str.match(/(\(|\{|\}|\)|;|\.|,|=>|\[|\])/)
-    // },
-    // {
-    //     token: "number",
-    //     match: str => (
-    //         str.match(/[+-]?\d[\d_]*(?:(?:\.\d*)?(?:[eE][+-]?\d+)?)?\b/) ||
-    //         str.match(/0(?:[xX][0-9a-fA-F]+|[bB][01]+)\b/)
-    //     )
-    // }
-];
-
-
 
 class EditSession {
     constructor(path:string='', mode:string='text') {
@@ -341,9 +272,6 @@ export class Editor extends Component {
     }
 
     render() {
-        // let visibleLines = this.state.session.getClip();
-        // let visibleLines = this.state.session.document.lines;
-        // console.log(visibleLines)
         return (
             <div className="ride-editor">
                 <div className="ride-gutter" ref="gutter">
@@ -354,12 +282,6 @@ export class Editor extends Component {
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>
                     </div>
                 </div>
-                {/*<div className="ride-scroller-y">
-                    <div style={{height: 2000}}/>
-                </div>
-                <div className="ride-scroller-x">
-                    <div style={{width: 2000}}/>
-                </div>*/}
             </div>
         )
     }
